@@ -1,0 +1,102 @@
+<div class="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    disablePictureInPicture
+    [controls]="false"
+    class="absolute top-0 left-0 w-full h-full object-cover z-0 video-layer-1">
+    <source src="assets/GalaxiaUniversia.mp4" type="video/mp4">
+  </video>
+
+
+ <div class="absolute z-30 w-[60%] h-[70%] flex flex-col items-center justify-center text-center pointer-events-none">
+    <h1 class="text-4xl font-black text-violet-400 tracking-[1em] uppercase select-none">
+      Universia
+    </h1>
+  </div>
+
+  <svg class="z-40 w-full h-full max-h-[98vh] filter drop-shadow-[0_0_20px_rgba(59,130,246,0.15)]"
+       viewBox="0 0 1400 800" xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+      <linearGradient id="fade-top-blue" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0" />
+        <stop offset="150%" stop-color="#3b82f6" stop-opacity="0.5" />
+      </linearGradient>
+      <linearGradient id="fade-bottom-blue" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4" />
+        <stop offset="150%" stop-color="#3b82f6" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="fade-top-purple" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a855f7" stop-opacity="0" />
+        <stop offset="150%" stop-color="#a855f7" stop-opacity="0.4" />
+      </linearGradient>
+      <linearGradient id="fade-bottom-purple" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a855f7" stop-opacity="0.4" />
+        <stop offset="150%" stop-color="#a855f7" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(150, 400)">
+        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[-10px]">
+          <path d="M 120,-280 A 500,500 0 0,0 20,-125 L 85,-110 A 420,420 0 0,1 170,-240 Z"
+              stroke="url(#fade-top-blue)"
+              class="fill-blue-500/10 stroke-[3] transition-all group-hover:fill-blue-500/20 group-hover:stroke-blue-300"/>
+          <text x="70" y="-180" class="fill-blue-200/70 text-4xl select-none opacity-80 group-hover:opacity-100">🏠</text>
+        </g>
+
+        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[-15px]">
+          <path d="M 18,-120 A 500,500 0 0,0 18,120 L 83,105 A 420,420 0 0,1 83,-105 Z"
+              class="fill-blue-500/10 stroke-blue-500/40 stroke-[3] transition-colors group-hover:fill-blue-500/20 group-hover:stroke-blue-300"/>
+          <text x="15" y="5" class="fill-blue-200/70 text-4xl select-none">🪐</text>
+        </g>
+
+        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[-10px]">
+          <path d="M 20,125 A 500,500 0 0,0 120,280 L 170,240 A 420,420 0 0,1 85,110 Z"
+              stroke="url(#fade-bottom-blue)"
+              class="fill-blue-500/10 stroke-[3] transition-all group-hover:fill-blue-500/20 group-hover:stroke-blue-300"/>
+
+          <g transform="translate(60, 160) scale(0.12)">
+            <path class="fill-blue-200/70 transition-all duration-300 group-hover:fill-blue-400"
+                d="M404.554,438.441c-4.658-17.514-17.013-31.505-29.244-37.64c-14.434-8.306-48.233-13.242-60.491-55.264l-14.011-48.648v113.808c12.01,0.89,21.573,10.842,21.573,23.129v14.844h73.889C401.809,448.671,405.962,443.547,404.554,438.441z M303.755,475.08h-9.396l-9.952,36.639h29.3L303.755,475.08z M222.305,171.628v239.626c10.174,2.502,17.735,11.62,17.735,22.573v14.844h35.693v-14.844c0-9.507,5.782-17.68,13.955-21.294V171.628H222.305z M273.9,244.906c-6.671,6.669-16.106,8.809-24.686,6.505c-18.746-4.9-24.726-28.703-11.12-42.31c6.45-6.505,15.734-8.951,24.686-6.561C281.505,207.438,287.589,231.333,273.9,244.906z M259.945,213.271c-5.095-1.327-10.346,0.005-14.011,3.67c-7.509,7.506-4.358,20.997,6.115,23.74c5.116,1.334,10.342,0,14.011-3.67C273.731,229.34,270.258,216.095,259.945,213.271z M221.47,475.08h-9.451l-9.897,36.639h29.244L221.47,475.08z M197.175,345.538c-12.015,41.188-48.235,48.375-60.657,55.319c-11.982,6.003-24.451,20.066-29.077,37.584c-1.367,4.868,2.596,10.23,8.34,10.23h77.67v-14.844c0-10.953,7.561-20.071,17.736-22.573V296.89L197.175,345.538z M162.315,77.057c-2.093-2.792-6.144-2.859-8.451,0.056c-11.731,15.957-18.181,29.356-18.181,37.64v18.236h44.701v-18.236C180.384,106.19,173.99,92.791,162.315,77.057z M135.683,173.351v55.32h44.701v-55.32H135.683z M135.683,144.107v18.125h44.701v-18.125H135.683z M135.683,239.791v18.125h44.701v-18.125H135.683z M135.683,269.035v119.701c18.431-7.89,32.734-12.294,44.701-32.246v-87.455H135.683z M216.801,421.651h-0.111c-6.672,0.056-12.121,5.449-12.121,12.176v30.133h24.352v-30.133C228.921,427.1,223.528,421.651,216.801,421.651z M263.28,113.528c-3.629-4.989-11.537-4.324-14.566,0c-9.018,12.108-22.173,32.232-25.687,46.98h65.884C285.887,146.284,271.946,125.082,263.28,113.528z M299.085,421.651c-6.728,0-12.232,5.449-12.232,12.176v30.133h24.408v-30.133C311.261,427.1,305.757,421.651,299.085,421.651z M274.455,8.838c-9.529-11.251-27.075-11.549-37.028-0.055c-29.411,34.693-45.645,64.993-45.645,85.342v229.952l19.404-67.385v-90.624c0-17.977,21.622-51.444,30.189-60.88c3.976-4.231,8.626-6.449,14.622-6.449c7.616,0,12.408,3.429,16.901,9.062c10.153,14.148,27.854,40.291,27.854,57.766c0.181,0.543,0.056,4.12,0.056,91.124l19.459,67.608V94.125C320.267,74.165,303.978,43.865,274.455,8.838z M358.241,77.057c-2.057-2.743-6.226-2.893-8.395,0c-11.62,15.678-18.236,29.411-18.236,37.695v18.236h44.756v-18.236C376.366,106.19,369.916,92.846,358.241,77.057z M331.61,239.791v18.125h44.701v-18.125H331.61z M331.61,144.107v18.125h44.701v-18.125H331.61z M331.61,173.351v55.32h44.756v-55.32H331.61z M331.61,269.035v87.455c12.383,22.275,35.186,27.521,44.756,32.302V269.035H331.61z"></path>
+          </g>
+        </g>
+      </g>
+
+      <g transform="translate(1250, 400)">
+        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[10px]">
+          <path d="M -120,-280 A 500,500 0 0,1 -20,-125 L -85,-110 A 420,420 0 0,0 -170,-240 Z"
+                stroke="url(#fade-top-purple)"
+                class="fill-purple-500/10 stroke-[3] transition-all group-hover:fill-purple-500/20 group-hover:stroke-blue-300"/>
+          <text x="-110" y="-180" class="fill-purple-200/70 text-4xl select-none opacity-80 group-hover:opacity-100">👤</text>
+        </g>
+
+        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[15px]">
+          <path d="M -18,-120 A 500,500 0 0,1 -18,120 L -83,105 A 420,420 0 0,0 -83,-105 Z"
+                class="fill-purple-500/10 stroke-purple-500/40 stroke-[3] transition-colors group-hover:fill-purple-500/20 group-hover:stroke-purple-300"/>
+
+          <g transform="translate(-65, -35) scale(0.11)">
+              <g class="fill-purple-200/70 transition-all duration-300 group-hover:fill-purple-400">
+                  <path d="M438.954,131H147.635l44.548-52.589a8.027,8.027,0,0,0-12.2-10.436l-46.152,54.357-67.575-76.2a8,8,0,0,0-11.293-.68,8.128,8.128,0,0,0-.677,11.4L119.954,131H69.66A47.579,47.579,0,0,0,22,178.783V420.567C22,447.035,43.193,469,69.66,469H442.34c26.467,0,47.66-21.965,47.66-48.433v-238.4A50.969,50.969,0,0,0,438.954,131ZM474,420.567C474,438.212,459.985,453,442.34,453H69.66C52.015,453,38,438.212,38,420.567V178.783A31.562,31.562,0,0,1,69.66,147H438.954A34.951,34.951,0,0,1,474,182.167Z"></path>
+                  <path d="M417.922,208.525a35.59,35.59,0,1,0,35.589,35.59A35.63,35.63,0,0,0,417.922,208.525Zm0,55.179a19.59,19.59,0,1,1,19.589-19.589A19.612,19.612,0,0,1,417.922,263.7Z"></path>
+                  <path d="M439.862 315H395.983a8 8 0 1 0 0 16h43.879a8 8 0 1 0 0-16zM439.862 348H395.983a8 8 0 1 0 0 16h43.879a8 8 0 1 0 0-16zM439.862 380H395.983a8 8 0 1 0 0 16h43.879a8 8 0 1 0 0-16z"></path>
+                  <path d="M364,177a8,8,0,0,0-8-8H65a8,8,0,0,0-8,8V424a8,8,0,0,0,8,8H356a8,8,0,0,0,8-8ZM348,416H73V185H348Z"></path>
+                  <path d="M120.467,317.216a245.2,245.2,0,0,0,24.033,8.7,75.706,75.706,0,0,0,133.364,17.26q2.508-.169,4.921-.39c26.755-2.477,41.27-9.764,43.144-21.659,1.91-12.125-10.1-23.694-35.7-34.422a75.72,75.72,0,0,0-139.327-25.938c-29.011-.024-61.923,4.1-64.834,22.577C84.2,295.237,95.77,306.633,120.467,317.216Zm44.5,14.32c11.195,2.728,23.07,5.107,35.312,7.035a407.289,407.289,0,0,0,56.12,5.1,59.649,59.649,0,0,1-91.432-12.131ZM310.1,318.616c-.433.613-4.334,5.2-23.376,7.642a75.209,75.209,0,0,0,4.538-21.553C305.868,311.776,309.807,317.161,310.1,318.616Zm-94.424-78.363a59.706,59.706,0,0,1,52.968,87.338c-19.236.566-42.183-1.091-65.88-4.824a404.891,404.891,0,0,1-45.387-9.74,59.7,59.7,0,0,1,58.3-72.774Zm-72.121,36.616a75.791,75.791,0,0,0-3.235,30.851c-4-1.389-7.809-2.825-11.388-4.3-23.966-9.886-26.79-16.818-27.032-17.6C103.3,283.036,115.478,277.673,143.557,276.869Z"></path>
+              </g>
+          </g>
+        </g>
+
+        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[10px]">
+          <path d="M -20,125 A 500,500 0 0,1 -120,280 L -170,240 A 420,420 0 0,0 -85,110 Z"
+                stroke="url(#fade-bottom-purple)"
+                class="fill-purple-500/10 stroke-[3] transition-all group-hover:fill-purple-500/20 group-hover:stroke-blue-300"/>
+          <text x="-110" y="195" class="fill-purple-200/70 text-4xl select-none opacity-80 group-hover:opacity-100">❓</text>
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>
