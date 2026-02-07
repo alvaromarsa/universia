@@ -1,0 +1,10 @@
+{
+  "/api-francia": {
+    "target": "https://api.le-systeme-solaire.net",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api-francia": ""
+    }
+  }
+}

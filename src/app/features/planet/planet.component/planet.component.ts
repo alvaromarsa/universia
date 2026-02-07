@@ -1,10 +1,26 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
+import { RouterLink } from '@angular/router';
+
+
+
+import { Petitions } from '../../../shared/services/petitions.service';
+import { Planeta } from '../../../shared/interfaces/planet.interface';
 
 @Component({
-  selector: 'app-planet.component',
+  selector: 'planetComponent',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, AsyncPipe, RouterLink],
   templateUrl: './planet.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlanetComponent { }
+export class PlanetComponent implements OnInit {
+
+  public petitionsInject = inject(Petitions);
+  public planetsName$!: Observable<Planeta[]>;
+
+  ngOnInit(): void {
+    this.planetsName$ = this.petitionsInject.getPlanetsName();
+  }
+
+ }

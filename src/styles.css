@@ -10,4 +10,8 @@ body, html {
   overflow: hidden; /* Esto evita que la pantalla se mueva */
 }
 
-
+/* Eliminamos el recuadro de enfoque en los elementos del menú */
+[routerLink], g, path, svg {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent; /* Para que no brille en móviles al tocar */
+}

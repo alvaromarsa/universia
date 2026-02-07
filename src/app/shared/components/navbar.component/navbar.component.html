@@ -1,18 +1,6 @@
-<div class="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+<div class="relativ w-full overflow-hidden pointer-events-none flex items-center justify-center">
 
-  <video
-    autoplay
-    muted
-    loop
-    playsinline
-    disablePictureInPicture
-    [controls]="false"
-    class="absolute top-0 left-0 w-full h-full object-cover z-0 video-layer-1">
-    <source src="assets/GalaxiaUniversia.mp4" type="video/mp4">
-  </video>
-
-
- <div class="absolute z-30 w-[60%] h-[70%] flex flex-col items-center justify-center text-center pointer-events-none">
+ <div *ngIf="isHome" class="absolute z-30 w-[60%] h-[70%] flex flex-col items-center justify-center text-center pointer-events-none">
     <h1 class="text-4xl font-black text-violet-400 tracking-[1em] uppercase select-none">
       Universia
     </h1>
@@ -40,16 +28,18 @@
       </linearGradient>
     </defs>
 
-    <g stroke-linecap="round" stroke-linejoin="round">
+    <g stroke-linecap="round" stroke-linejoin="round" class="pointer-events-auto">
       <g transform="translate(150, 400)">
-        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[-10px]">
+        <g [routerLink]="['/home']"
+          class="group cursor-pointer transition-all duration-300 hover:translate-x-[-10px]">
           <path d="M 120,-280 A 500,500 0 0,0 20,-125 L 85,-110 A 420,420 0 0,1 170,-240 Z"
               stroke="url(#fade-top-blue)"
               class="fill-blue-500/10 stroke-[3] transition-all group-hover:fill-blue-500/20 group-hover:stroke-blue-300"/>
           <text x="70" y="-180" class="fill-blue-200/70 text-4xl select-none opacity-80 group-hover:opacity-100">🏠</text>
         </g>
 
-        <g class="group cursor-pointer transition-all duration-300 hover:translate-x-[-15px]">
+        <g [routerLink]="['/planets']"
+          class="group cursor-pointer transition-all duration-300 hover:translate-x-[-15px]">
           <path d="M 18,-120 A 500,500 0 0,0 18,120 L 83,105 A 420,420 0 0,1 83,-105 Z"
               class="fill-blue-500/10 stroke-blue-500/40 stroke-[3] transition-colors group-hover:fill-blue-500/20 group-hover:stroke-blue-300"/>
           <text x="15" y="5" class="fill-blue-200/70 text-4xl select-none">🪐</text>
