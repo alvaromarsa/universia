@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Planeta, PlanetInterface } from '../interfaces/planet.interface';
+import { environment } from '../../../environments/environment.development';
 
 
 @Injectable({
@@ -13,11 +14,11 @@ export class Petitions {
 
   constructor(private http:HttpClient) { }
 
-  private readonly API_URL = 'https://images-api.nasa.gov';
-  private readonly API_KEY = '4JQgrsLcpM941ZZX7ALTzNvFGw54b0VudLHvSBaz';
+  private readonly API_URL = environment.nasaApiUrl;
+  private readonly API_KEY = environment.nasaApiKey;
 
-  private readonly API_URL2 = '/api-francia/rest/bodies';
-  private readonly API_KEY2 = '858572d5-d638-4732-a437-88b29092b9a1'
+  private readonly API_URL2 = environment.franceApiUrl;
+  private readonly API_KEY2 = environment.franceApiKey;
 
   private headers = new HttpHeaders({
     'Authorization': `Bearer ${this.API_KEY2}`
