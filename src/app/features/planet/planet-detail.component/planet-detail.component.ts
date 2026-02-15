@@ -22,16 +22,25 @@ export class PlanetDetailComponent implements OnInit {
   public petitionsInject = inject(Petitions);
   public planetData$!: Observable<Planeta[]>;
 
-ngOnInit(): void {
+    ngOnInit(): void {
 
-  this.planetData$ = this.route.paramMap.pipe(
-    switchMap(params => {
-      const nombre = params.get('nombrePlaneta');
-      return nombre ? this.petitionsInject.getPlanetsData(nombre) : of([]);
-    }),
-    tap(datos => {
-      console.log('📦 Datos recibidos de la API:', datos); // Esto para ver el array de planetas
-    })
-  );
-}
+      this.planetData$ = this.route.paramMap.pipe(
+        switchMap(params => {
+          const nombre = params.get('nombrePlaneta');
+          console.log('Nombre del planeta:', nombre);
+          return nombre ? this.petitionsInject.getPlanetsData(nombre) : of([]);
+        })
+      );
+
+
+    }
+
+    getPlanetVideo(name: string): string {
+      return name
+        .normalize('NFD')                   // Separa tildes
+        .replace(/[\u0300-\u036f]/g, '')    // Borra tildes
+        .toLowerCase()                      // Minúsculas
+        .trim()                             // Quita espacios vacíos al final
+        .replace(/\s+/g, '-');              // Cambia espacios por guiones
+    }
 }

@@ -1,6 +1,12 @@
-<div *ngIf="planetData$ | async as data" class="p-10 text-white">
+<div *ngIf="planetData$ | async as data" class="p-10 text-white" class="universo">
   <div *ngFor="let p of data">
     <h1 class="text-6xl font-bold text-orange-500">{{ p.name }}</h1>
+    <div class="universo">
+      <video autoplay muted loop playsinline
+            class="planeta-chroma"
+           [src]="'assets/videos/' + getPlanetVideo(p.name) + '.mp4'">
+      </video>
+    </div>
     <div class="mt-10 grid grid-cols-2 gap-4">
       <p class="text-xl">🪐 Gravedad: {{ p.gravity }} m/s²</p>
       <p class="text-xl">🌑 Lunas: {{ p.moons ? p.moons.length : 0 }}</p>

@@ -40,8 +40,6 @@ export class Petitions {
 
    const urlFiltered = `${this.API_URL2}?filter[]=isPlanet,eq,true&filter[]=id,eq,${planetId}`;
 
-   console.log('🔗 URL que estoy llamando:', urlFiltered);
-
    return this.http.get<PlanetInterface>(urlFiltered, {headers: this.headers}).pipe(
      map(response => response.bodies.map(planet => ({
       ...planet,
