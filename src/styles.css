@@ -39,20 +39,27 @@ body, html {
   @apply border-orange-500 bg-orange-500/10 scale-105 shadow-[0_0_20px_rgba(249,115,22,0.3)];
 }
 
-.planeta-chroma {
-  /* 1. Volvemos el negro transparente */
-  mix-blend-mode: screen;
-
-  /* 2. EL TRUCO: Bajamos el brillo y subimos mucho el contraste */
-  /* El 'brightness' bajo hace que el gris se vuelva negro. */
-  /* El 'contrast' alto hace que el planeta recupere su fuerza. */
-  filter: brightness(0.8) contrast(1.4) saturate(1.1);
-
-  /* 3. Un pequeño difuminado en los bordes para que no se vea el corte del cuadro */
-  mask-image: radial-gradient(circle, black 60%, transparent 95%);
-
+.planeta-img {
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
+  height: auto;
+
+  /* Un brillo más suave, tipo atmósfera */
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.15));
+
+  /* Animación: Solo sube, baja y se inclina un pelín */
+  animation: vaivenEspacial 8s ease-in-out infinite;
+}
+
+@keyframes vaivenEspacial {
+  0%, 100% {
+    /* Posición normal */
+    transform: translateY(0) rotate(-2deg) scale(1);
+  }
+  50% {
+    /* Sube un poco, se inclina al otro lado y crece un pelín */
+    transform: translateY(-20px) rotate(3deg) scale(1.02);
+  }
 }
 
 .universo {
@@ -68,4 +75,32 @@ body, html {
   justify-content: center;
   align-items: center;
   min-height: 500px;
+}
+
+.login-universo {
+  background: radial-gradient(circle at bottom, #0d1b2a 0%, #000814 100%);
+  /* Si tienes la imagen de la galaxia, úsala aquí también */
+}
+
+.panel-espacial {
+  /* Efecto de cristal esmerilado */
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Un pequeño detalle: que el input brille al escribir */
+input:focus {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+span.text-red-700 {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  /* Una pequeña animación para que el error no asuste */
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

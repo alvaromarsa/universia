@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavbarComponent } from "../../../shared/components/navbar.component/navbar.component";
+import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'homeComponent',
   standalone: true,
-  imports: [NavbarComponent],
+  imports: [],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

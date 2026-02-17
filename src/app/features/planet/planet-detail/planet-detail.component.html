@@ -1,0 +1,37 @@
+<!--
+<div *ngIf="planetData$ | async as data" class="p-10 text-white" class="universo">
+  <div *ngFor="let p of data">
+    <h1 class="text-6xl font-bold text-orange-500">{{ p.name }}</h1>
+    <div class="universo">
+      <video autoplay muted loop playsinline
+            class="planeta-chroma"
+           [src]="'assets/videos/' + getPlanetVideo(p.name) + '.mp4'">
+      </video>
+    </div>
+    <div class="mt-10 grid grid-cols-2 gap-4">
+      <p class="text-xl">🪐 Gravedad: {{ p.gravity }} m/s²</p>
+      <p class="text-xl">🌑 Lunas: {{ p.moons ? p.moons.length : 0 }}</p>
+      <p class="text-xl">🌡️ Temperatura: {{ p.avgTemp }} K</p>
+      <p class="text-xl">📏 Radio: {{ p.meanRadius }} km</p>
+    </div>
+  </div>
+</div>
+-->
+<div *ngIf="planetData$ | async as data" class="p-10 text-white galaxia-fondo">
+  <div *ngFor="let p of data" class="planet-container">
+    <h1 class="text-6xl font-bold text-orange-500">{{ p.name }}</h1>
+
+    <div class="flex justify-center my-8">
+      <img [src]="'assets/images/' + p.name.toLowerCase() + '.png'"
+           [alt]="p.name"
+           class="planeta-img">
+    </div>
+
+    <div class="mt-10 grid grid-cols-2 gap-4">
+      <p class="text-xl">🪐 Gravedad: {{ p.gravity }} m/s²</p>
+      <p class="text-xl">🌑 Lunas: {{ p.moons ? p.moons.length : 0 }}</p>
+      <p class="text-xl">🌡️ Temperatura: {{ p.avgTemp }} K</p>
+      <p class="text-xl">📏 Radio: {{ p.meanRadius }} km</p>
+    </div>
+  </div>
+</div>
