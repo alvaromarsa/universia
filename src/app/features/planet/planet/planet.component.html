@@ -1,34 +1,41 @@
-<div class="pt-20 pb-10 px-5 min-h-screen bg-black flex flex-col items-center">
 
-  <h1 class="text-white text-3xl font-bold mb-16 drop-shadow-lg text-center tracking-[0.2em]">
+<div class=" contenedor-universo pt-20 pb-10 px-5 min-h-screen flex flex-col
+            items-center overflow-hidden"
+            [class.sistema-oculto]="hideSystem">
+
+  <h1 class="text-white text-3xl font-bold mb-8 drop-shadow-lg text-center tracking-[0.2em] z-50">
     🚀 SISTEMA SOLAR
   </h1>
 
   @if (planetsName$ | async; as planetas) {
-    <div class="flex flex-row items-center justify-between w-full max-w-7xl gap-8 mt-12">
+    <div class="sistema-solar-container relative flex items-center justify-center w-full h-[70vh]"
+         [class.zoomed]="idSeleccionado">
 
-      <div class="flex flex-col gap-6 items-end w-1/4">
-        @for(i of planetas.slice(0, 4); track i.id) {
-          <a [routerLink]="['/planets', i.id]" class="boton-parentesis-izq group">
-            <span class="text-orange-500 text-xs font-black uppercase tracking-widest group-hover:text-white transition-colors">
-              {{i.name}}
-            </span>
-          </a>
+      <div class="sol"></div>
 
-        }
+      @for(planeta of planetas; track planeta.id; let i = $index) {
+        <div class="orbita" [class.paused]="idSeleccionado === planeta.id"
+             [style.width.px]="250 + (i * 50)"
+             [style.height.px]="250 + (i * 50)"
+             [style.animationDuration]="15 + (i * 8) + 's'"
+             [style.animationDelay]="'-' + (i * randomNumber) + 's'">
+          <div class="planeta-wrapper" [class.paused]="idSeleccionado === planeta.id" [style.animationDuration]="15 + (i * 8) + 's'"
+          [style.animationDelay]="'-' + (i * randomNumber) + 's'">
+            <a (click)="viajarAPlaneta($event,planeta.id)"
+                class="planeta-link group"
+                [class.planeta-seleccionado]="idSeleccionado === planeta.id">
 
-      </div>
+              <video autoplay muted loop playsinline class="video-planeta"
+              [style.--diameter.px]="scaleRadius(planeta.meanRadius)">
+                <source [src]="'assets/videos/' + planeta.id + '.mp4'" type="video/mp4">
+              </video>
 
-      <div class="flex flex-col gap-6 items-start w-1/4">
-        @for(i of planetas.slice(4, 8); track i.id) {
-          <a [routerLink]="['/planets', i.id]" class="boton-parentesis-der group">
-            <span class="text-orange-500 text-xs font-black uppercase tracking-widest group-hover:text-white transition-colors">
-              {{i.name}}
-            </span>
-          </a>
-        }
-      </div>
+              <span class="nombre-tooltip">{{ planeta.name }}</span>
+            </a>
+          </div>
 
+        </div>
+      }
     </div>
   }
 </div>

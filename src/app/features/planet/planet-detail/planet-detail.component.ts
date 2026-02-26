@@ -4,7 +4,7 @@ import { Observable, of, switchMap, tap } from 'rxjs';
 import { CommonModule, AsyncPipe } from '@angular/common';
 
 
-import { Petitions } from '../../../shared/services/petitions.service';
+import { PlanetService } from '../planet.service';
 import { Planeta } from '../../../shared/interfaces/planet.interface';
 
 
@@ -19,7 +19,7 @@ export class PlanetDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) { }
 
-  public petitionsInject = inject(Petitions);
+  public petitionsInject = inject(PlanetService);
   public planetData$!: Observable<Planeta[]>;
 
     ngOnInit(): void {
@@ -27,7 +27,6 @@ export class PlanetDetailComponent implements OnInit {
       this.planetData$ = this.route.paramMap.pipe(
         switchMap(params => {
           const nombre = params.get('nombrePlaneta');
-          console.log('Nombre del planeta:', nombre);
           return nombre ? this.petitionsInject.getPlanetsData(nombre) : of([]);
         })
       );

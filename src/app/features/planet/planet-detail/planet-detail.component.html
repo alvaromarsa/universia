@@ -1,10 +1,10 @@
-<!--
-<div *ngIf="planetData$ | async as data" class="p-10 text-white" class="universo">
-  <div *ngFor="let p of data">
-    <h1 class="text-6xl font-bold text-orange-500">{{ p.name }}</h1>
-    <div class="universo">
+
+<div *ngIf="planetData$ | async as data" class="planet-detail p-10 text-white universo min-h-screen flex flex-col items-center justify-center">
+  <div *ngFor="let p of data" class="w-full max-w-3xl">
+    <h1 class="text-6xl font-bold text-orange-500 text-center">{{ p.name }}</h1>
+    <div class="flex justify-center my-8">
       <video autoplay muted loop playsinline
-            class="planeta-chroma"
+            class="planeta-chroma w-full max-w-md"
            [src]="'assets/videos/' + getPlanetVideo(p.name) + '.mp4'">
       </video>
     </div>
@@ -16,7 +16,7 @@
     </div>
   </div>
 </div>
--->
+<!--
 <div *ngIf="planetData$ | async as data" class="p-10 text-white galaxia-fondo">
   <div *ngFor="let p of data" class="planet-container">
     <h1 class="text-6xl font-bold text-orange-500">{{ p.name }}</h1>
@@ -35,3 +35,4 @@
     </div>
   </div>
 </div>
+-->

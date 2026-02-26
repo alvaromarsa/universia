@@ -9,23 +9,27 @@ export const routes: Routes = [
 
   { path: '',
     component: HomeComponent,
+    data: { animation: 'HomePage' }
   },
   { path: 'planets',
     component: PlanetComponent,
+    data: { animation: 'PlanetsPage' }
   },
   { path: 'planets/:nombrePlaneta',
     component: PlanetDetailComponent,
+    data: { animation: 'PlanetDetailPage' }
   },
   { path: 'login',
     component: LoginComponent,
+    data: { animation: 'LoginPage' }
   },
     { path: 'register',
     component: RegisterComponent,
+    data: { animation: 'RegisterPage' }
   },
   { path: '**',
     component: HomeComponent,
+    data: { animation: 'HomePage' }
   },
-
-
 
 ];
