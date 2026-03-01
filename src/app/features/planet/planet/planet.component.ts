@@ -14,6 +14,7 @@ import { TranslatePipe } from '../../../shared/translations/translate.pipe';
   standalone: true,
   imports: [CommonModule, AsyncPipe, TranslatePipe],
   templateUrl: './planet.component.html',
+  styleUrls: ['./planet.component.css'],
 })
 export class PlanetComponent implements OnInit {
 

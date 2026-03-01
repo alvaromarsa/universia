@@ -1,0 +1,154 @@
+/* Planet Component Styles */
+
+.contenedor-universo {
+  position: relative; /* Importante para que el fondo sepa dónde quedarse */
+  z-index: 1;
+}
+
+.contenedor-universo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  mask-image: radial-gradient(circle, black 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
+
+  /* --- AQUÍ CONTROLAS EL PROTAGONISMO --- */
+  opacity: 0.2; /* Prueba con 0.1 o 0.2 para que sea muy sutil */
+
+  z-index: -1; /* Se va al fondo de todo para no tapar nada */
+  pointer-events: none; /* El ratón lo atraviesa como si fuera aire */
+}
+
+.sistema-oculto {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.sistema-solar-container {
+  perspective: 1000px; /* Da un poco de sensación 3D */
+  /* establecemos origen en esquina para que los cálculos de traslación
+     sean más sencillos y el zoom se dirija correctamente hacia el punto
+     absoluto de la pantalla */
+  transform-origin: 0 0;
+}
+
+.sistema-solar-container.zoomed {
+  animation: zoomAll 1.5s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+  z-index: 1000;
+}
+
+.sol {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #ffcc00 0%, #ff8800 70%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 50px #ff8800;
+  z-index: 10;
+}
+
+.orbita {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  animation-name: orbitar;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 15s;
+  animation-delay: 0s;
+  pointer-events: none; /* <--- Esto hace que la órbita sea como un fantasma, el ratón la atraviesa */
+  /* Los estilos animation-duration y animation-delay se establecen dinámicamente en el HTML */
+}
+
+.orbita.paused {
+  animation-play-state: paused !important;
+}
+
+.planeta-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-name: contragiro;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 15s;
+  animation-delay: 0s;
+  /* Los estilos animation-duration y animation-delay se establecen dinámicamente en el HTML */
+}
+
+.planeta-wrapper.paused {
+  animation-play-state: paused !important;
+}
+
+.video-planeta {
+  width: var(--diameter); /* Usamos la variable CSS para el tamaño */
+  height: var(--diameter); /* Lo mismo para la altura */
+  border-radius: 50%; /* Hacemos el vídeo circular */
+  object-fit: cover;
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+  transition: transform 0.3s ease;
+  pointer-events: auto; /* <--- Pero esto dice que el planeta SÍ se puede tocar */
+  z-index: 100; /* Aseguramos que el planeta esté por encima de todo */
+}
+
+.video-planeta:hover {
+  transform: scale(1.8);
+  filter: drop-shadow(0 0 20px #fff);
+}
+
+/* durante el zoom al planeta seleccionado no queremos que el hover
+   vuelva a escalar el mismo elemento, ya tiene su propia animación */
+.sistema-solar-container.zoomed .planeta-link.planeta-seleccionado .video-planeta:hover {
+  transform: none !important;
+  /* opcional: mantenemos la sombra normal para no saltar dramaticamente */
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+}
+
+.nombre-tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.planeta-link:hover .nombre-tooltip {
+  opacity: 1;
+}
+
+/* Animaciones */
+@keyframes orbitar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes contragiro {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes zoomAll {
+  0% {
+    transform: translate(0,0) scale(1);
+  }
+  100% {
+    /* usamos las traslaciones calculadas en TypeScript */
+    transform: translate(var(--tx,0), var(--ty,0)) scale(var(--scale-final, 1));
+  }
+}

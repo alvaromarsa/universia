@@ -1,5 +1,5 @@
 
-<div *ngIf="planetData$ | async as data" class="planet-detail p-10 text-white universo min-h-screen flex flex-col items-center justify-center">
+<div *ngIf="planetData$ | async as data" class="planet-detail p-10 universo min-h-screen flex flex-col items-center justify-center">
   <div *ngFor="let p of data" class="w-full max-w-3xl">
     <h1 class="text-6xl font-bold text-orange-500 text-center">{{ p.name | translate}}</h1>
     <div class="flex justify-center my-8">

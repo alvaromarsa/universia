@@ -23,6 +23,7 @@ body, html {
     -webkit-tap-highlight-color: transparent; /* Para que no brille en móviles al tocar */
 }
 
+/* Botones de navegación con parentesis */
 .boton-parentesis-izq, .boton-parentesis-der {
   /* Bajamos el padding a p-2 para que sean más estilizados */
   @apply bg-black/40 backdrop-blur-md border border-orange-500/20 p-2 w-28 text-right transition-all duration-500;
@@ -46,29 +47,7 @@ body, html {
   @apply border-orange-500 bg-orange-500/10 scale-105 shadow-[0_0_20px_rgba(249,115,22,0.3)];
 }
 
-.planeta-img {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-
-  /* Un brillo más suave, tipo atmósfera */
-  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.15));
-
-  /* Animación: Solo sube, baja y se inclina un pelín */
-  animation: vaivenEspacial 8s ease-in-out infinite;
-}
-
-@keyframes vaivenEspacial {
-  0%, 100% {
-    /* Posición normal */
-    transform: translateY(0) rotate(-2deg) scale(1);
-  }
-  50% {
-    /* Sube un poco, se inclina al otro lado y crece un pelín */
-    transform: translateY(-20px) rotate(3deg) scale(1.02);
-  }
-}
-
+/* Fondo universo global */
 .universo {
   background-color: #050505;
   background-image:
@@ -84,215 +63,20 @@ body, html {
   min-height: 500px;
 }
 
-.login-universo {
-  background: radial-gradient(circle at bottom, #0d1b2a 0%, #000814 100%);
-  /* Si tienes la imagen de la galaxia, úsala aquí también */
-}
-
-.panel-espacial {
-  /* Efecto de cristal esmerilado */
-  border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
 /* Un pequeño detalle: que el input brille al escribir */
 input:focus {
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
 }
 
+/* Animación de errores en formularios */
 span.text-red-700 {
   display: block;
   font-size: 0.75rem;
   margin-top: 0.25rem;
-  /* Una pequeña animación para que el error no asuste */
   animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.sistema-solar-container {
-  perspective: 1000px; /* Da un poco de sensación 3D */
-}
-
-.sol {
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, #ffcc00 0%, #ff8800 70%, transparent 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 50px #ff8800;
-  z-index: 10;
-}
-
-.orbita {
-  position: absolute;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  animation: orbitar linear infinite;
-  pointer-events: none; /* <--- Esto hace que la órbita sea como un fantasma, el ratón la atraviesa */
-}
-
-.planeta-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: contragiro linear infinite;
-}
-
-.video-planeta {
-  width: var(--diameter); /* Usamos la variable CSS para el tamaño */
-  height: var(--diameter); /* Lo mismo para la altura */
-  border-radius: 50%; /* Hacemos el vídeo circular */
-  object-fit: cover;
-  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
-  transition: transform 0.3s ease;
-  pointer-events: auto; /* <--- Pero esto dice que el planeta SÍ se puede tocar */
-  z-index: 100; /* Aseguramos que el planeta esté por encima de todo */
-}
-
-.video-planeta:hover {
-  transform: scale(1.8);
-  filter: drop-shadow(0 0 20px #fff);
-}
-
-/* durante el zoom al planeta seleccionado no queremos que el hover
-   vuelva a escalar el mismo elemento, ya tiene su propia animación */
-.sistema-solar-container.zoomed .planeta-link.planeta-seleccionado .video-planeta:hover {
-  transform: none !important;
-  /* opcional: mantenemos la sombra normal para no saltar dramaticamente */
-  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
-}
-
-.planeta-chroma {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 50%;
-  object-fit: cover;
-  filter: drop-shadow(0 0 15px rgba(59,130,246,0.5));
-}
-
-/* cuando el video abre en la vista de detalle, colocarlo donde quedó el planeta */
-.planet-detail {
-  position: relative;
-}
-.planet-detail .planeta-chroma {
-  position: absolute;
-  top: var(--final-y,50vh);
-  left: var(--final-x,50vw);
-  /* mantendrá su tamaño original, solo movemos la posición
-     usando translate(); no escalamos en la vista de detalle */
-  transform: translate(-50%, -50%) scale(1);
-  transition: top 0.5s ease, left 0.5s ease;
-}
-
-/* caja de datos del planeta: debe ir situada justo bajo el planeta y no
-   desplazarlo cuando aparece */
-.planet-detail .planet-info {
-  position: absolute;
-  top: calc(var(--final-y,50vh) + 220px); /* ajustar según tamaño máximo del vídeo */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 400px; /* igual al max-width del vídeo para alinearlos */
-  text-align: center;
-}
-
-/* si quieres algo de separación adicional puedes añadir padding o
-   margin dentro de planet-info, pero la posición es fija */
-
-/* pausa de órbita cuando hemos seleccionado un planeta */
-.orbita.paused, .planeta-wrapper.paused {
-  animation-play-state: paused !important;
-}
-
-/* la animación de zoom ahora la aplicamos al contenedor entero */
-
-/* cuando se selecciona un planeta, el sistema solar interno hace zoom */
-.sistema-solar-container {
-  /* establecemos origen en esquina para que los cálculos de traslación
-     sean más sencillos y el zoom se dirija correctamente hacia el punto
-     absoluto de la pantalla */
-  transform-origin: 0 0;
-}
-
-.sistema-solar-container.zoomed {
-  animation: zoomAll 1.5s cubic-bezier(0.45, 0, 0.55, 1) forwards;
-  z-index: 1000;
-}
-
-@keyframes zoomAll {
-  0% {
-    transform: translate(0,0) scale(1);
-  }
-  100% {
-    /* usamos las traslaciones calculadas en TypeScript */
-    transform: translate(var(--tx,0), var(--ty,0)) scale(var(--scale-final, 1));
-  }
-}
-
-.nombre-tooltip {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.planeta-link:hover .nombre-tooltip {
-  opacity: 1;
-}
-
-/* Animaciones */
-@keyframes orbitar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes contragiro {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.contenedor-universo {
-  position: relative; /* Importante para que el fondo sepa dónde quedarse */
-  z-index: 1;
-}
-
-.contenedor-universo::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('assets/images/fondo.jpg');
-  background-size: cover;
-  background-position: center;
-  mask-image: radial-gradient(circle, black 50%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
-
-  /* --- AQUÍ CONTROLAS EL PROTAGONISMO --- */
-  opacity: 0.2; /* Prueba con 0.1 o 0.2 para que sea muy sutil */
-
-  z-index: -1; /* Se va al fondo de todo para no tapar nada */
-  pointer-events: none; /* El ratón lo atraviesa como si fuera aire */
-
-}
-
-
-.sistema-oculto {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
 }
