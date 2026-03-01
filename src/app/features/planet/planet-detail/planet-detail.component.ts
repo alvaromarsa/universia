@@ -6,12 +6,13 @@ import { CommonModule, AsyncPipe } from '@angular/common';
 
 import { PlanetService } from '../planet.service';
 import { Planeta } from '../../../shared/interfaces/planet.interface';
+import { TranslatePipe } from '../../../shared/translations/translate.pipe';
 
 
 @Component({
   selector: 'planet-detail.component',
   standalone: true,
-  imports: [ CommonModule, AsyncPipe ],
+  imports: [ CommonModule, AsyncPipe, TranslatePipe ],
   templateUrl: './planet-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

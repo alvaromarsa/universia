@@ -1,17 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { map, Observable, of, switchMap, tap } from 'rxjs';
-import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
 import { PlanetService } from '../planet.service';
 import { Planeta } from '../../../shared/interfaces/planet.interface';
+import { TranslatePipe } from '../../../shared/translations/translate.pipe';
 
 @Component({
   selector: 'planetComponent',
   standalone: true,
-  imports: [CommonModule, AsyncPipe],
+  imports: [CommonModule, AsyncPipe, TranslatePipe],
   templateUrl: './planet.component.html',
 })
 export class PlanetComponent implements OnInit {

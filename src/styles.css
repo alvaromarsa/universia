@@ -127,7 +127,6 @@ span.text-red-700 {
 
 .orbita {
   position: absolute;
-  border: 1px solid rgba(59, 130, 246, 0.2); /* Línea de órbita muy sutil */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -159,6 +158,14 @@ span.text-red-700 {
   filter: drop-shadow(0 0 20px #fff);
 }
 
+/* durante el zoom al planeta seleccionado no queremos que el hover
+   vuelva a escalar el mismo elemento, ya tiene su propia animación */
+.sistema-solar-container.zoomed .planeta-link.planeta-seleccionado .video-planeta:hover {
+  transform: none !important;
+  /* opcional: mantenemos la sombra normal para no saltar dramaticamente */
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+}
+
 .planeta-chroma {
   width: 100%;
   max-width: 400px;
@@ -180,6 +187,21 @@ span.text-red-700 {
   transform: translate(-50%, -50%) scale(1);
   transition: top 0.5s ease, left 0.5s ease;
 }
+
+/* caja de datos del planeta: debe ir situada justo bajo el planeta y no
+   desplazarlo cuando aparece */
+.planet-detail .planet-info {
+  position: absolute;
+  top: calc(var(--final-y,50vh) + 220px); /* ajustar según tamaño máximo del vídeo */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px; /* igual al max-width del vídeo para alinearlos */
+  text-align: center;
+}
+
+/* si quieres algo de separación adicional puedes añadir padding o
+   margin dentro de planet-info, pero la posición es fija */
 
 /* pausa de órbita cuando hemos seleccionado un planeta */
 .orbita.paused, .planeta-wrapper.paused {
