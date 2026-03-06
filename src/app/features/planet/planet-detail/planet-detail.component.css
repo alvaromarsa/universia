@@ -1,12 +1,30 @@
 /* Planet Detail Component Styles */
 
-.planeta-chroma {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 50%;
-  object-fit: cover;
-  filter: drop-shadow(0 0 15px rgba(59,130,246,0.5));
+/* repetir las reglas del fondo estrellado para que el encapsulado no las oculte */
+.contenedor-universo {
+  position: relative; /* Importante para que el fondo sepa dónde quedarse */
+  z-index: 1;
 }
+
+.contenedor-universo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  mask-image: radial-gradient(circle, black 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
+
+  opacity: 0.2;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
 
 /* cuando el video abre en la vista de detalle, colocarlo donde quedó el planeta */
 .planet-detail {

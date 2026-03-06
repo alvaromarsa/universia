@@ -59,6 +59,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   animation-name: orbitar;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -93,15 +94,33 @@
   height: var(--diameter); /* Lo mismo para la altura */
   border-radius: 50%; /* Hacemos el vídeo circular */
   object-fit: cover;
-  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
   pointer-events: auto; /* <--- Pero esto dice que el planeta SÍ se puede tocar */
   z-index: 100; /* Aseguramos que el planeta esté por encima de todo */
 }
 
+.video-planeta-saturno {
+  /* Saturno tiene más anchura para mostrar sus anillos */
+  width: calc(var(--diameter) * 2.2);
+  height: var(--diameter);
+  border-radius: 50% / 50%; /* Elipse en lugar de círculo */
+  object-fit: contain; /* Mostrar todo el video sin recortes */
+  clip-path: polygon(
+    50% 0%,
+    100% 0%,
+    100% 30%,
+    50% 100%,
+    15% 100%  /* esquina inferior izquierda */
+  );
+}
+
 .video-planeta:hover {
   transform: scale(1.8);
-  filter: drop-shadow(0 0 20px #fff);
+}
+
+
+.video-planeta-saturno:hover {
+  transform: scale(1.8);
 }
 
 /* durante el zoom al planeta seleccionado no queremos que el hover

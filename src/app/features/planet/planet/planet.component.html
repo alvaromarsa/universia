@@ -25,9 +25,11 @@
                 class="planeta-link group"
                 [class.planeta-seleccionado]="idSeleccionado === planeta.id">
 
-              <video autoplay muted loop playsinline class="video-planeta"
-              [style.--diameter.px]="scaleRadius(planeta.meanRadius)">
-                <source [src]="'assets/videos/' + planeta.id + '.mp4'" type="video/mp4">
+              <video autoplay muted loop playsinline
+              class="video-planeta"
+              [class.video-planeta-saturno]="planeta.id.toLowerCase() === 'saturne'"
+              [style.--diameter.px]="scaleRadius(planeta.meanRadius)"
+              [src]="'assets/videos/' + planeta.id + '.mp4'">
               </video>
 
               <span class="nombre-tooltip">{{ planeta.name | translate }}</span>

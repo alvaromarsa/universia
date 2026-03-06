@@ -40,6 +40,10 @@ export class PlanetComponent implements OnInit {
         return planetas.sort((a, b) => {
           return ordenReal.indexOf(a.id.toLowerCase()) - ordenReal.indexOf(b.id.toLowerCase());
         });
+      }),
+      tap(planetas => {
+        console.log('Planetas cargados:', planetas);
+        console.log('randomNumber:', this.randomNumber);
       })
     );
 
