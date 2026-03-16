@@ -26,32 +26,92 @@
 
 
 
-/* cuando el video abre en la vista de detalle, colocarlo donde quedó el planeta */
 .planet-detail {
   position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* tamaño final visible del planeta en detail */
+  --planet-detail-size: max(calc(var(--final-planet-size, 350px) / 2), 350px);
 }
 
-.planet-detail .planeta-chroma {
-  position: absolute;
-  top: var(--final-y,50vh);
-  left: var(--final-x,50vw);
-  /* mantendrá su tamaño original, solo movemos la posición
-     usando translate(); no escalamos en la vista de detalle */
-  transform: translate(-50%, -50%) scale(1);
-  transition: top 0.5s ease, left 0.5s ease;
-}
-
-/* caja de datos del planeta: debe ir situada justo bajo el planeta y no
-   desplazarlo cuando aparece */
-.planet-detail .planet-info {
-  position: absolute;
-  top: calc(var(--final-y,50vh) + 220px); /* ajustar según tamaño máximo del vídeo */
-  left: 50%;
-  transform: translateX(-50%);
+.detail-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  max-width: 400px; /* igual al max-width del vídeo para alinearlos */
-  text-align: center;
+  padding-top: 10rem;
 }
 
-/* si quieres algo de separación adicional puedes añadir padding o
-   margin dentro de planet-info, pero la posición es fija */
+/* El video del planeta se queda fijo en el centro */
+.planet-video-container {
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.planeta-detail-video {
+  width: var(--planet-detail-size);
+  height: var(--planet-detail-size);
+  border-radius: 60%;
+  object-fit: cover;
+}
+
+/* Saturno en detail - sin máscara, mostrando los anillos completos */
+.planeta-detail-video-saturno {
+  width: calc(var(--planet-detail-size) * 1.8);
+  height: var(--planet-detail-size);
+  border-radius: 0;
+  object-fit: contain;
+}
+
+/* Título aparece con fade in */
+.detail-title {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0 1rem;
+  animation: fadeIn 0.8s ease 0.5s forwards;
+  z-index: 50;
+}
+
+/* Información aparece con fade in */
+.planet-info {
+  position: relative;
+  margin-top: 20rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 0.8s ease 0.8s forwards;
+  z-index: 50;
+}
+
+.icon-container {
+  display: inline-block; /* Mejor que inline-flex para imágenes simples */
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  background: transparent !important; /* Por si acaso */
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+

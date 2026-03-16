@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { PlanetService } from '../planet.service';
-import { Planeta } from '../../../shared/interfaces/planet.interface';
-import { TranslatePipe } from '../../../shared/translations/translate.pipe';
+import { Planeta } from '@shared/interfaces/planet.interface';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'planetComponent',
@@ -87,6 +87,11 @@ scaleRadius(radiusKm: number): number {
 public posicionInicial = { x: 0, y: 0 };
 
 viajarAPlaneta(event: MouseEvent, id: string) {
+  // prevenir clicks múltiples durante el zoom
+  if (this.idSeleccionado) {
+    return;
+  }
+
   // si conseguimos el elemento del planeta, calculamos su centro y la
   // traslación necesaria para llevarlo al centro tras escalar
   const anchor = event.currentTarget as HTMLElement;
@@ -129,19 +134,37 @@ viajarAPlaneta(event: MouseEvent, id: string) {
   document.documentElement.style.setProperty('--ty', `${tY}px`);
 
     // guardamos también dónde queda el planeta al terminar (centro de viewport)
+    // calculamos el tamaño final del video del planeta
+    if (videoElem) {
+      const rect = videoElem.getBoundingClientRect();
+      // finalSize es el tamaño real del video después del zoom
+      const finalSize = rect.width * containerScale;
+      document.documentElement.style.setProperty('--final-planet-size', `${finalSize}px`);
+    }
+
     document.documentElement.style.setProperty('--final-x', `${window.innerWidth / 2}px`);
     document.documentElement.style.setProperty('--final-y', `${window.innerHeight / 2}px`);
     document.documentElement.style.setProperty('--final-scale', containerScale.toString());
+
+  // Desactivamos el navbar durante el zoom
+  document.body.classList.add('zoom-active');
+
   //this.posicionInicial = { x, y };
   // mostramos la animación sin ocultar todavía el sistema
   this.idSeleccionado = id;
   this.hideSystem = false;
 
   setTimeout(() => {
-    // una vez termine la animación, ocultamos el sistema y navegamos
-    this.hideSystem = true;
+    // primero navegamos
     this.router.navigate(['/planets', id]);
+    // Reactivamos el navbar después de la navegación
+    document.body.classList.remove('zoom-active');
   }, 1500);
+
+  // ocultamos el sistema con un fade largo DESPUÉS de navegar
+  setTimeout(() => {
+    this.hideSystem = true;
+  }, 1600);
 }
 
 }

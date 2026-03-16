@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormUtils } from '../../shared/utils/form-utils';
+
+
+import { FormUtils } from '@shared/utils/form-utils';
 
 @Component({
   selector: 'app-register',

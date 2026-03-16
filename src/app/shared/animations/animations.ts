@@ -52,6 +52,53 @@ export const slideInAnimation =
       ])
     ]),
 
+    // Transición de PLANETS a PLANET DETAIL - coexistencia de componentes
+    transition('PlanetsPage => PlanetDetailPage', [
+      style({ position: 'relative' }),
+      query(':enter, :leave', [
+        style({
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%'
+        })
+      ], { optional: true }),
+      group([
+        // El componente que sale (planet) permanece visible y luego se desvanece MUY lentamente
+        query(':leave', [
+          style({ opacity: 1, zIndex: 1 }),
+          animate('3000ms 500ms ease-out', style({ opacity: 0 }))
+        ], { optional: true }),
+        // El componente que entra (planet-detail) aparece inmediatamente ENCIMA
+        query(':enter', [
+          style({ opacity: 1, zIndex: 2 })
+        ], { optional: true })
+      ])
+    ]),
+
+    // Transición de PLANET DETAIL a PLANETS (volver atrás)
+    transition('PlanetDetailPage => PlanetsPage', [
+      query(':enter, :leave', [
+        style({
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%'
+        })
+      ], { optional: true }),
+      group([
+        query(':leave', [
+          animate('300ms ease-out', style({ opacity: 0 }))
+        ], { optional: true }),
+        query(':enter', [
+          style({ opacity: 0 }),
+          animate('300ms ease-in', style({ opacity: 1 }))
+        ], { optional: true })
+      ])
+    ]),
+
     transition('* <=> *', [ // Esto significa: "de cualquier ruta a cualquier ruta"
       query(':enter, :leave', [
         style({

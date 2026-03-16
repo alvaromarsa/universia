@@ -2,11 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Registramos la fuente personalizada */
+@font-face {
+  font-family: 'axion'; /* El nombre que tú quieras darle */
+  src: url('assets/fonts/axion.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Esto evita que el texto desaparezca mientras carga */
+  /* Solo permite que esta fuente se use para letras (mayúsculas y minúsculas) */
+  /* U+0041-005A (A-Z), U+0061-007A (a-z), U+00C0-00FF (acentos y ñ) */
+  unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+
+/* 2. APLICACIÓN UNIVERSAL (Obliga a toda la app a usarla) */
+html, body {
+  font-family: 'axion', system-ui, -apple-system, sans-serif !important;
+}
+
+/* 3. REFUERZO PARA BOTONES E INPUTS (A veces son rebeldes) */
+button, input, select, textarea {
+  font-family: 'axion', sans-serif;
+}
+
 /* variables globales que dinámicamente se ajustan en planet.component.ts */
 :root {
   --x-inicial: 0px;
   --y-inicial: 0px;
   --scale-final: 1;
+}
+
+/* Desactivar navbar durante zoom de planeta */
+body.zoom-active navbar {
+  pointer-events: none !important;
+}
+
+body.zoom-active navbar *,
+body.zoom-active navbar g,
+body.zoom-active navbar path,
+body.zoom-active navbar text {
+  pointer-events: none !important;
+  cursor: default !important;
 }
 
 body, html {

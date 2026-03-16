@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { CommonModule, AsyncPipe } from '@angular/common';
 
 
 import { PlanetService } from '../planet.service';
-import { Planeta } from '../../../shared/interfaces/planet.interface';
-import { TranslatePipe } from '../../../shared/translations/translate.pipe';
+import { Planeta } from '@shared/interfaces/planet.interface';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { CelsiusPipe } from './celsius.pipe';
 
 
 @Component({
   selector: 'planet-detail.component',
   standalone: true,
-  imports: [ CommonModule, AsyncPipe, TranslatePipe ],
+  imports: [ CommonModule, AsyncPipe, TranslatePipe, CelsiusPipe ],
   templateUrl: './planet-detail.component.html',
   styleUrls: ['./planet-detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

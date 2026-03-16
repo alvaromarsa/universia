@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { FormUtils } from '../../shared/utils/form-utils';
+import { FormUtils } from '@shared/utils/form-utils';
 import { RouterModule } from '@angular/router';
 
 @Component({

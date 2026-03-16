@@ -19,7 +19,7 @@
   -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
 
   /* --- AQUÍ CONTROLAS EL PROTAGONISMO --- */
-  opacity: 0.2; /* Prueba con 0.1 o 0.2 para que sea muy sutil */
+  opacity: 0.2;
 
   z-index: -1; /* Se va al fondo de todo para no tapar nada */
   pointer-events: none; /* El ratón lo atraviesa como si fuera aire */
@@ -27,7 +27,7 @@
 
 .sistema-oculto {
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 2s ease;
   pointer-events: none;
 }
 
@@ -124,11 +124,21 @@
 }
 
 /* durante el zoom al planeta seleccionado no queremos que el hover
-   vuelva a escalar el mismo elemento, ya tiene su propia animación */
+   vuelva a escalar el mismo elemento, ya tiene su propia animación
 .sistema-solar-container.zoomed .planeta-link.planeta-seleccionado .video-planeta:hover {
   transform: none !important;
-  /* opcional: mantenemos la sombra normal para no saltar dramaticamente */
+  opcional: mantenemos la sombra normal para no saltar dramaticamente
   filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+}*/
+
+/* durante el zoom, desactivamos hover de TODOS los planetas */
+.sistema-solar-container.zoomed .video-planeta:hover,
+.sistema-solar-container.zoomed .video-planeta-saturno:hover {
+  transform: none !important;
+}
+
+.sistema-solar-container.zoomed .planeta-link:hover .nombre-tooltip {
+  opacity: 0 !important;
 }
 
 .nombre-tooltip {
@@ -136,7 +146,7 @@
   top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: blue;
   font-size: 10px;
   font-weight: bold;
   text-transform: uppercase;

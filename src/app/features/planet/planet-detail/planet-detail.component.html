@@ -1,20 +1,53 @@
 
-<div *ngIf="planetData$ | async as data" class="planet-detail contenedor-universo p-10 universo min-h-screen flex flex-col items-center justify-center">
-  <div *ngFor="let p of data" class="w-full max-w-3xl">
-    <h1 class="text-6xl font-bold text-orange-500 text-center">{{ p.name | translate}}</h1>
-    <div class="flex justify-center my-8">
+<div *ngIf="planetData$ | async as data" class="planet-detail contenedor-universo p-10 universo min-h-screen">
+  <div *ngFor="let p of data" class="detail-container w-full">
+    <h1 class="detail-title text-6xl font-bold text-blue-400 text-center opacity-0">{{ p.name | translate}}</h1>
+
+    <div class="planet-video-container">
       <video autoplay muted loop playsinline
-            class="planeta-chroma w-full max-w-md"
+            class="planeta-detail-video"
+            [class.planeta-detail-video-saturno]="p.id.toLowerCase() === 'saturne'"
            [src]="'assets/videos/' + p.id + '.mp4'">
       </video>
-
     </div>
-    <!-- contenedor relativo que permite posicionar la información por encima sin afectar al vídeo -->
-    <div class="planet-info grid grid-cols-2 gap-4">
-      <p class="text-xl">🪐 Gravedad: {{ p.gravity }} m/s²</p>
-      <p class="text-xl">🌑 Lunas: {{ p.moons ? p.moons.length : 0 }}</p>
-      <p class="text-xl">🌡️ Temperatura: {{ p.avgTemp }} K</p>
-      <p class="text-xl">📏 Radio: {{ p.meanRadius }} km</p>
+
+    <!-- contenedor de información del planeta -->
+    <div class="planet-info grid grid-cols-2 gap-4 opacity-0 text-blue-400">
+      <p class="text-xl flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-container" stroke="currentColor" viewBox="0 0 64 64" id="gravity">
+          <circle cx="32" cy="32" r="5" fill="#6cc5ef"></circle>
+          <path fill="#3db3ea" d="M31.81 15.64a17.07 17.07 0 0 0-2.26.18 16.37 16.37 0 0 1 0 32.36 16.73 16.73 0 0 0 2.45.18 16.36 16.36 0 0 0 0-32.72Z"></path>
+          <path fill="#9af39a" d="M19.33 21.65A16.34 16.34 0 0 0 15.64 32a15.93 15.93 0 0 0 .16 2.29h9.57a2.33 2.33 0 0 0 0-4.66h-2.91a1.66 1.66 0 1 1 0-3.32h5.73a2.33 2.33 0 0 0 0-4.66zm17.67 0h2.62a2.33 2.33 0 0 1 0 4.66H37a2.33 2.33 0 0 1 0-4.66zm-3.53 10.12a1.65 1.65 0 0 0 0 3.29 1.64 1.64 0 0 1 0 3.28h-3a1.65 1.65 0 0 0 0 3.29H40a1.65 1.65 0 0 0 0-3.29 1.65 1.65 0 0 1 0-3.29h3a1.64 1.64 0 1 0 0-3.28z"></path>
+          <path fill="#60e977" d="M39.79 21.67a16.93 16.93 0 0 1 2 3.14A2.27 2.27 0 0 0 42 24a2.32 2.32 0 0 0-2.21-2.33Zm3.67 10.18V32a17.08 17.08 0 0 1-.28 3 1.64 1.64 0 0 0 .28-3.18Zm-1.89 7.79a17.3 17.3 0 0 1-1.2 1.93A1.63 1.63 0 0 0 41.6 40a2 2 0 0 0 0-.34Z"></path>
+          <path fill="#16244d" d="M32 14.64A17.36 17.36 0 1 0 49.36 32 17.38 17.38 0 0 0 32 14.64Zm-12.16 8h8.35a1.33 1.33 0 0 1 0 2.66h-5.73a2.66 2.66 0 1 0 0 5.32h2.91a1.33 1.33 0 0 1 0 2.66H16.7c0-.43-.06-.86-.06-1.29a15.27 15.27 0 0 1 3.2-9.34ZM32 47.36a15.39 15.39 0 0 1-15-12.07h8.37a3.33 3.33 0 0 0 0-6.66h-2.91a.66.66 0 1 1 0-1.32h5.73a3.33 3.33 0 0 0 0-6.66h-6.51A15.35 15.35 0 1 1 32 47.36Z"></path>
+          <path fill="#16244d" d="M37 27.31h2.62a3.33 3.33 0 0 0 0-6.66H37a3.33 3.33 0 0 0 0 6.66zm0-4.66h2.62a1.33 1.33 0 0 1 0 2.66H37a1.33 1.33 0 0 1 0-2.66zm6 8.12h-9.53a2.64 2.64 0 0 0-.12 5.28h.08a.63.63 0 0 1 .64.64.64.64 0 0 1-.64.64h-2.95a2.65 2.65 0 1 0 0 5.29H40a2.65 2.65 0 0 0 0-5.29.63.63 0 0 1-.64-.64.64.64 0 0 1 .64-.65h3a2.64 2.64 0 1 0 0-5.28zm0 3.28h-3a2.65 2.65 0 0 0 0 5.29.63.63 0 0 1 .64.64.64.64 0 0 1-.64.65h-9.52a.65.65 0 0 1-.65-.65.64.64 0 0 1 .65-.64h3.12a2.64 2.64 0 0 0 0-5.27h-.12a.64.64 0 0 1-.64-.65.63.63 0 0 1 .64-.64H43a.64.64 0 0 1 0 1.28zm-10.29 18.4a1 1 0 0 0-1.42 0l-3 3a1 1 0 1 0 1.41 1.41l1.3-1.29V60a1 1 0 0 0 2 0v-4.43l1.27 1.26a1 1 0 0 0 1.41-1.41zm-1.42-40.9a1 1 0 0 0 1.42 0l3-3a1 1 0 0 0-1.41-1.41L33 8.43V4a1 1 0 0 0-2 0v4.43l-1.27-1.26a1 1 0 1 0-1.41 1.41zM11.55 31.29l-3-3a1 1 0 1 0-1.41 1.41L8.43 31H4a1 1 0 0 0 0 2h4.43l-1.26 1.27a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l3-3a1 1 0 0 0-.03-1.39zM60 31h-4.43l1.26-1.27a1 1 0 1 0-1.41-1.41l-3 3a1 1 0 0 0 0 1.42l3 3a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41L55.57 33H60a1 1 0 0 0 0-2zM17 46h-4.2a1 1 0 1 0 0 2h1.79l-3.14 3.13a1 1 0 0 0 0 1.42 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29L16 49.37v1.79a1 1 0 0 0 2 0V47a1 1 0 0 0-1-1zm30-28h4.2a1 1 0 0 0 0-2h-1.83l3.14-3.13a1 1 0 0 0-1.42-1.42L48 14.63v-1.79a1 1 0 1 0-2 0V17a1 1 0 0 0 1 1zm-32.37-2h-1.79a1 1 0 0 0 0 2H17a1 1 0 0 0 1-1v-4.2a1 1 0 0 0-2 0v1.79l-3.13-3.14a1 1 0 1 0-1.42 1.42zm34.74 32h1.79a1 1 0 0 0 0-2H47a1 1 0 0 0-1 1v4.2a1 1 0 0 0 2 0v-1.83l3.13 3.14a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29 1 1 0 0 0 0-1.42z"></path>
+        </svg>
+
+        Gravedad: {{ p.gravity }} m/s²</p>
+      <p class="text-xl flex items-center gap-2">
+        <img
+          src="assets/icons/luna.png"
+          alt="Icono Lunas"
+          class="icon-container object-contain"
+        />
+
+        Lunas: {{ p.moons ? p.moons.length : 0 }}</p>
+      <p class="text-xl flex items-center gap-2">
+        <img
+          src="assets/icons/temperatura.png"
+          alt="Icono Temperatura"
+          class="icon-container object-contain"
+        />
+
+        Temperatura: {{ p.avgTemp | celsius }}</p>
+
+      <p class="text-xl flex items-center gap-2">
+        <img
+          src="assets/icons/radio.png"
+          alt="Icono Radio"
+          class="icon-container object-contain"
+        />
+        Radio: {{ p.meanRadius }} km</p>
     </div>
   </div>
 </div>

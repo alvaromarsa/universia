@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { Planeta, PlanetInterface } from '../../shared/interfaces/planet.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment.development';
+
+import { Planeta, PlanetInterface } from '@shared/interfaces/planet.interface';
+import { environment } from '@env/environment.development';
 
 @Injectable({
   providedIn: 'root'
