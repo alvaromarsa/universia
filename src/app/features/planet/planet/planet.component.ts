@@ -36,9 +36,11 @@ export class PlanetComponent implements OnInit {
         // Definimos el orden oficial de la NASA
         const ordenReal = ['mercure', 'venus', 'terre', 'mars', 'jupiter', 'saturne', 'uranus', 'neptune'];
 
-        // Ordenamos el array comparando con nuestra lista
-        return planetas.sort((a, b) => {
-          return ordenReal.indexOf(a.id.toLowerCase()) - ordenReal.indexOf(b.id.toLowerCase());
+        // Copiamos el array original para no mutarlo y luego lo ordenamos comparando con nuestra lista
+        return [...planetas].sort((a, b) => {
+          const indexA = ordenReal.indexOf(a.id?.toLowerCase() || '');
+          const indexB = ordenReal.indexOf(b.id?.toLowerCase() || '');
+          return indexA - indexB;
         });
       }),
       tap(planetas => {

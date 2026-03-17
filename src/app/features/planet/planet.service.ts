@@ -28,10 +28,11 @@ export class PlanetService {
 
    return this.http.get<PlanetInterface>(urlFiltered, { headers: this.headers }).pipe(
     map(response => response.bodies.map(planet => ({
-      id: planet.id,
-      name: planet.name,
-      meanRadius: planet.meanRadius,
-    } as unknown as Planeta)))
+
+      id: planet.id || '',
+      name: planet.name || 'Sin nombre',
+      meanRadius: planet.meanRadius || 0,
+    } as Planeta )))
   );
   }
 
