@@ -1,0 +1,34 @@
+
+<div class="nasa-container">
+  <header>
+    <h1>🛰️ Explorador de Patentes NASA</h1>
+    <p>Mostrando {{visibleTechnologies.length}} de {{allTechnologies.length}} tecnologías</p>
+  </header>
+
+  <div class="tech-grid">
+    <div class="card" *ngFor="let tech of visibleTechnologies">
+      <div class="card-header">
+        <span class="badge">{{ tech.id }}</span>
+      </div>
+      <div class="card-body">
+        <h3>{{ tech.title }}</h3>
+        <p [title]="tech.description">{{ tech.description | slice:0:120 }}...</p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-more">Saber más</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="pagination-nav">
+    <button (click)="prevPage()" [disabled]="currentPage === 0" class="btn-nav">
+      ◀ Anterior
+    </button>
+
+    <span class="page-indicator">Página {{ currentPage + 1 }}</span>
+
+    <button (click)="nextPage()" [disabled]="(currentPage + 1) * pageSize >= allTechnologies.length" class="btn-nav">
+      Siguiente ▶
+    </button>
+  </nav>
+</div>

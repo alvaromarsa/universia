@@ -12,8 +12,6 @@ export class PlanetService {
 
   constructor(private http:HttpClient) { }
 
-  private readonly API_URL = environment.nasaApiUrl;
-  private readonly API_KEY = environment.nasaApiKey;
 
   private readonly API_URL2 = environment.franceApiUrl;
   private readonly API_KEY2 = environment.franceApiKey;
