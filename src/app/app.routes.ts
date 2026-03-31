@@ -5,7 +5,7 @@ import { PlanetComponent } from './features/planet/planet/planet.component';
 import { PlanetDetailComponent } from './features/planet/planet-detail/planet-detail.component';
 import { LoginComponent } from './features/login/login-component';
 import { RegisterComponent } from './features/register/register.component';
-import { TechnologyComponent } from './features/tecnology/technology.component';
+import { TechnologyComponent } from './features/tecnology/technology/technology.component';
 
 export const routes: Routes = [
 

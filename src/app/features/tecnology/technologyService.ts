@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { forkJoin, map, Observable } from 'rxjs';
 
 import { environment } from '@env/environment.development';
-import { NasaResponse, TechnologyInterface } from './technologyInterface';
+import { NasaResponse, TechnologyInterface } from './technology/technologyInterface';
 
 @Injectable({
   providedIn: 'root'

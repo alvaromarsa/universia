@@ -2,7 +2,17 @@
   <div class="technology-content">
     <div class="tech-grid">
       <div class="card" *ngFor="let tech of techs">
-         <h3>{{ tech.title | technologyTranslate }}</h3>
+        <div class="card-media">
+          <img class="card-image"
+               [src]="getTechnologyImageUrl(tech.imageUrl)"
+               [alt]="tech.title | technologyTranslate"
+               loading="lazy"
+               (error)="onImageError($event)">
+        </div>
+
+        <div class="card-body">
+          <h3>{{ tech.title | technologyTranslate }}</h3>
+        </div>
       </div>
     </div>
   </div>
@@ -12,7 +22,7 @@
       Anterior
     </button>
 
-    <span class="page-indicator">Página {{ (currentPage$ | async)! + 1 }}</span>
+    <span class="page-indicator">Página {{ (currentPage$ | async)! + 1 }} de {{ totalPages }}</span>
 
     <button class="btn-nav"
             (click)="nextPage()"

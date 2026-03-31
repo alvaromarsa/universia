@@ -4,13 +4,13 @@ import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 
 
-import { TechnologyService } from './technologyService';
+import { TechnologyService } from '../technologyService';
 import { TechnologyInterface } from './technologyInterface';
 import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe';
 
 
 @Component({
-  selector: 'tecnologyComponent',
+  selector: 'technology-component',
   standalone: true,
   imports: [CommonModule, TechnologyTranslatePipe],
   templateUrl: './technology.component.html',
@@ -18,6 +18,7 @@ import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechnologyComponent implements OnInit {
+  public readonly fallbackImage = 'assets/images/fondo.jpg';
 
   public allTechnologies: TechnologyInterface[] = []; // Las 28 tecnologias
   public visibleTechnologies$: Observable<TechnologyInterface[]> | undefined; // Las 4 tecnologias visibles
@@ -70,6 +71,31 @@ ngOnInit(): void {
       this.currentPage$.next(prev);
       this.updatePage();
     }
+  }
+
+  getTechnologyImageUrl(imageUrl: string | null | undefined): string {
+    if (!imageUrl || !imageUrl.toString().trim()) {
+      return this.fallbackImage;
+    }
+
+    return imageUrl;
+  }
+
+  onImageError(event: Event): void {
+    const image = event.target as HTMLImageElement | null;
+
+    if (!image || image.src.includes(this.fallbackImage)) {
+      return;
+    }
+
+    image.src = this.fallbackImage;
+  }
+
+  get totalPages(): number {
+    if (this.allTechnologies.length === 0) {
+      return 0;
+    }
+    return Math.ceil(this.allTechnologies.length / this.pageSize);
   }
 
  }
