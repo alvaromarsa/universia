@@ -1,7 +1,7 @@
 <div class="technology-section" *ngIf="visibleTechnologies$ | async as techs; else loading">
   <div class="technology-content">
     <div class="tech-grid">
-      <div class="card" *ngFor="let tech of techs">
+      <div class="card" *ngFor="let tech of techs" (click)="goToTechnologyDetail(tech.id)">
         <div class="card-media">
           <img class="card-image"
                [src]="getTechnologyImageUrl(tech.imageUrl)"

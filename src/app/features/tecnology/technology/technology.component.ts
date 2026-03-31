@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, OnInit } from 
 import { CommonModule, isPlatformBrowser} from '@angular/common';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 import { TechnologyService } from '../technologyService';
@@ -27,6 +28,7 @@ export class TechnologyComponent implements OnInit {
   public pageSize: number = 4;
 
   constructor( private technologyService: TechnologyService,
+               private router: Router,
                @Inject(PLATFORM_ID) private platformId: Object
               ) { }
 
@@ -96,6 +98,10 @@ ngOnInit(): void {
       return 0;
     }
     return Math.ceil(this.allTechnologies.length / this.pageSize);
+  }
+
+  goToTechnologyDetail(id: string): void {
+    this.router.navigate(['/technology', id]);
   }
 
  }

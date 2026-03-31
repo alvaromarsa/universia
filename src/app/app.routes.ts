@@ -6,6 +6,7 @@ import { PlanetDetailComponent } from './features/planet/planet-detail/planet-de
 import { LoginComponent } from './features/login/login-component';
 import { RegisterComponent } from './features/register/register.component';
 import { TechnologyComponent } from './features/tecnology/technology/technology.component';
+import { TechnologyDetailComponent } from './features/tecnology/technology-detail.component/technology-detail.component';
 
 export const routes: Routes = [
 
@@ -32,6 +33,10 @@ export const routes: Routes = [
   { path: 'technology',
     component: TechnologyComponent,
     data: { animation: 'TechnologyPage' }
+  },
+  { path: 'technology/:id',
+    component: TechnologyDetailComponent,
+    data: { animation: 'TechnologyDetailPage' }
   },
   { path: '**',
     component: HomeComponent,

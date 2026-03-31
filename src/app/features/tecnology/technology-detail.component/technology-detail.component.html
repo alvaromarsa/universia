@@ -1,1 +1,27 @@
-<p>technology-detail.component works!</p>,
+<div class="technology-detail" *ngIf="currentTechnology as tech; else loading">
+	<div class="detail-card">
+		<div class="detail-media">
+			<img
+				class="detail-image"
+				[src]="getTechnologyImageUrl(tech.imageUrl)"
+				[alt]="tech.title | technologyTranslate"
+				(error)="onImageError($event)"
+			>
+		</div>
+
+		<div class="detail-body">
+			<h2>{{ tech.title | technologyTranslate }}</h2>
+			<p>{{ tech.description | technologyDescriptionTranslate:tech.id }}</p>
+		</div>
+	</div>
+
+	<div class="bottom-actions">
+		<button class="btn-nav" (click)="goPrev()" [disabled]="currentIndex <= 0">Anterior</button>
+		<button class="btn-back" (click)="goBack()">Volver a tecnologías</button>
+		<button class="btn-nav" (click)="goNext()" [disabled]="currentIndex >= allTechnologies.length - 1">Siguiente</button>
+	</div>
+</div>
+
+<ng-template #loading>
+	<div class="loader">Cargando detalle de tecnología...</div>
+</ng-template>
