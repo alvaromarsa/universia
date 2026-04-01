@@ -21,11 +21,6 @@
 }
 
 .detail-card {
-  position: relative;
-  z-index: 1;
-}
-
-.detail-card {
   background: #4281f5;
   border-radius: 20px;
   overflow: hidden;
@@ -36,6 +31,66 @@
   flex-direction: column;
   position: relative;
   z-index: 1;
+}
+
+.detail-card.slide-out-left {
+  animation: detailSlideOutLeft 220ms ease forwards;
+}
+
+.detail-card.slide-out-right {
+  animation: detailSlideOutRight 220ms ease forwards;
+}
+
+.detail-card.slide-in-left {
+  animation: detailSlideInLeft 220ms ease forwards;
+}
+
+.detail-card.slide-in-right {
+  animation: detailSlideInRight 220ms ease forwards;
+}
+
+@keyframes detailSlideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-28px) scale(0.985);
+  }
+}
+
+@keyframes detailSlideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(28px) scale(0.985);
+  }
+}
+
+@keyframes detailSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes detailSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
 }
 
 .detail-media {

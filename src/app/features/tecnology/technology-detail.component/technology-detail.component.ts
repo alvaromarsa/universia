@@ -21,6 +21,9 @@ export class TechnologyDetailComponent implements OnInit {
   public allTechnologies: TechnologyInterface[] = [];
   public currentTechnology: TechnologyInterface | null = null;
   public currentIndex = -1;
+  public animationClass = '';
+  private readonly animationDurationMs = 220;
+  private pendingEntryClass = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +49,16 @@ export class TechnologyDetailComponent implements OnInit {
         this.allTechnologies = list;
         this.currentIndex = list.findIndex(tech => tech.id === id);
         this.currentTechnology = this.currentIndex >= 0 ? list[this.currentIndex] : null;
+
+        if (this.pendingEntryClass) {
+          this.animationClass = this.pendingEntryClass;
+          this.pendingEntryClass = '';
+          setTimeout(() => {
+            this.animationClass = '';
+            this.cdr.markForCheck();
+          }, this.animationDurationMs);
+        }
+
         this.cdr.markForCheck();
       })
     ).subscribe();
@@ -58,15 +71,29 @@ export class TechnologyDetailComponent implements OnInit {
   goPrev(): void {
     if (this.currentIndex > 0) {
       const prev = this.allTechnologies[this.currentIndex - 1];
-      this.router.navigate(['/technology', prev.id]);
+      this.navigateWithAnimation(prev.id, 'prev');
     }
   }
 
   goNext(): void {
     if (this.currentIndex >= 0 && this.currentIndex < this.allTechnologies.length - 1) {
       const next = this.allTechnologies[this.currentIndex + 1];
-      this.router.navigate(['/technology', next.id]);
+      this.navigateWithAnimation(next.id, 'next');
     }
+  }
+
+  private navigateWithAnimation(id: string, direction: 'prev' | 'next'): void {
+    if (this.animationClass) {
+      return;
+    }
+
+    this.animationClass = direction === 'next' ? 'slide-out-left' : 'slide-out-right';
+    this.pendingEntryClass = direction === 'next' ? 'slide-in-right' : 'slide-in-left';
+    this.cdr.markForCheck();
+
+    setTimeout(() => {
+      this.router.navigate(['/technology', id]);
+    }, this.animationDurationMs);
   }
 
   getTechnologyImageUrl(imageUrl: string | null | undefined): string {

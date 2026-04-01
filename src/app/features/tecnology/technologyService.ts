@@ -35,11 +35,26 @@ export class TechnologyService {
 
 
   getFavTecnologies(): Observable<TechnologyInterface[]> {
-    const petitions = this.favouritesTec.map( id =>this.http.get<NasaResponse>(`${this.API_URL}/${id}`));
+    const petitions = this.favouritesTec.map(id =>
+      this.http.get<NasaResponse>(`${this.API_URL}/${id}`).pipe(
+        map(response => ({ requestedId: id, response }))
+      )
+    );
+
     return forkJoin(petitions).pipe(
-      map((responses: NasaResponse[]) => {
-        return responses.map( res => {
-          const data = res.results[0];
+      map(responses => {
+        return responses.map(({ requestedId, response }) => {
+          const data = response.results.find(result => result[this.nasaIndex.id] === requestedId)
+            ?? response.results[0];
+
+          if (!data) {
+            return {
+              id: requestedId,
+              title: requestedId,
+              description: '',
+              imageUrl: ''
+            } as TechnologyInterface;
+          }
 
           return {
             id: data[this.nasaIndex.id],

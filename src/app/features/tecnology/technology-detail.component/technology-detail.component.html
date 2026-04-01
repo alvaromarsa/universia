@@ -1,5 +1,5 @@
 <div class="technology-detail" *ngIf="currentTechnology as tech; else loading">
-	<div class="detail-card">
+	<div class="detail-card" [ngClass]="animationClass">
 		<div class="detail-media">
 			<img
 				class="detail-image"
