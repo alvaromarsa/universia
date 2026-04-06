@@ -1,8 +1,7 @@
 /* Planet Detail Component Styles */
 
-/* repetir las reglas del fondo estrellado para que el encapsulado no las oculte */
 .contenedor-universo {
-  position: fixed;     /* fijo en la pantalla */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -17,21 +16,17 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-image: url('/assets/images/fondo.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   mask-image: radial-gradient(circle, black 50%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
-
   opacity: 0.2;
   z-index: -1;
   pointer-events: none;
-  
 }
-
-
 
 .planet-detail {
   position: relative;
@@ -67,6 +62,7 @@
   height: var(--planet-detail-size);
   border-radius: 60%;
   object-fit: cover;
+  clip-path: circle(40% at 50% 50%);
 }
 
 /* Saturno en detail - sin máscara, mostrando los anillos completos */
@@ -75,6 +71,7 @@
   height: var(--planet-detail-size);
   border-radius: 0;
   object-fit: contain;
+  clip-path: none;
 }
 
 /* Título aparece con fade in */

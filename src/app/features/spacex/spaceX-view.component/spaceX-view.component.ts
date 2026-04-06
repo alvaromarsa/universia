@@ -125,8 +125,28 @@ interface LaunchDetailState {
         word-break: break-word;
       }
 
+      .status-success {
+        color: #22c55e !important;
+      }
+
+      .status-failure {
+        color: #fca5a5 !important;
+      }
+
       .detail-meta a {
         text-decoration: none;
+      }
+
+      .detail-meta .wikipedia-link {
+        color: #22c55e;
+      }
+
+      .detail-meta .webcast-link {
+        color: #60a5fa;
+      }
+
+      .detail-meta .link-unavailable {
+        color: #dc2626;
       }
 
       .detail-meta a:hover {
@@ -229,5 +249,17 @@ export class SpaceXViewComponent {
     }
 
     return 'Sin datos';
+  }
+
+  getLaunchStatusClass(success: boolean | null): string {
+    if (success === true) {
+      return 'status-success';
+    }
+
+    if (success === false) {
+      return 'status-failure';
+    }
+
+    return '';
   }
 }

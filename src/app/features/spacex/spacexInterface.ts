@@ -8,6 +8,7 @@ export interface SpacexInterface {
     patch: {
       small: string | null; // La miniatura del logo
     },
+    wikipedia: string | null;
     webcast: string | null; // ¡Por si quieres poner un botón para ver el vídeo en YouTube!
   };
   rocket: string; // ID del cohete

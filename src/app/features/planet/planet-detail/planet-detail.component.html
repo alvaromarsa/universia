@@ -1,5 +1,5 @@
 
-<div *ngIf="planetData$ | async as data" class="planet-detail contenedor-universo p-10 universo min-h-screen">
+<div *ngIf="planetData$ | async as data" class="planet-detail contenedor-universo p-10 min-h-screen">
   <div *ngFor="let p of data" class="detail-container w-full">
     <h1 class="detail-title text-6xl font-bold text-blue-400 text-center opacity-0">{{ p.name | translate}}</h1>
 

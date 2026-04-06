@@ -25,17 +25,22 @@
 
 					<div>
 						<span>Estado</span>
-						<strong>{{ getLaunchStatus(launch.success) }}</strong>
+						<strong [class]="getLaunchStatusClass(launch.success)">{{ getLaunchStatus(launch.success) }}</strong>
 					</div>
 
 					<div>
-						<span>Rocket ID</span>
-						<strong>{{ launch.rocket }}</strong>
+						<span>Wikipedia</span>
+						<a *ngIf="launch.links.wikipedia; else noWikipedia" class="wikipedia-link" [href]="launch.links.wikipedia" target="_blank" rel="noreferrer">
+							Abrir articulo
+						</a>
+						<ng-template #noWikipedia>
+							<strong class="link-unavailable">No disponible</strong>
+						</ng-template>
 					</div>
 
 					<div>
 						<span>Webcast</span>
-						<a *ngIf="launch.links.webcast; else noWebcast" [href]="launch.links.webcast" target="_blank" rel="noreferrer">
+						<a *ngIf="launch.links.webcast; else noWebcast" class="webcast-link" [href]="launch.links.webcast" target="_blank" rel="noreferrer">
 							Ver lanzamiento
 						</a>
 						<ng-template #noWebcast>

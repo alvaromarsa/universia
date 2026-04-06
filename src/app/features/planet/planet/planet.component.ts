@@ -27,8 +27,6 @@ export class PlanetComponent implements OnInit {
   public planetData$!: Observable<Planeta[]>;
 
   public idSeleccionado: string | null = null;
-  // control para que el sistema no se oculte inmediatamente al seleccionar
-  public hideSystem: boolean = false;
 
   ngOnInit(): void {
     this.planetsName$ = this.petitionsInject.getPlanetsName().pipe(
@@ -100,20 +98,27 @@ viajarAPlaneta(event: MouseEvent, id: string) {
   const videoElem = anchor.querySelector('.video-planeta') as HTMLElement | null;
   let tX = 0;
   let tY = 0;
-  // predeclaro containerScale para usarlo más tarde incluso si falta videoElem
-  let containerScale = 1;
+  const isSaturnSelected = id.toLowerCase() === 'saturne';
+  // Separamos el zoom visible del tamaño que se usa después en detail.
+  let detailScale = 1;
+  let zoomScale = 1;
   if (videoElem) {
     const rect = videoElem.getBoundingClientRect();
     // coordenadas del centro del planeta en pantalla
     const absCenterX = rect.left + rect.width / 2;
     const absCenterY = rect.top + rect.height / 2;
 
-    // tamaño final base en la ventana (como antes)
-    const targetWidth = Math.min(window.innerWidth * 0.5, 300);
+    // Saturno necesita un zoom algo mayor para empatar con el tamaño
+    // visual que tendrá al entrar en la vista detail.
+    const targetWidth = isSaturnSelected
+      ? Math.min(window.innerWidth * 0.55, 315)
+      : Math.min(window.innerWidth * 0.5, 300);
     let scale = targetWidth / rect.width;
-    // reducimos el zoom final a aproximadamente la mitad
-    containerScale = Math.min(scale * 2, 10);
-    document.documentElement.style.setProperty('--scale-final', containerScale.toString());
+    detailScale = Math.min(scale * 2, 10);
+    zoomScale = isSaturnSelected
+      ? Math.min(detailScale * 1.08, 10)
+      : detailScale;
+    document.documentElement.style.setProperty('--scale-final', zoomScale.toString());
 
     // ahora calculamos la traslación que necesitamos aplicar al contenedor.
     const containerRect = (
@@ -126,9 +131,9 @@ viajarAPlaneta(event: MouseEvent, id: string) {
       const localY = absCenterY - containerRect.top;
 
       // después de escalar desde la esquina, la ubicación global del punto será
-      // containerRect.left + localX * containerScale
-      tX = window.innerWidth / 2 - (containerRect.left + localX * containerScale);
-      tY = window.innerHeight / 2 - (containerRect.top + localY * containerScale);
+      // containerRect.left + localX * zoomScale
+      tX = window.innerWidth / 2 - (containerRect.left + localX * zoomScale);
+      tY = window.innerHeight / 2 - (containerRect.top + localY * zoomScale);
     }
   }
 
@@ -139,22 +144,21 @@ viajarAPlaneta(event: MouseEvent, id: string) {
     // calculamos el tamaño final del video del planeta
     if (videoElem) {
       const rect = videoElem.getBoundingClientRect();
-      // finalSize es el tamaño real del video después del zoom
-      const finalSize = rect.width * containerScale;
+      // finalSize es el tamaño que usará la vista detail al entrar.
+      const finalSize = rect.width * detailScale;
       document.documentElement.style.setProperty('--final-planet-size', `${finalSize}px`);
     }
 
     document.documentElement.style.setProperty('--final-x', `${window.innerWidth / 2}px`);
     document.documentElement.style.setProperty('--final-y', `${window.innerHeight / 2}px`);
-    document.documentElement.style.setProperty('--final-scale', containerScale.toString());
+    document.documentElement.style.setProperty('--final-scale', detailScale.toString());
 
   // Desactivamos el navbar durante el zoom
   document.body.classList.add('zoom-active');
 
   //this.posicionInicial = { x, y };
-  // mostramos la animación sin ocultar todavía el sistema
+  // activamos el zoom y el desvanecido inmediato de los elementos no seleccionados
   this.idSeleccionado = id;
-  this.hideSystem = false;
 
   setTimeout(() => {
     // primero navegamos
@@ -162,11 +166,6 @@ viajarAPlaneta(event: MouseEvent, id: string) {
     // Reactivamos el navbar después de la navegación
     document.body.classList.remove('zoom-active');
   }, 1500);
-
-  // ocultamos el sistema con un fade largo DESPUÉS de navegar
-  setTimeout(() => {
-    this.hideSystem = true;
-  }, 1600);
 }
 
 }

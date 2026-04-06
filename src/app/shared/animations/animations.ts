@@ -65,10 +65,10 @@ export const slideInAnimation =
         })
       ], { optional: true }),
       group([
-        // El componente que sale (planet) permanece visible y luego se desvanece MUY lentamente
+        // El componente que sale (planet) se desvanece mucho mas rapido
         query(':leave', [
           style({ opacity: 1, zIndex: 1 }),
-          animate('3000ms 500ms ease-out', style({ opacity: 0 }))
+          animate('900ms 100ms ease-out', style({ opacity: 0 }))
         ], { optional: true }),
         // El componente que entra (planet-detail) aparece inmediatamente ENCIMA
         query(':enter', [

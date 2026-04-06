@@ -1,9 +1,9 @@
 
 <div class=" contenedor-universo pt-20 pb-10 px-5 min-h-screen flex flex-col
-            items-center overflow-hidden"
-            [class.sistema-oculto]="hideSystem">
+            items-center overflow-hidden">
 
-  <h1 class="text-blue-400 text-3xl font-bold mb-8 drop-shadow-lg text-center tracking-[0.2em] z-50">
+  <h1 class="planet-title text-blue-400 text-3xl font-bold mb-8 drop-shadow-lg text-center tracking-[0.2em] z-50"
+      [class.zoom-fade]="!!idSeleccionado">
     SISTEMA SOLAR
   </h1>
 
@@ -11,10 +11,12 @@
     <div class="sistema-solar-container relative flex items-center justify-center w-full h-[70vh]"
          [class.zoomed]="idSeleccionado">
 
-      <div class="sol"></div>
+       <div class="sol" [class.zoom-fade]="!!idSeleccionado"></div>
 
       @for(planeta of planetas; track planeta.id; let i = $index) {
-        <div class="orbita" [class.paused]="!!idSeleccionado"
+         <div class="orbita"
+           [class.paused]="!!idSeleccionado"
+           [class.orbita-oculta]="!!idSeleccionado && idSeleccionado !== planeta.id"
              [style.width.px]="250 + (i * 50)"
              [style.height.px]="250 + (i * 50)"
              [style.animationDuration]="15 + (i * 8) + 's'"
