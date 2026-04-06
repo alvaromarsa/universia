@@ -5,7 +5,7 @@ import { CommonModule, AsyncPipe } from '@angular/common';
 
 
 import { PlanetService } from '../planet.service';
-import { Planeta } from '@shared/interfaces/planet.interface';
+import { Planeta } from 'src/app/features/planet/planet.interface';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { CelsiusPipe } from './celsius.pipe';
 

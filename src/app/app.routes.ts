@@ -7,6 +7,8 @@ import { LoginComponent } from './features/login/login-component';
 import { RegisterComponent } from './features/register/register.component';
 import { TechnologyComponent } from './features/tecnology/technology/technology.component';
 import { TechnologyDetailComponent } from './features/tecnology/technology-detail.component/technology-detail.component';
+import { SpacexComponent } from './features/spacex/spaceX/spacex.component';
+import { SpaceXViewComponent } from './features/spacex/spaceX-view.component/spaceX-view.component';
 
 export const routes: Routes = [
 
@@ -37,6 +39,14 @@ export const routes: Routes = [
   { path: 'technology/:id',
     component: TechnologyDetailComponent,
     data: { animation: 'TechnologyDetailPage' }
+  },
+  { path: 'spacex',
+    component: SpacexComponent,
+    data: { animation: 'SpacexPage' }
+  },
+  { path: 'spacex/:id',
+    component: SpaceXViewComponent,
+    data: { animation: 'SpacexDetailPage' }
   },
   { path: '**',
     component: HomeComponent,

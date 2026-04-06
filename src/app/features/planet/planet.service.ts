@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Planeta, PlanetInterface } from '@shared/interfaces/planet.interface';
+import { Planeta, PlanetInterface } from 'src/app/features/planet/planet.interface';
 import { environment } from '@env/environment.development';
 
 @Injectable({

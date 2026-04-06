@@ -39,6 +39,24 @@ header h1 {
 
 }
 
+.technology-title {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  margin: 0;
+  color: #60a5fa;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 6px 18px rgba(11, 61, 145, 0.45);
+  white-space: nowrap;
+}
+
 .technology-section::before {
   content: "";
   position: absolute;
@@ -197,6 +215,13 @@ header h1 {
 @media (max-width: 720px) {
   .technology-section {
     min-height: auto;
+  }
+
+  .technology-title {
+    top: 44px;
+    width: calc(100% - 32px);
+    white-space: normal;
+    line-height: 1.1;
   }
 
   .technology-content {
