@@ -44,3 +44,8 @@ Thumbs.db
 # Secretos de la misión
 src/environments/environment.ts
 src/environments/environment.development.ts
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

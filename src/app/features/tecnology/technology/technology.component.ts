@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, OnInit } from 
 import { CommonModule, isPlatformBrowser} from '@angular/common';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { TechnologyService } from '../technologyService';
@@ -28,12 +28,19 @@ export class TechnologyComponent implements OnInit {
   public pageSize: number = 4;
 
   constructor( private technologyService: TechnologyService,
+               private route: ActivatedRoute,
                private router: Router,
                @Inject(PLATFORM_ID) private platformId: Object
               ) { }
 
 ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      // Read initial page from query params
+      this.route.queryParams.subscribe(params => {
+        const page = +params['page'] || 0;
+        this.currentPage$.next(page);
+      });
+
       // 3. Definimos cómo se calculan las tecnologías visibles
       const data$ = this.technologyService.getFavTecnologies().pipe(
         tap(data => this.allTechnologies = data), // Guardamos el total para límites
@@ -101,7 +108,7 @@ ngOnInit(): void {
   }
 
   goToTechnologyDetail(id: string): void {
-    this.router.navigate(['/technology', id]);
+    this.router.navigate(['/technology', id], { queryParams: { page: this.currentPage$.value } });
   }
 
  }

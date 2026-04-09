@@ -24,6 +24,7 @@ export class TechnologyDetailComponent implements OnInit {
   public animationClass = '';
   private readonly animationDurationMs = 220;
   private pendingEntryClass = '';
+  private currentPage: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +34,10 @@ export class TechnologyDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.currentPage = +params['page'] || 0;
+    });
+
     this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get('id');
@@ -65,7 +70,7 @@ export class TechnologyDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/technology']);
+    this.router.navigate(['/technology'], { queryParams: { page: this.currentPage } });
   }
 
   goPrev(): void {
