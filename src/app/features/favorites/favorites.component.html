@@ -15,10 +15,10 @@
         </div>
 
         <div class="favorite-name">
-          <h2>{{ favorite.title }}</h2>
+          <h2>{{ favorite.title | technologyTranslate }}</h2>
         </div>
 
-        <button class="favorite-remove" type="button" (click)="removeFavoriteSilent(favorite, $event)" [title]="'Eliminar: ' + favorite.title">
+        <button class="favorite-remove" type="button" (click)="removeFavoriteSilent(favorite, $event)" [title]="'Eliminar: ' + (favorite.title | technologyTranslate)">
           ✕
         </button>
       </div>

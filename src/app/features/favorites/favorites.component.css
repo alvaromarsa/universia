@@ -53,13 +53,13 @@
 .favorites-grid {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(3, 176px);
+  grid-template-columns: repeat(2, 220px);
   justify-content: center;
   justify-items: center;
   align-content: center;
   position: relative;
   z-index: 1;
-  width: min(100%, 560px);
+  width: min(100%, 460px);
   margin-bottom: 24px;
 }
 
@@ -68,8 +68,8 @@
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  width: 160px;
-  height: 160px;
+  width: 220px;
+  height: 220px;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -77,6 +77,7 @@
   text-decoration: none;
   color: inherit;
   position: relative;
+  border-bottom: 4px solid rgba(248, 113, 113, 0.35);
 }
 
 .favorite-card:hover {
@@ -88,8 +89,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 126px;
-  padding: 11px 11px 5px;
+  height: 180px;
+  padding: 15px 15px 6px;
   background: linear-gradient(180deg, #0b3d91 0%, #4281f5 100%);
   flex-shrink: 0;
 }
@@ -101,7 +102,7 @@
 }
 
 .favorite-name {
-  padding: 5px 8px 13px;
+  padding: 6px 12px 28px;
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -111,13 +112,15 @@
 
 .favorite-name h2 {
   color: chartreuse;
-  font-size: 0.66rem;
+  font-size: 0.9rem;
   line-height: 1.3;
   margin: 0;
   font-weight: bold;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .favorite-remove {

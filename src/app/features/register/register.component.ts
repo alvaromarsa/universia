@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 
 import { FormUtils } from '@shared/utils/form-utils';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

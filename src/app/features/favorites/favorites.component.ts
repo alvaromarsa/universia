@@ -6,11 +6,12 @@ import { map, tap } from 'rxjs/operators';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FavoriteItem, FavoritesService } from 'src/app/core/services/favorites.service';
+import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe';
 
 @Component({
   selector: 'favoritesComponent',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TechnologyTranslatePipe],
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +21,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   public allFavorites: FavoriteItem[] = [];
   public visibleFavorites$: Observable<FavoriteItem[]> | undefined;
   public currentPage$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  public pageSize: number = 9;
+  public pageSize: number = 4;
   private currentUserUid: string | null = null;
   private userSubscription: Subscription | undefined;
 
