@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, updateProfile } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,8 +15,10 @@ export class AuthService {
   }
 
   // 1. Registro de nuevos usuarios
-  register(email: string, pass: string) {
-    return createUserWithEmailAndPassword(this.auth, email, pass);
+  async register(email: string, pass: string, name: string) {
+    const userCredential = await createUserWithEmailAndPassword(this.auth, email, pass);
+    await updateProfile(userCredential.user, { displayName: name });
+    return userCredential;
   }
 
   // 2. Login de usuarios existentes

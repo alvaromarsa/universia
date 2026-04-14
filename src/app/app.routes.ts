@@ -9,6 +9,8 @@ import { TechnologyComponent } from './features/tecnology/technology/technology.
 import { TechnologyDetailComponent } from './features/tecnology/technology-detail.component/technology-detail.component';
 import { SpacexComponent } from './features/spacex/spaceX/spacex.component';
 import { SpaceXViewComponent } from './features/spacex/spaceX-view.component/spaceX-view.component';
+import { UserProfileComponent } from './features/user-profile/user-profile.component';
+import { FavoritesComponent } from './features/favorites/favorites.component';
 
 export const routes: Routes = [
 
@@ -32,6 +34,10 @@ export const routes: Routes = [
     component: RegisterComponent,
     data: { animation: 'RegisterPage' }
   },
+  { path: 'profile',
+    component: UserProfileComponent,
+    data: { animation: 'ProfilePage' }
+  },
   { path: 'technology',
     component: TechnologyComponent,
     data: { animation: 'TechnologyPage' }
@@ -47,6 +53,10 @@ export const routes: Routes = [
   { path: 'spacex/:id',
     component: SpaceXViewComponent,
     data: { animation: 'SpacexDetailPage' }
+  },
+  { path: 'favorites',
+    component: FavoritesComponent,
+    data: { animation: 'FavoritesPage' }
   },
   { path: '**',
     component: HomeComponent,

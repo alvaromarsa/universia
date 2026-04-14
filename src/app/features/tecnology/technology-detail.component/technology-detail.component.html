@@ -10,7 +10,12 @@
 		</div>
 
 		<div class="detail-body">
-			<h2>{{ tech.title | technologyTranslate }}</h2>
+			<div class="detail-header">
+				<h2>{{ tech.title | technologyTranslate }}</h2>
+				<button class="favorite-toggle" type="button" (click)="toggleFavorite()" [title]="isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'">
+					<span aria-hidden="true">{{ isFavorite ? '★' : '☆' }}</span>
+				</button>
+			</div>
 			<p>{{ tech.description | technologyDescriptionTranslate:tech.id }}</p>
 		</div>
 	</div>

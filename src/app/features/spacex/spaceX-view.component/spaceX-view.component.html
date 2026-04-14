@@ -15,7 +15,20 @@
 			</div>
 
 			<div class="detail-body">
-				<h1>{{ launch.name }}</h1>
+				<div class="detail-header">
+					<h1>{{ launch.name }}</h1>
+					<button
+						class="favorite-toggle"
+						type="button"
+						( click )="toggleFavorite()"
+						[title]="isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+					>
+						<span aria-hidden="true">
+							{{ isFavorite ? '★' : '☆' }}
+						</span>
+						<span class="sr-only">{{ isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos' }}</span>
+					</button>
+				</div>
 
 				<div class="detail-meta">
 					<div>

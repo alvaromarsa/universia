@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 
+import { AuthService } from 'src/app/core/services/auth.service';
+import { FavoriteItem, FavoritesService } from 'src/app/core/services/favorites.service';
 import { TechnologyService } from '../technologyService';
 import { TechnologyInterface } from '../technology/technologyInterface';
 import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe';
@@ -22,20 +24,29 @@ export class TechnologyDetailComponent implements OnInit {
   public currentTechnology: TechnologyInterface | null = null;
   public currentIndex = -1;
   public animationClass = '';
+  public isFavorite = false;
   private readonly animationDurationMs = 220;
   private pendingEntryClass = '';
   private currentPage: number = 0;
+  private currentUserUid: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private technologyService: TechnologyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private favoritesService: FavoritesService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.currentPage = +params['page'] || 0;
+    });
+
+    this.authService.user$.subscribe(user => {
+      this.currentUserUid = user?.uid ?? null;
+      this.updateFavoriteState();
     });
 
     this.route.paramMap.pipe(
@@ -54,6 +65,7 @@ export class TechnologyDetailComponent implements OnInit {
         this.allTechnologies = list;
         this.currentIndex = list.findIndex(tech => tech.id === id);
         this.currentTechnology = this.currentIndex >= 0 ? list[this.currentIndex] : null;
+        this.updateFavoriteState();
 
         if (this.pendingEntryClass) {
           this.animationClass = this.pendingEntryClass;
@@ -99,6 +111,46 @@ export class TechnologyDetailComponent implements OnInit {
     setTimeout(() => {
       this.router.navigate(['/technology', id]);
     }, this.animationDurationMs);
+  }
+
+  toggleFavorite(): void {
+    if (!this.currentTechnology) {
+      return;
+    }
+
+    if (!this.currentUserUid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const favoriteItem: FavoriteItem = {
+      id: this.currentTechnology.id,
+      type: 'technology',
+      title: this.currentTechnology.title,
+      description: this.currentTechnology.description,
+      imageUrl: this.currentTechnology.imageUrl || this.fallbackImage,
+    };
+
+    if (this.isFavorite) {
+      this.favoritesService.removeFavorite(this.currentUserUid, favoriteItem.id, favoriteItem.type);
+    } else {
+      this.favoritesService.addFavorite(this.currentUserUid, favoriteItem);
+    }
+
+    this.isFavorite = !this.isFavorite;
+  }
+
+  private updateFavoriteState(): void {
+    if (!this.currentUserUid || !this.currentTechnology) {
+      this.isFavorite = false;
+      return;
+    }
+
+    this.isFavorite = this.favoritesService.isFavorite(
+      this.currentUserUid,
+      this.currentTechnology.id,
+      'technology'
+    );
   }
 
   getTechnologyImageUrl(imageUrl: string | null | undefined): string {

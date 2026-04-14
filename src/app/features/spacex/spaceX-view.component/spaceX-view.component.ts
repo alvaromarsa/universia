@@ -1,8 +1,10 @@
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 
+import { AuthService } from 'src/app/core/services/auth.service';
+import { FavoriteItem, FavoritesService } from 'src/app/core/services/favorites.service';
 import { SpacexDescriptionTranslatePipe } from '../spacex-description-translate.pipe';
 import { SpacexInterface } from '../spacexInterface';
 import { SpacexService } from '../spacexService';
@@ -90,11 +92,57 @@ interface LaunchDetailState {
       }
 
       .detail-body h1 {
-        margin: 0 0 18px;
+        margin: 0;
         color: #60a5fa;
         font-size: 1.875rem;
         line-height: 2.25rem;
         font-weight: 800;
+      }
+
+      .detail-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        gap: 18px;
+      }
+
+      .favorite-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        border-radius: 999px;
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        background: rgba(59, 130, 246, 0.12);
+        color: #fef08a;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .favorite-toggle:hover {
+        transform: scale(1.05);
+        background: rgba(59, 130, 246, 0.22);
+      }
+
+      .favorite-toggle:focus-visible {
+        outline: 2px solid #60a5fa;
+        outline-offset: 2px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
       .detail-meta {
@@ -208,11 +256,16 @@ interface LaunchDetailState {
 })
 export class SpaceXViewComponent {
   readonly launchState$: Observable<LaunchDetailState>;
+  public currentLaunch: SpacexInterface | null = null;
+  public currentUserUid: string | null = null;
+  public isFavorite = false;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly spacexService: SpacexService
+    private readonly spacexService: SpacexService,
+    private readonly favoritesService: FavoritesService,
+    private readonly authService: AuthService
   ) {
     this.launchState$ = this.route.paramMap.pipe(
       map((params) => params.get('id')),
@@ -231,12 +284,61 @@ export class SpaceXViewComponent {
             });
           })
         );
+      }),
+      tap((state) => {
+        this.currentLaunch = state.launch;
+        this.updateFavoriteState();
       })
     );
+
+    this.authService.user$.subscribe((user) => {
+      this.currentUserUid = user?.uid ?? null;
+      this.updateFavoriteState();
+    });
   }
 
   goBack(): void {
     this.router.navigate(['/spacex']);
+  }
+
+  toggleFavorite(): void {
+    if (!this.currentLaunch) {
+      return;
+    }
+
+    if (!this.currentUserUid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const favoriteItem: FavoriteItem = {
+      id: this.currentLaunch.id,
+      type: 'spacex',
+      title: this.currentLaunch.name,
+      description: this.currentLaunch.details ?? 'Sin descripción.',
+      imageUrl: this.currentLaunch.links.patch.small || 'assets/images/fondo.jpg',
+    };
+
+    if (this.isFavorite) {
+      this.favoritesService.removeFavorite(this.currentUserUid, favoriteItem.id, favoriteItem.type);
+    } else {
+      this.favoritesService.addFavorite(this.currentUserUid, favoriteItem);
+    }
+
+    this.isFavorite = !this.isFavorite;
+  }
+
+  private updateFavoriteState(): void {
+    if (!this.currentUserUid || !this.currentLaunch) {
+      this.isFavorite = false;
+      return;
+    }
+
+    this.isFavorite = this.favoritesService.isFavorite(
+      this.currentUserUid,
+      this.currentLaunch.id,
+      'spacex'
+    );
   }
 
   getLaunchStatus(success: boolean | null): string {

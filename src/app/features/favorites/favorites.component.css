@@ -1,0 +1,94 @@
+.favorites-page {
+  padding: 24px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.favorites-page h1 {
+  margin-bottom: 16px;
+  color: #e0f2fe;
+}
+
+.favorites-page p {
+  color: #cbd5e1;
+}
+
+.favorites-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 18px;
+}
+
+.favorite-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(96, 165, 250, 0.22);
+  box-shadow: 0 18px 40px rgba(7, 11, 26, 0.28);
+}
+
+.favorite-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.favorite-content {
+  padding: 18px;
+}
+
+.favorite-type {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(96, 165, 250, 0.14);
+  color: #7dd3fc;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.favorite-content h2 {
+  margin: 0 0 10px;
+  color: #f8fafc;
+  font-size: 1.15rem;
+}
+
+.favorite-content p {
+  margin: 0 0 18px;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.favorite-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.favorite-actions a,
+.favorite-actions button {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  background: rgba(59, 130, 246, 0.18);
+  color: #eff6ff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.favorite-actions a:hover,
+.favorite-actions button:hover {
+  background: rgba(59, 130, 246, 0.35);
+}
+
+.favorite-actions button {
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  background: rgba(248, 113, 113, 0.16);
+}
