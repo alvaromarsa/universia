@@ -2,10 +2,9 @@
   <h1>Favoritos</h1>
 
   <ng-container *ngIf="user; else loginTemplate">
-    <p *ngIf="favorites.length === 0">Todavía no tienes favoritos. Marca la estrella en una tarjeta para agregarlos.</p>
 
-    <div class="favorites-grid" *ngIf="favorites.length > 0">
-      <article class="favorite-card" *ngFor="let favorite of favorites">
+    <div class="favorites-grid" *ngIf="(visibleFavorites$ | async) as favorites; else loading">
+      <div class="favorite-card" [routerLink]="getFavoriteLink(favorite)" *ngFor="let favorite of favorites">
         <div class="favorite-image">
           <img
             [src]="favorite.imageUrl || 'assets/images/fondo.jpg'"
@@ -15,18 +14,35 @@
           >
         </div>
 
-        <div class="favorite-content">
-          <span class="favorite-type">{{ favorite.type === 'spacex' ? 'SpaceX' : 'Tecnología' }}</span>
+        <div class="favorite-name">
           <h2>{{ favorite.title }}</h2>
-          <p>{{ favorite.description }}</p>
-
-          <div class="favorite-actions">
-            <a [routerLink]="getFavoriteLink(favorite)">Ver detalle</a>
-            <button type="button" (click)="removeFavorite(favorite)">Eliminar</button>
-          </div>
         </div>
-      </article>
+
+        <button class="favorite-remove" type="button" (click)="removeFavoriteSilent(favorite, $event)" [title]="'Eliminar: ' + favorite.title">
+          ✕
+        </button>
+      </div>
     </div>
+
+    <div class="pagination-nav" *ngIf="allFavorites.length > pageSize">
+      <button class="btn-nav" (click)="prevPage()" [disabled]="(currentPage$ | async) === 0">
+        Anterior
+      </button>
+
+      <span class="page-indicator">Página {{ (currentPage$ | async)! + 1 }} de {{ totalPages }}</span>
+
+      <button class="btn-nav"
+              (click)="nextPage()"
+              [disabled]="((currentPage$ | async)! + 1) * pageSize >= allFavorites.length">
+        Siguiente
+      </button>
+    </div>
+
+    <ng-template #loading>
+      <div class="loader">Cargando favoritos...</div>
+    </ng-template>
+
+    <p *ngIf="allFavorites.length === 0">Todavía no tienes favoritos. Marca la estrella en una tarjeta para agregarlos.</p>
   </ng-container>
 
   <ng-template #loginTemplate>
@@ -34,4 +50,3 @@
     <a routerLink="/login">Iniciar sesión</a>
   </ng-template>
 </section>
-
