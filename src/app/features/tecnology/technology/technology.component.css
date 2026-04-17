@@ -183,24 +183,24 @@ header h1 {
 }
 
 .btn-nav {
-  background: rgba(11, 61, 145, 0.75);
-  border: 1px solid #4f86e8;
+  background: rgba(66, 129, 245, 0.85); /* azul claro como las tarjetas */
+  border: 1px solid #60a5fa;
   padding: 12px 25px;
   border-radius: 50px;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(11, 61, 145, 0.3);
+  box-shadow: 0 4px 10px rgba(66, 129, 245, 0.18);
   transition: background-color 0.2s ease;
 }
 
 .btn-nav:hover:not(:disabled),
 .btn-nav:focus-visible:not(:disabled),
 .btn-nav:active:not(:disabled) {
-  background: rgba(11, 61, 145, 1);
+  background: #60a5fa;
 }
 
-.btn-nav:disabled {
-  background: #ccc;
+ .btn-nav:disabled {
+  background: #b3d1fa; /* azul claro en vez de gris */
   border-color: #d8d8d8;
   cursor: not-allowed;
   box-shadow: none;

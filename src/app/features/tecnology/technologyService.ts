@@ -20,9 +20,6 @@ export class TechnologyService {
                             'MSC-TOPS-85', 'TOP2-106', 'GSC-TOPS-223', 'TOP2-169',
                             'LAR-TOPS-194', 'TOP2-256', 'MSC-TOPS-29', 'MSC-TOPS-96',
                             'LEW-TOPS-99', 'MSC-TOPS-60', 'GSC-TOPS-243', 'TOP2-246',
-                            'TOP2-218', 'MSC-TOPS-47', 'TOP2-299', 'KSC-TOPS-33',
-                            'LEW-TOPS-141', 'LAR-TOPS-122', 'LEW-TOPS-32', 'LAR-TOPS-212',
-                            'KSC-TOPS-99', 'LAR-TOPS-402', 'LEW-TOPS-50',  'LAR-TOPS-361'
                         ];
 
 

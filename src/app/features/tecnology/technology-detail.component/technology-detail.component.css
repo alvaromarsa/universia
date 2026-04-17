@@ -184,8 +184,8 @@
 
 .btn-nav,
 .btn-back {
-  background: rgba(11, 61, 145, 0.75);
-  border: 1px solid #4f86e8;
+  background: rgba(66, 129, 245, 0.85); /* azul claro como las tarjetas */
+  border: 1px solid #60a5fa;
   border-radius: 50px;
   color: #fff;
   font-weight: 700;
@@ -196,11 +196,11 @@
 
 .btn-nav:hover:not(:disabled),
 .btn-back:hover {
-  background: rgba(11, 61, 145, 1);
+  background: #60a5fa;
 }
 
-.btn-nav:disabled {
-  background: #ccc;
+ .btn-nav:disabled {
+  background: #b3d1fa; /* azul claro en vez de gris */
   border-color: #d8d8d8;
   cursor: not-allowed;
 }
