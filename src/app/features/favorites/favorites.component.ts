@@ -101,6 +101,22 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     }
     this.favoritesService.removeFavorite(this.currentUserUid, item.id, item.type);
     this.loadFavorites();
+    setTimeout(() => {
+      // Espera a que visibleFavorites$ se actualice
+      this.visibleFavorites$?.subscribe(favs => {
+        if (favs.length === 0 && this.currentPage$.value > 0) {
+          // Retrocede de página y recarga
+          const prev = this.currentPage$.value - 1;
+          this.currentPage$.next(prev);
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: prev }
+          });
+          this.loadFavorites();
+        }
+        this.cdr.markForCheck();
+      }).unsubscribe();
+    }, 0);
   }
 
   removeFavoriteSilent(item: FavoriteItem, event: Event): void {

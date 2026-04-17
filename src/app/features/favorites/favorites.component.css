@@ -69,7 +69,7 @@
   display: flex;
   flex-direction: column;
   width: 220px;
-  height: 220px;
+  height: 240px; /* Aumenta la altura para más espacio de texto */
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -102,10 +102,10 @@
 }
 
 .favorite-name {
-  padding: 6px 12px 28px;
+  padding: 6px 12px 10px; /* Menos padding abajo para acercar el texto a la imagen */
   flex-grow: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Alinea el texto arriba */
   justify-content: center;
   text-align: center;
 }

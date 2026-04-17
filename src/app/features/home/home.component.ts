@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Inject, PLATFORM_ID, inject, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 
 @Component({
@@ -6,6 +7,8 @@ import { NavbarComponent } from '../../shared/components/navbar/navbar.component
   standalone: true,
   imports: [],
   templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent { }
+
+export class HomeComponent  {
+
+}
