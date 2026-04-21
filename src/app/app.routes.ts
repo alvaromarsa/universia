@@ -11,6 +11,7 @@ import { SpacexComponent } from './features/spacex/spaceX/spacex.component';
 import { SpaceXViewComponent } from './features/spacex/spaceX-view.component/spaceX-view.component';
 import { UserProfileComponent } from './features/user-profile/user-profile.component';
 import { FavoritesComponent } from './features/favorites/favorites.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
 
@@ -36,6 +37,7 @@ export const routes: Routes = [
   },
   { path: 'profile',
     component: UserProfileComponent,
+    canActivate: [authGuard],
     data: { animation: 'ProfilePage' }
   },
   { path: 'technology',
@@ -56,6 +58,7 @@ export const routes: Routes = [
   },
   { path: 'favorites',
     component: FavoritesComponent,
+    canActivate: [authGuard],
     data: { animation: 'FavoritesPage' }
   },
   { path: '**',

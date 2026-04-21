@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -17,23 +17,33 @@ import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
+  private readonly mobileBreakpoint = 640;
   public user: any = null;
   public allFavorites: FavoriteItem[] = [];
   public visibleFavorites$: Observable<FavoriteItem[]> | undefined;
   public currentPage$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pageSize: number = 4;
+  public isMobileView = false;
   private currentUserUid: string | null = null;
   private userSubscription: Subscription | undefined;
+  private resizeHandler?: () => void;
 
   constructor(
     private authService: AuthService,
     private favoritesService: FavoritesService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.syncViewportMode();
+      this.resizeHandler = () => this.syncViewportMode();
+      window.addEventListener('resize', this.resizeHandler);
+    }
+
     this.route.queryParams.subscribe(params => {
       const page = +params['page'] || 0;
       this.currentPage$.next(page);
@@ -68,10 +78,36 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
     this.visibleFavorites$ = combineLatest([data$, this.currentPage$]).pipe(
       map(([data, page]) => {
+        if (this.isMobileView) {
+          return data;
+        }
+
         const start = page * this.pageSize;
         return data.slice(start, start + this.pageSize);
       })
     );
+  }
+
+  private syncViewportMode(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const nextIsMobileView = window.innerWidth <= this.mobileBreakpoint;
+
+    if (nextIsMobileView === this.isMobileView) {
+      return;
+    }
+
+    this.isMobileView = nextIsMobileView;
+
+    if (this.isMobileView) {
+      this.currentPage$.next(0);
+    } else {
+      this.currentPage$.next(this.currentPage$.value);
+    }
+
+    this.cdr.markForCheck();
   }
 
   nextPage(): void {
@@ -140,10 +176,18 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     if (this.allFavorites.length === 0) {
       return 0;
     }
+
+    if (this.isMobileView) {
+      return 1;
+    }
+
     return Math.ceil(this.allFavorites.length / this.pageSize);
   }
 
   ngOnDestroy(): void {
     this.userSubscription?.unsubscribe();
+    if (this.resizeHandler && isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
   }
 }

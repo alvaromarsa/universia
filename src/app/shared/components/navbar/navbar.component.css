@@ -1,7 +1,9 @@
-/* 1. Iluminamos el borde del botón activo */
-/* Buscamos cualquier path que sea el "fondo" o borde del botón */
-::ng-deep .active-link .path-borde,
-::ng-deep .active-link > path {
+:host {
+  display: block;
+}
+
+.desktop-orbit-nav .active-link .path-borde,
+.desktop-orbit-nav .active-link > path {
   fill: transparent !important;
   stroke: #60a5fa !important;
   stroke-width: 3px !important;
@@ -9,11 +11,30 @@
   transition: all 0.4s ease-in-out;
 }
 
-/* 2. PROTEGEMOS LOS ICONOS */
-/* Le decimos que cualquier cosa que esté dentro de un SVG o
-   un grupo de icono NO herede el borde azul ni la sombra */
-::ng-deep .active-link svg path,
-::ng-deep .active-link g g path:not(.path-borde) {
+.desktop-orbit-nav .active-link svg path,
+.desktop-orbit-nav .active-link g g path:not(.path-borde) {
   stroke: none !important;
   filter: none !important;
+}
+
+.nav-button {
+  box-shadow: 0 16px 34px rgba(2, 6, 23, 0.28);
+}
+
+.nav-button.active-link {
+  background: rgba(96, 165, 250, 0.22);
+  border-color: rgba(147, 197, 253, 0.8);
+  box-shadow: 0 0 24px rgba(96, 165, 250, 0.35);
+}
+
+.nav-button.active-link svg {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
+}
+
+@media (min-width: 768px) {
+  .nav-button--left,
+  .nav-button--right {
+    border-left-width: 1px;
+    border-right-width: 1px;
+  }
 }

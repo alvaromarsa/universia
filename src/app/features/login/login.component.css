@@ -1,15 +1,5 @@
 /* Login Component Styles */
 
-.login-universo {
-  background: radial-gradient(circle at bottom, #0d1b2a 0%, #000814 100%);
-  /* Si tienes la imagen de la galaxia, úsala aquí también */
-}
-
-.panel-espacial {
-  /* Efecto de cristal esmerilado */
-  border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
 .planeta-img {
   width: 100%;
   max-width: 400px;

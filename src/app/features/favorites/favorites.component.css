@@ -9,21 +9,6 @@
   padding: 80px 24px 40px;
 }
 
-.favorites-page::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/assets/images/fondo.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.2;
-  z-index: 0;
-  pointer-events: none;
-}
-
 .favorites-page h1 {
   position: absolute;
   top: 64px;
@@ -61,6 +46,12 @@
   z-index: 1;
   width: min(100%, 460px);
   margin-bottom: 24px;
+}
+
+.favorites-scroll-area {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .favorite-card {
@@ -211,12 +202,39 @@
 
 @media (max-width: 640px) {
   .favorites-page {
-    padding: 104px 16px 32px;
+    min-height: 100dvh;
+    height: 100dvh;
+    padding: 148px 16px 32px;
+    justify-content: flex-start;
+    overflow: hidden;
   }
 
-  .favorites-grid {
+  .favorites-scroll-area.mobile-scroll-enabled {
+    flex: 1 1 auto;
+    align-self: stretch;
+    max-height: none;
+    min-height: 0;
+    margin-top: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 32px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom, 0));
+    padding-right: 8px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .favorites-scroll-area.mobile-scroll-enabled::-webkit-scrollbar {
+    display: none;
+  }
+
+  .favorites-grid,
+  .favorites-grid.mobile-favorites-grid {
+    align-content: start;
     grid-template-columns: 1fr;
-    width: min(100%, 160px);
+    width: min(100%, 220px);
+    margin-bottom: 0;
   }
 
   .pagination-nav {

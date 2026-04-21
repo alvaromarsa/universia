@@ -102,6 +102,20 @@ body, html {
   min-height: 500px;
 }
 
+.login-universo {
+  position: relative;
+  overflow: hidden;
+}
+
+.login-universo > * {
+  position: relative;
+  z-index: 1;
+}
+
+.panel-espacial {
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
 /* Un pequeño detalle: que el input brille al escribir */
 input:focus {
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);

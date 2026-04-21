@@ -1,12 +1,14 @@
-
-<div class="fixed inset-0 -z-30 bg-black"></div>
+<div class="app-background" aria-hidden="true">
+  <div class="app-background__image"></div>
+  <div class="app-background__overlay"></div>
+</div>
 
 <div class="fixed top-0 left-0 w-full z-50 pointer-events-none">
   <navbar/>
 </div>
 
 
-<main class="relative z-10 w-full min-h-screen" [@routeAnimations]="getRouteAnimationData()">
+<main class="app-route-shell relative z-10 w-full min-h-screen" [@routeAnimations]="getRouteAnimationData()">
   <router-outlet/>
 </main>
 

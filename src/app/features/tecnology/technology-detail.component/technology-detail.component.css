@@ -9,17 +9,6 @@
   position: relative;
 }
 
-.technology-detail::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url('/assets/images/fondo.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.2;
-  z-index: 0;
-}
-
 .detail-card {
   background: #4281f5;
   border-radius: 20px;

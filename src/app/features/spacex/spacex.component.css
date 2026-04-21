@@ -8,21 +8,6 @@
         padding: 112px 24px 40px;
       }
 
-      .spacex-view::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url('/assets/images/fondo.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        mask-image: radial-gradient(circle, black 50%, transparent 100%);
-        -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
-        opacity: 0.2;
-        z-index: 0;
-        pointer-events: none;
-      }
-
       .spacex-view-content {
         position: relative;
         z-index: 1;
@@ -227,6 +212,59 @@
           grid-template-columns: 1fr;
         }
       }
+
+      @media (max-width: 640px) {
+        .spacex-view {
+          height: 100dvh;
+          min-height: 100dvh;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+          padding: 104px 72px 32px;
+        }
+
+        .spacex-view::-webkit-scrollbar {
+          display: none;
+        }
+
+        .spacex-view-content {
+          width: min(100%, calc(100vw - 144px));
+        }
+
+        .detail-card {
+          gap: 18px;
+          padding: 16px;
+          border-radius: 20px;
+        }
+
+        .detail-media {
+          min-height: 160px;
+          padding: 16px;
+        }
+
+        .detail-image {
+          max-width: 120px;
+        }
+
+        .detail-header {
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .detail-body h1 {
+          font-size: 1.5rem;
+          line-height: 1.8rem;
+          word-break: break-word;
+        }
+
+        .favorite-toggle {
+          width: 44px;
+          height: 44px;
+          flex: 0 0 auto;
+        }
+      }
+
       .spacex-section {
         display: flex;
         flex-direction: column;
@@ -236,21 +274,6 @@
         min-height: 100vh;
         position: relative;
         padding: 0 24px;
-      }
-
-      .spacex-section::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url('/assets/images/fondo.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        mask-image: radial-gradient(circle, black 50%, transparent 100%);
-        -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
-        opacity: 0.2;
-        z-index: 0;
-        pointer-events: none;
       }
 
       .spacex-content {
@@ -386,8 +409,25 @@
 
       @media (max-width: 640px) {
         .spacex-section {
-          min-height: auto;
-          padding: 0 16px 32px;
+          min-height: 100dvh;
+          height: 100dvh;
+          justify-content: flex-start;
+          padding: 104px 72px 24px;
+          overflow: hidden;
+        }
+
+        .spacex-content {
+          flex: 1 1 auto;
+          min-height: 0;
+          justify-content: flex-start;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .spacex-content::-webkit-scrollbar {
+          display: none;
         }
 
         .spacex-header {
@@ -396,8 +436,9 @@
         }
 
         .spacex-grid {
-          grid-template-columns: repeat(2, 1fr);
-          width: 100%;
+          grid-template-columns: 1fr;
+          align-content: start;
+          width: min(100%, 160px);
         }
 
         .launch-card {

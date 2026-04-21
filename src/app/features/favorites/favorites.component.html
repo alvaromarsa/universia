@@ -3,28 +3,30 @@
 
   <ng-container *ngIf="user; else loginTemplate">
 
-    <div class="favorites-grid" *ngIf="(visibleFavorites$ | async) as favorites; else loading">
-      <div class="favorite-card" [routerLink]="getFavoriteLink(favorite)" *ngFor="let favorite of favorites">
-        <div class="favorite-image">
-          <img
-            [src]="favorite.imageUrl || 'assets/images/fondo.jpg'"
-            [alt]="favorite.title"
-            loading="lazy"
-            (error)="onImageError($event)"
-          >
-        </div>
+    <div class="favorites-scroll-area" [class.mobile-scroll-enabled]="isMobileView" *ngIf="(visibleFavorites$ | async) as favorites; else loading">
+      <div class="favorites-grid" [class.mobile-favorites-grid]="isMobileView">
+        <div class="favorite-card" [routerLink]="getFavoriteLink(favorite)" *ngFor="let favorite of favorites">
+          <div class="favorite-image">
+            <img
+              [src]="favorite.imageUrl || 'assets/images/fondo.jpg'"
+              [alt]="favorite.title"
+              loading="lazy"
+              (error)="onImageError($event)"
+            >
+          </div>
 
-        <div class="favorite-name">
-          <h2>{{ favorite.title | technologyTranslate }}</h2>
-        </div>
+          <div class="favorite-name">
+            <h2>{{ favorite.title | technologyTranslate }}</h2>
+          </div>
 
-        <button class="favorite-remove" type="button" (click)="removeFavoriteSilent(favorite, $event)" [title]="'Eliminar: ' + (favorite.title | technologyTranslate)">
-          ✕
-        </button>
+          <button class="favorite-remove" type="button" (click)="removeFavoriteSilent(favorite, $event)" [title]="'Eliminar: ' + (favorite.title | technologyTranslate)">
+            ✕
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="pagination-nav" *ngIf="allFavorites.length > pageSize">
+    <div class="pagination-nav" *ngIf="!isMobileView && allFavorites.length > pageSize">
       <button class="btn-nav" (click)="prevPage()" [disabled]="(currentPage$ | async) === 0">
         Anterior
       </button>

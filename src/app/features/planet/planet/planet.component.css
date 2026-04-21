@@ -9,27 +9,6 @@
   z-index: 1;
 }
 
-.contenedor-universo::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/assets/images/fondo.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  mask-image: radial-gradient(circle, black 50%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
-
-  /* --- AQUÍ CONTROLAS EL PROTAGONISMO --- */
-  opacity: 0.2;
-
-  z-index: -1; /* Se va al fondo de todo para no tapar nada */
-  pointer-events: none; /* El ratón lo atraviesa como si fuera aire */
-}
-
 .planet-title,
 .sol,
 .orbita {
