@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { RouterModule, NavigationEnd, Router, RouterLinkActive } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { filter, map, Observable } from 'rxjs';
@@ -15,12 +16,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class NavbarComponent {
   isHome$: Observable<boolean>;
-  user$: Observable<any>;
+  user$: Observable<User | null>;
 
   constructor(private router: Router, private authService: AuthService) {
     this.isHome$ = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map((event: any) => {
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => {
         const url = event.urlAfterRedirects;
         return url === '/' || url === '/home' || url === '';
       })
@@ -28,7 +29,7 @@ export class NavbarComponent {
     this.user$ = this.authService.user$;
   }
 
-  getLoginRoute(user: any): string[] {
+  getLoginRoute(user: User | null): string[] {
     return user ? ['/profile'] : ['/login'];
   }
 }

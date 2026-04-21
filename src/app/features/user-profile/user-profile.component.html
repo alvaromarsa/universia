@@ -10,7 +10,7 @@
       <p class="text-blue-200/60 text-sm mt-2">Información del tripulante</p>
     </div>
 
-    <div *ngIf="!isLoggedOut && (authService.user$ | async) as user" class="space-y-6">
+    <div *ngIf="!isLoggedOut && (userProfile$ | async) as user" class="space-y-6">
       <div>
         <label class="block text-xs font-bold text-blue-400
                       uppercase mb-2 ml-1 tracking-widest">Nombre del Piloto</label>
@@ -31,22 +31,22 @@
         <label class="block text-xs font-bold text-blue-400
                       uppercase mb-2 ml-1 tracking-widest">Rango</label>
         <div class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg py-3 px-4 text-white capitalize">
-          {{ getUserRank() }}
+          {{ user.rango }}
         </div>
+      </div>
+
+      <div class="text-center mt-6">
+        <button (click)="logout()" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500
+                    hover:to-red-400 text-white font-bold py-4 rounded-lg shadow-lg transform
+                      active:scale-95 transition-all uppercase tracking-widest text-sm">
+          Cerrar Sesión
+        </button>
       </div>
     </div>
 
     <div *ngIf="isLoggedOut" class="space-y-6 text-center">
       <p class="text-green-400 text-lg font-semibold">Sesión cerrada con éxito</p>
       <p class="text-blue-200/60 text-sm">Gracias por volar con nosotros</p>
-    </div>
-
-    <div *ngIf="!isLoggedOut && (authService.user$ | async)" class="text-center mt-6">
-      <button (click)="logout()" class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500
-                  hover:to-red-400 text-white font-bold py-4 rounded-lg shadow-lg transform
-                    active:scale-95 transition-all uppercase tracking-widest text-sm">
-        Cerrar Sesión
-      </button>
     </div>
 
     <div *ngIf="isLoggedOut" class="text-center mt-6">

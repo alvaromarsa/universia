@@ -12,6 +12,7 @@ import { SpaceXViewComponent } from './features/spacex/spaceX-view.component/spa
 import { UserProfileComponent } from './features/user-profile/user-profile.component';
 import { FavoritesComponent } from './features/favorites/favorites.component';
 import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
 
 export const routes: Routes = [
 
@@ -29,10 +30,12 @@ export const routes: Routes = [
   },
   { path: 'login',
     component: LoginComponent,
+    canActivate: [guestGuard],
     data: { animation: 'LoginPage' }
   },
     { path: 'register',
     component: RegisterComponent,
+    canActivate: [guestGuard],
     data: { animation: 'RegisterPage' }
   },
   { path: 'profile',

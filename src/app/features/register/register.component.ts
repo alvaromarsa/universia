@@ -35,10 +35,13 @@ export class RegisterComponent {
 
 async onRegister() {
     try {
-      const user = await this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.nombre);
+      const user = await this.authService.register(
+        this.registerForm.value.email,
+        this.registerForm.value.password,
+        this.registerForm.value.nombre,
+        this.registerForm.value.rango
+      );
       console.log('🚀 Usuario creado con éxito:', user);
-      // Guardar el rango en localStorage
-      localStorage.setItem('userRank', this.registerForm.value.rango);
       // Si todo va bien, mandamos al usuario a la página de home
       this.router.navigate(['/home']);
     } catch (error) {
