@@ -31,7 +31,7 @@
         <label class="block text-xs font-bold text-blue-400
                       uppercase mb-2 ml-1 tracking-widest">Rango</label>
         <div class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg py-3 px-4 text-white capitalize">
-          {{ user.rango }}
+          {{ user.rango || 'Sin rango disponible' }}
         </div>
       </div>
 

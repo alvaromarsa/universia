@@ -42,8 +42,8 @@ async onRegister() {
         this.registerForm.value.rango
       );
       console.log('🚀 Usuario creado con éxito:', user);
-      // Si todo va bien, mandamos al usuario a la página de home
-      this.router.navigate(['/home']);
+      // Si todo va bien, mandamos al usuario a su perfil
+      this.router.navigate(['/profile']);
     } catch (error) {
       console.error('❌ Error al registrar:', error);
       alert('Algo ha fallado en el despegue: ' + error);

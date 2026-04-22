@@ -4,7 +4,7 @@ import { RouterModule, NavigationEnd, Router, RouterLinkActive } from '@angular/
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { filter, map, Observable } from 'rxjs';
 
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService, UserProfile } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'navbar',
@@ -17,6 +17,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class NavbarComponent {
   isHome$: Observable<boolean>;
   user$: Observable<User | null>;
+  userProfile$: Observable<UserProfile | null>;
 
   constructor(private router: Router, private authService: AuthService) {
     this.isHome$ = this.router.events.pipe(
@@ -27,6 +28,7 @@ export class NavbarComponent {
       })
     );
     this.user$ = this.authService.user$;
+    this.userProfile$ = this.authService.userProfile$;
   }
 
   getLoginRoute(user: User | null): string[] {

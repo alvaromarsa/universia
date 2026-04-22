@@ -252,7 +252,7 @@
     </g>
   </svg>
 
-  <div *ngIf="user$ | async as user" [routerLink]="['/profile']" class="absolute left-1/2 top-4 z-50 hidden -translate-x-1/2 cursor-pointer text-lg font-semibold text-violet-400 transition-colors hover:text-violet-300 md:block">
-    {{ user.displayName || 'Usuario' }}
+  <div *ngIf="userProfile$ | async as userProfile" [routerLink]="['/profile']" class="absolute left-1/2 top-4 z-50 hidden -translate-x-1/2 cursor-pointer text-lg font-semibold text-violet-400 transition-colors hover:text-violet-300 md:block">
+    {{ userProfile.displayName }}
   </div>
 </div>
