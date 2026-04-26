@@ -1,72 +1,56 @@
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './features/home/home.component';
-import { PlanetComponent } from './features/planet/planet/planet.component';
-import { PlanetDetailComponent } from './features/planet/planet-detail/planet-detail.component';
-import { LoginComponent } from './features/login/login-component';
-import { RegisterComponent } from './features/register/register.component';
-import { TechnologyComponent } from './features/tecnology/technology/technology.component';
-import { TechnologyDetailComponent } from './features/tecnology/technology-detail.component/technology-detail.component';
-import { SpacexComponent } from './features/spacex/spaceX/spacex.component';
-import { SpaceXViewComponent } from './features/spacex/spaceX-view.component/spaceX-view.component';
-import { UserProfileComponent } from './features/user-profile/user-profile.component';
-import { FavoritesComponent } from './features/favorites/favorites.component';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 
 export const routes: Routes = [
-
-  { path: '',
+  {
+    path: '',
     component: HomeComponent,
     data: { animation: 'HomePage' }
   },
-  { path: 'planets',
-    component: PlanetComponent,
-    data: { animation: 'PlanetsPage' }
+  {
+    path: 'planets',
+    loadChildren: () => import('./features/planet/planet.routes').then((m) => m.planetRoutes),
   },
-  { path: 'planets/:nombrePlaneta',
-    component: PlanetDetailComponent,
-    data: { animation: 'PlanetDetailPage' }
-  },
-  { path: 'login',
-    component: LoginComponent,
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/login.component').then((m) => m.LoginComponent),
     canActivate: [guestGuard],
     data: { animation: 'LoginPage' }
   },
-    { path: 'register',
-    component: RegisterComponent,
+  {
+    path: 'register',
+    loadComponent: () => import('./features/register/register.component').then((m) => m.RegisterComponent),
     canActivate: [guestGuard],
     data: { animation: 'RegisterPage' }
   },
-  { path: 'profile',
-    component: UserProfileComponent,
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
     canActivate: [authGuard],
     data: { animation: 'ProfilePage' }
   },
-  { path: 'technology',
-    component: TechnologyComponent,
-    data: { animation: 'TechnologyPage' }
+  {
+    path: 'technology',
+    loadChildren: () =>
+      import('./features/tecnology/technology.routes').then((m) => m.technologyRoutes),
   },
-  { path: 'technology/:id',
-    component: TechnologyDetailComponent,
-    data: { animation: 'TechnologyDetailPage' }
+  {
+    path: 'spacex',
+    loadChildren: () => import('./features/spacex/spacex.routes').then((m) => m.spacexRoutes),
   },
-  { path: 'spacex',
-    component: SpacexComponent,
-    data: { animation: 'SpacexPage' }
-  },
-  { path: 'spacex/:id',
-    component: SpaceXViewComponent,
-    data: { animation: 'SpacexDetailPage' }
-  },
-  { path: 'favorites',
-    component: FavoritesComponent,
+  {
+    path: 'favorites',
+    loadComponent: () => import('./features/favorites/favorites.component').then((m) => m.FavoritesComponent),
     canActivate: [authGuard],
     data: { animation: 'FavoritesPage' }
   },
-  { path: '**',
+  {
+    path: '**',
     component: HomeComponent,
     data: { animation: 'HomePage' }
   },
-
 ];

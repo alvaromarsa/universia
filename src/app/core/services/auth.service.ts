@@ -29,7 +29,7 @@ export class AuthService {
   constructor(
     private auth: Auth
   ) {
-    this.user$ = user(this.auth).pipe(
+    this.user$ = this.observeCurrentUser().pipe(
       shareReplay({ bufferSize: 1, refCount: true })
     );
 
@@ -69,8 +69,8 @@ export class AuthService {
       network: this.getNetworkDebugInfo(),
     });
 
-    const userCredential = await createUserWithEmailAndPassword(this.auth, email, pass);
-    await updateProfile(userCredential.user, { displayName: name });
+    const userCredential = await this.createUserCredential(email, pass);
+    await this.updateFirebaseProfile(userCredential.user, { displayName: name });
 
     this.writeStoredProfile(userCredential.user.uid, {
       displayName: name,
@@ -88,7 +88,7 @@ export class AuthService {
 
   // 2. Login de usuarios existentes
   async login(email: string, pass: string) {
-    const userCredential = await signInWithEmailAndPassword(this.auth, email, pass);
+    const userCredential = await this.signInUserCredential(email, pass);
     await userCredential.user.reload();
 
     const refreshedUser = this.auth.currentUser ?? userCredential.user;
@@ -111,7 +111,7 @@ export class AuthService {
 
   // 3. Cerrar sesión
   logout() {
-    return signOut(this.auth);
+    return this.signOutFromAuth();
   }
 
   async updateUserDisplayName(displayName: string): Promise<void> {
@@ -126,7 +126,7 @@ export class AuthService {
       throw new Error('El nombre de usuario no puede estar vacio.');
     }
 
-    await updateProfile(currentUser, { displayName: trimmedDisplayName });
+    await this.updateFirebaseProfile(currentUser, { displayName: trimmedDisplayName });
 
     const storedProfile = this.readStoredProfile(currentUser.uid);
     this.writeStoredProfile(currentUser.uid, {
@@ -143,6 +143,26 @@ export class AuthService {
 
   private storageKey(uid: string): string {
     return `universia_user_profile_${uid}`;
+  }
+
+  private observeCurrentUser() {
+    return user(this.auth);
+  }
+
+  private createUserCredential(email: string, pass: string) {
+    return createUserWithEmailAndPassword(this.auth, email, pass);
+  }
+
+  private signInUserCredential(email: string, pass: string) {
+    return signInWithEmailAndPassword(this.auth, email, pass);
+  }
+
+  private signOutFromAuth() {
+    return signOut(this.auth);
+  }
+
+  private updateFirebaseProfile(currentUser: User, profile: { displayName: string }) {
+    return updateProfile(currentUser, profile);
   }
 
   private readStoredProfile(uid: string): StoredUserProfile | null {

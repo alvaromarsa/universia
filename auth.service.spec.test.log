@@ -1,0 +1,109 @@
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+26 04 2026 17:10:53.921:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+26 04 2026 17:10:53.924:INFO [launcher]: Launching browsers ChromeHeadlessUniversia with concurrency unlimited
+26 04 2026 17:10:53.942:INFO [launcher]: Starting browser ChromeHeadless
+26 04 2026 17:10:54.991:INFO [Chrome Headless 147.0.0.0 (Windows 10)]: Connected on socket Ut2HdDqlsekfPNvJAAAB with id 29428597
+Chrome Headless 147.0.0.0 (Windows 10): Executed 0 of 7[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should register a user, update the display name, and persist the local profile FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 1 of 7[31m (1 FAILED)[39m (0 secs / 0.014 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should resolve the profile from Firebase Auth and localStorage FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 2 of 7[31m (2 FAILED)[39m (0 secs / 0.017 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should delegate logout to Firebase Auth signOut FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 3 of 7[31m (3 FAILED)[39m (0 secs / 0.019 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should trim and persist the updated display name while preserving rango FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 4 of 7[31m (4 FAILED)[39m (0 secs / 0.021 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should emit null profile when there is no authenticated user FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 5 of 7[31m (5 FAILED)[39m (0 secs / 0.023 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should throw when updating the display name without an authenticated user FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 6 of 7[31m (6 FAILED)[39m (0 secs / 0.024 secs)
+[1A[2K[31mChrome Headless 147.0.0.0 (Windows 10) AuthService should login, reload the user, and persist the hydrated local profile FAILED[39m
+	Error: Either AngularFireModule has not been provided in your AppModule (this can be done manually or implictly using
+	provideFirebaseApp) or you're calling an AngularFire method outside of an NgModule (which is not supported).
+	    at getSchedulers (node_modules/@angular/fire/fesm2022/angular-fire.mjs:128:15)
+	    at runOutsideAngular (node_modules/@angular/fire/fesm2022/angular-fire.mjs:134:12)
+	    at node_modules/@angular/fire/fesm2022/angular-fire.mjs:202:21
+	    at new AuthService (src/app/core/services/auth.service.ts:32:22)
+	    at Object.factory (ng:///AuthService/ɵfac.js:4:10)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:3219:47)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:866:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:3218:21)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:3082:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1914:52)
+Chrome Headless 147.0.0.0 (Windows 10): Executed 7 of 7[31m (7 FAILED)[39m (0 secs / 0.026 secs)
+[1A[2KChrome Headless 147.0.0.0 (Windows 10): Executed 7 of 7[31m (7 FAILED)[39m (0.037 secs / 0.026 secs)
+[31mTOTAL: 7 FAILED, 0 SUCCESS[39m
+✔ Browser application bundle generation complete.
+✔ Browser application bundle generation complete.

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService, UserProfile } from 'src/app/core/services/auth.service';
@@ -21,13 +21,18 @@ export class UserProfileComponent {
   displayNameError = '';
   userProfile$: Observable<UserProfile | null>;
 
-  constructor(public authService: AuthService, private router: Router) {
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.userProfile$ = this.authService.userProfile$;
   }
 
   async logout() {
     await this.authService.logout();
     this.isLoggedOut = true;
+    this.cdr.markForCheck();
   }
 
   startDisplayNameEdit(currentDisplayName: string): void {
@@ -64,6 +69,7 @@ export class UserProfileComponent {
       console.error('Error actualizando el nombre de usuario:', error);
     } finally {
       this.isSavingDisplayName = false;
+      this.cdr.markForCheck();
     }
   }
 
