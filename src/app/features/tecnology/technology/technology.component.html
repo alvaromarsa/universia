@@ -1,7 +1,7 @@
 <div class="technology-section" *ngIf="visibleTechnologies$ | async as techs; else loading">
   <h1 class="technology-title">Tecnologias de la NASA</h1>
 
-  <div class="technology-content">
+  <div class="technology-content" [class.technology-content--scrollable]="useScrollableLayout">
     <div class="tech-grid">
       <div class="card" *ngFor="let tech of techs" (click)="goToTechnologyDetail(tech.id)">
         <div class="card-media">
@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <div class="pagination-nav">
+  <div class="pagination-nav" *ngIf="!useScrollableLayout">
     <button class="btn-nav" (click)="prevPage()" [disabled]="(currentPage$ | async) === 0">
       Anterior
     </button>

@@ -18,6 +18,7 @@ export class RegisterComponent {
 
   // Hacemos pública la clase para usarla directamente en el HTML
   public formUtils = FormUtils;
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +35,12 @@ export class RegisterComponent {
     });
 
 async onRegister() {
+    if (this.registerForm.invalid || this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
+
     try {
       const user = await this.authService.register(
         this.registerForm.value.email,
@@ -47,6 +54,8 @@ async onRegister() {
     } catch (error) {
       console.error('❌ Error al registrar:', error);
       alert('Algo ha fallado en el despegue: ' + error);
+    } finally {
+      this.isSubmitting = false;
     }
   }
 }

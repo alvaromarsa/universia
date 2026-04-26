@@ -48,9 +48,9 @@
         }
       </div>
 
-      <button type="submit" [disabled]="registerForm.invalid"
+      <button type="submit" [disabled]="registerForm.invalid || isSubmitting"
               class="col-span-2 mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 rounded-lg shadow-lg uppercase tracking-widest text-sm transition-all disabled:opacity-30">
-        Crear Expediente
+        {{ isSubmitting ? 'Creando expediente...' : 'Crear Expediente' }}
       </button>
 
       <div class="col-span-2 text-center mt-4">

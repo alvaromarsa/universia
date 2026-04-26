@@ -318,6 +318,13 @@
         width: min(100%, 560px);
       }
 
+      @media (max-width: 1024px) {
+        .spacex-grid {
+          grid-template-columns: repeat(2, 176px);
+          width: min(100%, 368px);
+        }
+      }
+
       .launch-card {
         background: #4281f5;
         border-radius: 16px;
@@ -407,12 +414,12 @@
         border: 1px solid rgba(96, 165, 250, 0.22);
       }
 
-      @media (max-width: 640px) {
+      @media (max-width: 1024px) {
         .spacex-section {
           min-height: 100dvh;
           height: 100dvh;
           justify-content: flex-start;
-          padding: 104px 72px 24px;
+          padding: 140px 32px 24px;
           overflow: hidden;
         }
 
@@ -424,6 +431,8 @@
           overflow-x: hidden;
           -ms-overflow-style: none;
           scrollbar-width: none;
+          padding-top: 8px;
+          padding-bottom: 8px;
         }
 
         .spacex-content::-webkit-scrollbar {
@@ -431,8 +440,21 @@
         }
 
         .spacex-header {
-          top: 44px;
-          width: calc(100% - 32px);
+          top: 40px;
+          width: calc(100% - 48px);
+        }
+
+        .spacex-grid {
+          grid-template-columns: repeat(2, 176px);
+          align-content: start;
+          width: min(100%, 368px);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .spacex-section {
+          justify-content: flex-start;
+          padding: 104px 72px 24px;
         }
 
         .spacex-grid {

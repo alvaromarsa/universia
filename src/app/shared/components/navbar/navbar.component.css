@@ -31,7 +31,7 @@
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .nav-button--left,
   .nav-button--right {
     border-left-width: 1px;

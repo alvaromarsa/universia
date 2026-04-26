@@ -18,13 +18,16 @@ import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe
 })
 export class TechnologyComponent implements OnInit, OnDestroy {
   public readonly fallbackImage = 'assets/images/fondo.jpg';
+  private readonly tabletBreakpoint = 1024;
+  private readonly compactHeightBreakpoint = 820;
   private readonly mobileBreakpoint = 720;
   private readonly desktopPageSize = 4;
-  private readonly mobilePageSize = 1;
   private resizeHandler?: () => void;
+  private readonly layoutMode$ = new BehaviorSubject<boolean>(false);
 
   public allTechnologies: TechnologyInterface[] = [];
   public visibleTechnologies$: Observable<TechnologyInterface[]> | undefined;
+  public useScrollableLayout = false;
 
   public currentPage$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pageSize: number = this.desktopPageSize;
@@ -55,8 +58,12 @@ export class TechnologyComponent implements OnInit, OnDestroy {
         })
       );
 
-      this.visibleTechnologies$ = combineLatest([data$, this.currentPage$]).pipe(
-        map(([data, page]) => {
+      this.visibleTechnologies$ = combineLatest([data$, this.currentPage$, this.layoutMode$]).pipe(
+        map(([data, page, useScrollableLayout]) => {
+          if (useScrollableLayout) {
+            return data;
+          }
+
           const start = page * this.pageSize;
           return data.slice(start, start + this.pageSize);
         })
@@ -71,26 +78,34 @@ export class TechnologyComponent implements OnInit, OnDestroy {
   }
 
   private syncPageSize(): void {
-    const nextPageSize = window.innerWidth <= this.mobileBreakpoint
-      ? this.mobilePageSize
-      : this.desktopPageSize;
+    this.useScrollableLayout =
+      window.innerWidth <= this.tabletBreakpoint ||
+      window.innerHeight <= this.compactHeightBreakpoint;
+    this.layoutMode$.next(this.useScrollableLayout);
+
+    const nextPageSize = this.desktopPageSize;
 
     if (nextPageSize === this.pageSize) {
+      if (this.useScrollableLayout) {
+        this.currentPage$.next(0);
+      }
       return;
     }
 
     const currentStart = this.currentPage$.value * this.pageSize;
     this.pageSize = nextPageSize;
-    this.currentPage$.next(Math.floor(currentStart / this.pageSize));
+    this.currentPage$.next(this.useScrollableLayout ? 0 : Math.floor(currentStart / this.pageSize));
   }
 
   updatePage(): void {
-    const start = this.currentPage$.value * this.pageSize;
-    const end = start + this.pageSize;
-    this.visibleTechnologies$ = of(this.allTechnologies.slice(start, end));
+    this.currentPage$.next(this.currentPage$.value);
   }
 
   nextPage(): void {
+    if (this.useScrollableLayout) {
+      return;
+    }
+
     if ((this.currentPage$.value + 1) * this.pageSize < this.allTechnologies.length) {
       this.currentPage$.next(this.currentPage$.value + 1);
       this.updatePage();
@@ -98,6 +113,10 @@ export class TechnologyComponent implements OnInit, OnDestroy {
   }
 
   prevPage(): void {
+    if (this.useScrollableLayout) {
+      return;
+    }
+
     const prev = this.currentPage$.value - 1;
     if (prev >= 0) {
       this.currentPage$.next(prev);

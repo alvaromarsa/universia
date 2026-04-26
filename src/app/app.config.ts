@@ -6,7 +6,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 
@@ -25,6 +24,5 @@ export const appConfig: ApplicationConfig = {
         "authDomain":"universia-ac877.firebaseapp.com",
         "messagingSenderId":"586668173942",
     })),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())],
+    provideAuth(() => getAuth())],
 };

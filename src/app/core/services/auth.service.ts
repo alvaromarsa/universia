@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { Auth, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, updateProfile } from '@angular/fire/auth';
-import { Firestore, doc, docData, setDoc } from '@angular/fire/firestore';
-import { Observable, of } from 'rxjs';
-import { catchError, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
 
 export interface UserProfile {
   uid: string;
@@ -11,95 +11,50 @@ export interface UserProfile {
   rango: string;
 }
 
+type StoredUserProfile = Pick<UserProfile, 'displayName' | 'rango'>;
+
 @Injectable({
   providedIn: 'root' // Esto lo hace disponible en toda la app
 })
 export class AuthService {
   private readonly profileDebugEnabled = true;
-  private readonly profileWriteTimeoutMs = 1500;
-  private readonly profileWriteMaxAttempts = 3;
-  private readonly pendingUserProfiles = new Map<string, UserProfile>();
-  private readonly repairedProfileIds = new Set<string>();
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly profileRefresh$ = new BehaviorSubject(0);
 
   // Observable para saber en todo momento si el usuario está logueado o no
   user$: Observable<User | null>;
   userProfile$: Observable<UserProfile | null>;
 
   constructor(
-    private auth: Auth,
-    private firestore: Firestore
+    private auth: Auth
   ) {
     this.user$ = user(this.auth).pipe(
       shareReplay({ bufferSize: 1, refCount: true })
     );
 
-    this.userProfile$ = this.user$.pipe(
-      switchMap(currentUser => {
+    this.userProfile$ = combineLatest([this.user$, this.profileRefresh$]).pipe(
+      map(([currentUser]) => {
         if (!currentUser) {
           this.logProfileDebug('No hay usuario autenticado; el perfil queda en null');
-          return of(null);
+          return null;
         }
 
-        const baseProfile: UserProfile = {
+        const storedProfile = this.readStoredProfile(currentUser.uid);
+
+        const resolvedProfile: UserProfile = {
           uid: currentUser.uid,
           email: currentUser.email ?? '',
-          displayName: currentUser.displayName ?? '',
-          rango: '',
+          displayName: storedProfile?.displayName ?? currentUser.displayName ?? '',
+          rango: storedProfile?.rango ?? '',
         };
-        const pendingProfile = this.pendingUserProfiles.get(currentUser.uid);
-        const fallbackProfile = pendingProfile ?? baseProfile;
 
-        this.logProfileDebug('Usuario autenticado detectado; preparando lectura de perfil', {
-          uid: currentUser.uid,
-          email: baseProfile.email,
-          displayName: baseProfile.displayName,
-        });
+        this.logProfileDebug('Perfil resuelto desde Firebase Auth y localStorage', resolvedProfile);
 
-        const userProfileRef = doc(this.firestore, `users/${currentUser.uid}`);
-        return docData(userProfileRef).pipe(
-          tap((profile) => {
-            const firestoreProfile = profile as Partial<UserProfile> | undefined;
-
-            this.logProfileDebug('Documento de perfil recibido desde Firestore', {
-              uid: currentUser.uid,
-              profile,
-            });
-
-            if (!firestoreProfile) {
-              void this.repairMissingUserProfile(fallbackProfile);
-              return;
-            }
-
-            this.pendingUserProfiles.delete(currentUser.uid);
-          }),
-          map((profile) => {
-            const firestoreProfile = profile as Partial<UserProfile> | undefined;
-
-            const resolvedProfile = {
-              uid: currentUser.uid,
-              email: firestoreProfile?.email ?? fallbackProfile.email,
-              displayName: firestoreProfile?.displayName ?? fallbackProfile.displayName,
-              rango: firestoreProfile?.rango ?? fallbackProfile.rango,
-            } satisfies UserProfile;
-
-            this.logProfileDebug('Perfil resuelto tras fusionar Auth y Firestore', resolvedProfile);
-
-            return resolvedProfile;
-          }),
-          catchError((error) => {
-            console.error('Error al cargar el perfil de usuario desde Firestore', error);
-            this.logProfileDebug('Fallo leyendo el perfil; devolviendo perfil base', {
-              uid: currentUser.uid,
-              fallbackProfile,
-              error,
-            });
-            return of(fallbackProfile);
-          }),
-          startWith(fallbackProfile),
-          tap((profile) => {
-            this.logProfileDebug('Emitiendo perfil al resto de la app', profile);
-          })
-        );
+        return resolvedProfile;
+      }),
+      tap((profile) => {
+        this.logProfileDebug('Emitiendo perfil al resto de la app', profile);
       }),
       shareReplay({ bufferSize: 1, refCount: true })
     );
@@ -111,38 +66,47 @@ export class AuthService {
       email,
       displayName: name,
       rango,
+      network: this.getNetworkDebugInfo(),
     });
 
     const userCredential = await createUserWithEmailAndPassword(this.auth, email, pass);
     await updateProfile(userCredential.user, { displayName: name });
 
-    const profile: UserProfile = {
-      uid: userCredential.user.uid,
-      email,
+    this.writeStoredProfile(userCredential.user.uid, {
       displayName: name,
       rango,
-    };
-
-    this.logProfileDebug('Perfil preparado para persistencia tras registro', profile);
-    this.pendingUserProfiles.set(profile.uid, profile);
-
-    try {
-      await this.persistUserProfileWithTimeout(profile);
-    } catch (error) {
-      console.error('Error al guardar el perfil del usuario en Firestore', error);
-      this.logProfileDebug('Persistencia del perfil fallida tras registro', {
-        uid: profile.uid,
-        error,
-      });
-      throw error;
-    }
+    });
+    this.notifyProfileRefresh();
+    this.logProfileDebug('Perfil local guardado tras registro', {
+      uid: userCredential.user.uid,
+      displayName: name,
+      rango,
+    });
 
     return userCredential;
   }
 
   // 2. Login de usuarios existentes
-  login(email: string, pass: string) {
-    return signInWithEmailAndPassword(this.auth, email, pass);
+  async login(email: string, pass: string) {
+    const userCredential = await signInWithEmailAndPassword(this.auth, email, pass);
+    await userCredential.user.reload();
+
+    const refreshedUser = this.auth.currentUser ?? userCredential.user;
+    const storedProfile = this.readStoredProfile(refreshedUser.uid);
+
+    this.writeStoredProfile(refreshedUser.uid, {
+      displayName: storedProfile?.displayName ?? refreshedUser.displayName ?? '',
+      rango: storedProfile?.rango ?? '',
+    });
+    this.notifyProfileRefresh();
+
+    this.logProfileDebug('Perfil local hidratado tras login', {
+      uid: refreshedUser.uid,
+      displayName: storedProfile?.displayName ?? refreshedUser.displayName ?? '',
+      rango: storedProfile?.rango ?? '',
+    });
+
+    return userCredential;
   }
 
   // 3. Cerrar sesión
@@ -150,82 +114,75 @@ export class AuthService {
     return signOut(this.auth);
   }
 
-  private async persistUserProfile(profile: UserProfile): Promise<void> {
-    let lastError: unknown;
+  async updateUserDisplayName(displayName: string): Promise<void> {
+    const trimmedDisplayName = displayName.trim();
+    const currentUser = this.auth.currentUser;
 
-    for (let attempt = 0; attempt < this.profileWriteMaxAttempts; attempt += 1) {
-      try {
-        this.logProfileDebug('Intentando guardar perfil en Firestore', {
-          attempt: attempt + 1,
-          profile,
-        });
-        await setDoc(doc(this.firestore, `users/${profile.uid}`), profile);
-        this.logProfileDebug('Perfil guardado correctamente en Firestore', {
-          attempt: attempt + 1,
-          uid: profile.uid,
-          rango: profile.rango,
-        });
-        return;
-      } catch (error) {
-        lastError = error;
-        this.logProfileDebug('Error al guardar perfil en Firestore', {
-          attempt: attempt + 1,
-          uid: profile.uid,
-          error,
-        });
+    if (!currentUser) {
+      throw new Error('No hay un usuario autenticado.');
+    }
+
+    if (!trimmedDisplayName) {
+      throw new Error('El nombre de usuario no puede estar vacio.');
+    }
+
+    await updateProfile(currentUser, { displayName: trimmedDisplayName });
+
+    const storedProfile = this.readStoredProfile(currentUser.uid);
+    this.writeStoredProfile(currentUser.uid, {
+      displayName: trimmedDisplayName,
+      rango: storedProfile?.rango ?? '',
+    });
+    this.notifyProfileRefresh();
+
+    this.logProfileDebug('Nombre de usuario actualizado', {
+      uid: currentUser.uid,
+      displayName: trimmedDisplayName,
+    });
+  }
+
+  private storageKey(uid: string): string {
+    return `universia_user_profile_${uid}`;
+  }
+
+  private readStoredProfile(uid: string): StoredUserProfile | null {
+    if (!this.isBrowser || !uid) {
+      return null;
+    }
+
+    try {
+      const storedProfile = localStorage.getItem(this.storageKey(uid));
+      if (!storedProfile) {
+        return null;
       }
-    }
 
-    throw lastError;
-  }
-
-  private async persistUserProfileWithTimeout(profile: UserProfile): Promise<void> {
-    let didTimeout = false;
-
-    const persistPromise = this.persistUserProfile(profile)
-      .then(() => {
-        this.pendingUserProfiles.delete(profile.uid);
-      })
-      .catch((error) => {
-        this.pendingUserProfiles.set(profile.uid, profile);
-        throw error;
+      return JSON.parse(storedProfile) as StoredUserProfile;
+    } catch (error) {
+      this.logProfileDebug('No se pudo leer el perfil desde localStorage', {
+        uid,
+        error,
       });
-
-    await Promise.race([
-      persistPromise,
-      this.wait(this.profileWriteTimeoutMs).then(() => {
-        didTimeout = true;
-      }),
-    ]);
-
-    if (didTimeout) {
-      this.logProfileDebug('La persistencia del perfil sigue en curso; no se bloquea la redirección', {
-        uid: profile.uid,
-        rango: profile.rango,
-      });
+      return null;
     }
   }
 
-  private async repairMissingUserProfile(profile: UserProfile): Promise<void> {
-    if (this.repairedProfileIds.has(profile.uid)) {
+  private writeStoredProfile(uid: string, profile: StoredUserProfile): void {
+    if (!this.isBrowser || !uid) {
       return;
     }
 
-    this.repairedProfileIds.add(profile.uid);
-
     try {
-      this.logProfileDebug('Perfil inexistente en Firestore; creando documento base', profile);
-      await setDoc(doc(this.firestore, `users/${profile.uid}`), profile, { merge: true });
-      this.logProfileDebug('Documento base de perfil creado en Firestore', {
-        uid: profile.uid,
-      });
+      localStorage.setItem(this.storageKey(uid), JSON.stringify(profile));
     } catch (error) {
-      this.repairedProfileIds.delete(profile.uid);
-      this.logProfileDebug('No se pudo crear el documento base del perfil', {
-        uid: profile.uid,
+      this.logProfileDebug('No se pudo guardar el perfil en localStorage', {
+        uid,
         error,
       });
     }
+  }
+
+  private notifyProfileRefresh(): void {
+    this.profileRefresh$.next(this.profileRefresh$.value + 1);
   }
 
   private logProfileDebug(message: string, payload?: unknown): void {
@@ -241,10 +198,18 @@ export class AuthService {
     console.log('[AuthService][profile-debug]', message, payload);
   }
 
-  private wait(timeoutMs: number): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(resolve, timeoutMs);
-    });
+  private getNetworkDebugInfo(): { online: boolean | null; hasNavigator: boolean } {
+    if (typeof navigator === 'undefined') {
+      return {
+        online: null,
+        hasNavigator: false,
+      };
+    }
+
+    return {
+      online: navigator.onLine,
+      hasNavigator: true,
+    };
   }
 
 }

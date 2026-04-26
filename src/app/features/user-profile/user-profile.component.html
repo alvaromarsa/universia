@@ -14,8 +14,44 @@
       <div>
         <label class="block text-xs font-bold text-blue-400
                       uppercase mb-2 ml-1 tracking-widest">Nombre del Piloto</label>
-        <div class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg py-3 px-4 text-white">
-          {{ user.displayName || 'Usuario' }}
+        <div *ngIf="!isEditingDisplayName" class="space-y-3">
+          <div class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg py-3 px-4 text-white">
+            {{ user.displayName || 'Usuario' }}
+          </div>
+          <button
+            type="button"
+            (click)="startDisplayNameEdit(user.displayName || '')"
+            class="w-full rounded-lg border border-yellow-400/70 bg-blue-900/20 py-3 px-4 text-sm font-bold uppercase tracking-widest text-yellow-200 transition-all hover:border-yellow-300 hover:text-white">
+            Cambiar Nombre de Usuario
+          </button>
+        </div>
+
+        <div *ngIf="isEditingDisplayName" class="space-y-3">
+          <input
+            [(ngModel)]="displayNameDraft"
+            type="text"
+            class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+            placeholder="Nuevo nombre de usuario">
+
+          <div *ngIf="displayNameError" class="text-sm text-red-400">
+            {{ displayNameError }}
+          </div>
+
+          <button
+            type="button"
+            (click)="saveDisplayName()"
+            [disabled]="isSavingDisplayName"
+            class="w-full rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 py-3 px-4 text-sm font-bold uppercase tracking-widest text-white transition-all disabled:opacity-40">
+            {{ isSavingDisplayName ? 'Guardando...' : 'Guardar Nombre' }}
+          </button>
+
+          <button
+            type="button"
+            (click)="cancelDisplayNameEdit()"
+            [disabled]="isSavingDisplayName"
+            class="w-full rounded-lg border border-blue-500/50 bg-transparent py-3 px-4 text-sm font-bold uppercase tracking-widest text-blue-200 transition-all hover:border-blue-400 hover:text-white disabled:opacity-40">
+            Cancelar
+          </button>
         </div>
       </div>
 
