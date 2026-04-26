@@ -4,31 +4,17 @@
 	</header>
 
 	<div class="spacex-content" *ngIf="launchState$ | async as state">
-		<p class="spacex-error" *ngIf="state.error">{{ state.error }}</p>
+		<p class="spacex-empty" *ngIf="state.loading">Cargando lanzamientos de SpaceX...</p>
+		<p class="spacex-error" *ngIf="!state.loading && state.error">{{ state.error }}</p>
 
-		<div class="spacex-grid" *ngIf="state.launches.length; else emptyState">
-			<a class="launch-card" *ngFor="let launch of state.launches" [routerLink]="['/spacex', launch.id]">
-				<div class="launch-card-media">
-					<img
-						*ngIf="launch.links.patch.small; else patchFallback"
-						class="launch-patch"
-						[src]="launch.links.patch.small"
-						[alt]="launch.name"
-						loading="lazy">
-
-					<ng-template #patchFallback>
-						<div class="launch-patch-fallback">SX</div>
-					</ng-template>
-				</div>
-
-				<div class="launch-card-body">
-					<h2 class="launch-name">{{ launch.name }}</h2>
-				</div>
-			</a>
-		</div>
+		<app-spacex-launch-list
+			*ngIf="!state.loading && state.launches.length; else emptyState"
+			[launches]="state.launches"
+			(launchSelected)="openLaunchDetail($event)">
+		</app-spacex-launch-list>
 
 		<ng-template #emptyState>
-			<p class="spacex-empty" *ngIf="!state.error">No llegaron lanzamientos desde la API.</p>
+			<p class="spacex-empty" *ngIf="!state.loading && !state.error">No llegaron lanzamientos desde la API.</p>
 		</ng-template>
 	</div>
 </section>

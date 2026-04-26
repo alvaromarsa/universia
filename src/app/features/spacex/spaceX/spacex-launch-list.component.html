@@ -1,0 +1,24 @@
+<div class="spacex-grid" *ngIf="launches.length">
+  <button
+    *ngFor="let launch of launches; trackBy: trackById"
+    class="launch-card"
+    type="button"
+    (click)="selectLaunch(launch)">
+    <div class="launch-card-media">
+      <img
+        *ngIf="launch.links.patch.small; else patchFallback"
+        class="launch-patch"
+        [src]="launch.links.patch.small"
+        [alt]="launch.name"
+        loading="lazy">
+
+      <ng-template #patchFallback>
+        <div class="launch-patch-fallback">SX</div>
+      </ng-template>
+    </div>
+
+    <div class="launch-card-body">
+      <h2 class="launch-name">{{ launch.name }}</h2>
+    </div>
+  </button>
+</div>

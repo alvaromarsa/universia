@@ -1,79 +1,91 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, inject, PLATFORM_ID } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { BehaviorSubject, catchError, combineLatest, map, Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { catchError, combineLatest, distinctUntilChanged, fromEvent, map, Observable, of, startWith } from 'rxjs';
 
 import { SpacexInterface } from '../spacexInterface';
 import { SpacexService } from '../spacexService';
+import { SpacexLaunchListComponent } from './spacex-launch-list.component';
 
 interface LaunchViewState {
   launches: SpacexInterface[];
   error: string | null;
+  loading: boolean;
 }
 
 @Component({
   selector: 'spacexComponent',
   standalone: true,
-  imports: [NgIf, NgFor, AsyncPipe, RouterModule],
+  imports: [NgIf, AsyncPipe, SpacexLaunchListComponent],
   templateUrl: './spacex.component.html',
   styleUrls: ['../spacex.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SpacexComponent implements OnDestroy {
+export class SpacexComponent {
   readonly launchState$: Observable<LaunchViewState>;
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly desktopPageSize = 9;
   private readonly tabletBreakpoint = 1024;
-  private readonly mobileBreakpoint = 640;
-  private readonly visibleLaunchLimit$ = new BehaviorSubject<number | null>(this.desktopPageSize);
-  private readonly resizeHandler = () => this.syncVisibleLaunchLimit();
 
-  constructor(private readonly spacexService: SpacexService) {
-    this.syncVisibleLaunchLimit();
+  constructor(
+    private readonly spacexService: SpacexService,
+    private readonly router: Router
+  ) {
+    const visibleLaunchLimit$ = this.isBrowser
+      ? fromEvent(window, 'resize').pipe(
+          map(() => window.innerWidth),
+          startWith(window.innerWidth),
+          map((viewportWidth) => this.getVisibleLaunchLimit(viewportWidth)),
+          distinctUntilChanged()
+        )
+      : of(this.desktopPageSize);
 
-    if (this.isBrowser) {
-      window.addEventListener('resize', this.resizeHandler);
-    }
-
-    this.launchState$ = combineLatest([
-      this.spacexService.getRecentLaunches(),
-      this.visibleLaunchLimit$,
-    ]).pipe(
-      map(([launches, visibleLaunchLimit]) => ({
-        launches: visibleLaunchLimit === null ? launches : launches.slice(0, visibleLaunchLimit),
+    const launchesState$ = this.spacexService.getRecentLaunches().pipe(
+      map((launches) => ({
+        launches,
         error: null,
+        loading: false,
       })),
       catchError((error) => {
         console.error('Error al cargar los lanzamientos de SpaceX', error);
         return of({
           launches: [],
           error: 'No se pudieron cargar los lanzamientos de SpaceX.',
+          loading: false,
         });
+      }),
+      startWith({
+        launches: [],
+        error: null,
+        loading: true,
       })
+    );
+
+    this.launchState$ = combineLatest([
+      launchesState$,
+      visibleLaunchLimit$,
+    ]).pipe(
+      map(([state, visibleLaunchLimit]) => ({
+        ...state,
+        launches:
+          state.loading || visibleLaunchLimit === null
+            ? state.launches
+            : state.launches.slice(0, visibleLaunchLimit),
+      }))
     );
   }
 
-  ngOnDestroy(): void {
-    if (this.isBrowser) {
-      window.removeEventListener('resize', this.resizeHandler);
-    }
+  openLaunchDetail(launch: SpacexInterface): void {
+    this.router.navigate(['/spacex', launch.id]);
   }
 
-  private syncVisibleLaunchLimit(): void {
-    if (!this.isBrowser) {
-      this.visibleLaunchLimit$.next(this.desktopPageSize);
-      return;
-    }
-
-    const viewportWidth = window.innerWidth;
-
+  private getVisibleLaunchLimit(viewportWidth: number): number | null {
     if (viewportWidth <= this.tabletBreakpoint) {
-      this.visibleLaunchLimit$.next(null);
-      return;
+      return null;
     }
 
-    this.visibleLaunchLimit$.next(this.desktopPageSize);
+    return this.desktopPageSize;
   }
 }

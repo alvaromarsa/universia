@@ -1,77 +1,18 @@
-<section class="spacex-view" *ngIf="launchState$ | async as state">
-	<div class="spacex-view-content" *ngIf="state.launch as launch; else stateTemplate">
-		<article class="detail-card">
-			<div class="detail-media">
-				<img
-					*ngIf="launch.links.patch.small; else imageFallback"
-					class="detail-image"
-					[src]="launch.links.patch.small"
-					[alt]="launch.name"
-					loading="lazy">
+<section class="spacex-view" *ngIf="viewModel$ | async as vm">
+	<p class="state-message" *ngIf="vm.loading">Cargando detalle del lanzamiento...</p>
 
-				<ng-template #imageFallback>
-					<div class="detail-image-fallback">SX</div>
-				</ng-template>
-			</div>
-
-			<div class="detail-body">
-				<div class="detail-header">
-					<h1>{{ launch.name }}</h1>
-					<button
-						class="favorite-toggle"
-						type="button"
-						(click)="toggleFavorite()"
-						[title]="isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'"
-					>
-						<span aria-hidden="true">
-							{{ isFavorite ? '★' : '☆' }}
-						</span>
-						<span class="sr-only">{{ isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos' }}</span>
-					</button>
-				</div>
-
-				<div class="detail-meta">
-					<div>
-						<span>Fecha</span>
-						<strong>{{ launch.date_utc | date:'medium' }}</strong>
-					</div>
-
-					<div>
-						<span>Estado</span>
-						<strong [class]="getLaunchStatusClass(launch.success)">{{ getLaunchStatus(launch.success) }}</strong>
-					</div>
-
-					<div>
-						<span>Wikipedia</span>
-						<a *ngIf="launch.links.wikipedia; else noWikipedia" class="wikipedia-link" [href]="launch.links.wikipedia" target="_blank" rel="noreferrer">
-							Abrir articulo
-						</a>
-						<ng-template #noWikipedia>
-							<strong class="link-unavailable">No disponible</strong>
-						</ng-template>
-					</div>
-
-					<div>
-						<span>Webcast</span>
-						<a *ngIf="launch.links.webcast; else noWebcast" class="webcast-link" [href]="launch.links.webcast" target="_blank" rel="noreferrer">
-							Ver lanzamiento
-						</a>
-						<ng-template #noWebcast>
-							<strong>No disponible</strong>
-						</ng-template>
-					</div>
-				</div>
-
-				<p class="detail-description">{{ launch.details | spacexDescriptionTranslate: launch.id }}</p>
-			</div>
-		</article>
-
-		<div class="detail-actions">
-			<button class="btn-back" type="button" (click)="goBack()">Volver a lanzamientos</button>
-		</div>
+	<div class="spacex-view-content" *ngIf="!vm.loading && vm.launch as launch; else stateTemplate">
+		<app-spacex-launch-detail
+			[launch]="launch"
+			[isFavorite]="vm.isFavorite"
+			[launchStatus]="getLaunchStatus(launch.success)"
+			[launchStatusClass]="getLaunchStatusClass(launch.success)"
+			(favoriteToggled)="toggleFavorite(launch, vm.isFavorite)"
+			(backRequested)="goBack()">
+		</app-spacex-launch-detail>
 	</div>
 
 	<ng-template #stateTemplate>
-		<p class="state-message">{{ state.error }}</p>
+		<p class="state-message" *ngIf="!vm.loading && vm.error">{{ vm.error }}</p>
 	</ng-template>
 </section>
