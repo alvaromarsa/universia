@@ -7,6 +7,32 @@
   <navbar/>
 </div>
 
+<div class="loading-orbit" *ngIf="isLoading$ | async" aria-live="polite" aria-label="Cargando datos">
+  <div class="loading-orbit__spinner" aria-hidden="true"></div>
+  <span class="loading-orbit__label">Transmision en curso...</span>
+</div>
+
+<div class="notification-center" *ngIf="notifications$ | async as notifications">
+  <div
+    *ngFor="let notification of notifications; trackBy: trackNotificationById"
+    class="notification-toast"
+    [class.notification-toast--error]="notification.type === 'error'"
+    [class.notification-toast--warning]="notification.type === 'warning'"
+    [class.notification-toast--success]="notification.type === 'success'"
+    [class.notification-toast--info]="notification.type === 'info'"
+    role="status"
+    aria-live="polite">
+    <span class="notification-toast__message">{{ notification.message }}</span>
+    <button
+      class="notification-toast__close"
+      type="button"
+      (click)="dismissNotification(notification.id)"
+      aria-label="Cerrar notificacion">
+      x
+    </button>
+  </div>
+</div>
+
 
 <main class="app-route-shell relative z-10 w-full min-h-screen" [@routeAnimations]="getRouteAnimationData()">
   <router-outlet/>

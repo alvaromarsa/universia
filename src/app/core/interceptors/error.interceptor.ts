@@ -9,10 +9,12 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { NotificationService } from '../services/notification.service';
+
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor() { }
+  constructor(private readonly notificationService: NotificationService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -53,7 +55,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           }
         }
 
-        alert(errorMessage);
+        this.notificationService.error(errorMessage);
         return throwError(() => error);
       })
     );
