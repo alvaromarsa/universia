@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100dvh;
   /* tamaño final visible del planeta en detail */
   --planet-detail-size: max(calc(var(--final-planet-size, 350px) / 2), 350px);
 }
@@ -87,6 +88,36 @@
   width: 40px;
   height: 40px;
   background: transparent !important; /* Por si acaso */
+}
+
+@media (max-height: 900px) {
+  .planet-detail {
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .planet-detail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .detail-container {
+    min-height: max-content;
+    padding-top: 7rem;
+    padding-bottom: 2rem;
+  }
+
+  .detail-title {
+    top: 1.5rem;
+  }
+
+  .planet-info {
+    margin-top: 17rem;
+    padding-bottom: 1rem;
+  }
 }
 
 

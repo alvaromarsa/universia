@@ -246,11 +246,11 @@ header h1 {
   }
 
   .technology-title {
-    top: 28px;
+    top: 40px;
   }
 
   .technology-content {
-    align-items: center;
+    justify-content: center;
   }
 
   .tech-grid {
