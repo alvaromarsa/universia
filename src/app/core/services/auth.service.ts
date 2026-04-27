@@ -4,6 +4,8 @@ import { Auth, User, createUserWithEmailAndPassword, signInWithEmailAndPassword,
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 
+import { environment } from '@env/environment';
+
 export interface UserProfile {
   uid: string;
   email: string;
@@ -17,7 +19,7 @@ type StoredUserProfile = Pick<UserProfile, 'displayName' | 'rango'>;
   providedIn: 'root' // Esto lo hace disponible en toda la app
 })
 export class AuthService {
-  private readonly profileDebugEnabled = true;
+  private readonly profileDebugEnabled = !environment.production;
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly profileRefresh$ = new BehaviorSubject(0);

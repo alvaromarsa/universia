@@ -116,4 +116,27 @@ describe('ErrorInterceptor', () => {
       },
     });
   });
+
+  it('should safely handle non-browser error payloads without relying on ErrorEvent', (done) => {
+    const serverLikeError = new HttpErrorResponse({
+      error: new Error('Node prerender network failure'),
+      status: 0,
+      statusText: 'Unknown Error',
+      url: '/test-endpoint',
+    });
+
+    const handler: HttpHandler = {
+      handle: () => throwError(() => serverLikeError),
+    };
+
+    interceptor.intercept(request, handler).subscribe({
+      next: () => done.fail('Expected an error response'),
+      error: (error) => {
+        expect(error).toBe(serverLikeError);
+        expect(notificationService.error).toHaveBeenCalledOnceWith('❌ Error de conexión. Verifica tu conexión a internet.');
+        expect(consoleErrorSpy).toHaveBeenCalledOnceWith('Error HTTP interceptado:', serverLikeError);
+        done();
+      },
+    });
+  });
 });

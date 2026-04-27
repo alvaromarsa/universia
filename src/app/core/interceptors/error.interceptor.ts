@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         let errorMessage = 'Ha ocurrido un error en la misión.';
 
-        if (error.error instanceof ErrorEvent) {
+        if (this.isBrowserErrorEvent(error.error)) {
           // Error del cliente
           errorMessage = `Error: ${error.error.message}`;
         } else {
@@ -59,5 +59,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         return throwError(() => error);
       })
     );
+  }
+
+  private isBrowserErrorEvent(value: unknown): value is ErrorEvent {
+    return typeof ErrorEvent !== 'undefined' && value instanceof ErrorEvent;
   }
 }
