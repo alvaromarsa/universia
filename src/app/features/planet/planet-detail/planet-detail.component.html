@@ -6,8 +6,9 @@
     <div class="planet-video-container">
       <video autoplay muted loop playsinline
             class="planeta-detail-video"
+            preload="auto"
             [class.planeta-detail-video-saturno]="p.id.toLowerCase() === 'saturne'"
-           [src]="'assets/videos/' + p.id + '.mp4'">
+            [src]="getVideoUrl(p.id)">
       </video>
     </div>
 

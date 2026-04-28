@@ -42,13 +42,12 @@ async onRegister() {
     this.isSubmitting = true;
 
     try {
-      const user = await this.authService.register(
+      await this.authService.register(
         this.registerForm.value.email,
         this.registerForm.value.password,
         this.registerForm.value.nombre,
         this.registerForm.value.rango
       );
-      console.log('🚀 Usuario creado con éxito:', user);
       // Si todo va bien, mandamos al usuario a su perfil
       this.router.navigate(['/profile']);
     } catch (error) {

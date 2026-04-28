@@ -31,7 +31,7 @@
               class="video-planeta"
               [class.video-planeta-saturno]="planeta.id.toLowerCase() === 'saturne'"
               [style.--diameter.px]="scaleRadius(planeta.meanRadius)"
-              [src]="'assets/videos/' + planeta.id + '.mp4'">
+              [src]="getVideoUrl(planeta.id)">
               </video>
 
               <span class="nombre-tooltip">{{ planeta.name | translate }}</span>

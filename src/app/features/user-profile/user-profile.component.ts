@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService, UserProfile } from 'src/app/core/services/auth.service';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -23,7 +23,6 @@ export class UserProfileComponent {
 
   constructor(
     public authService: AuthService,
-    private router: Router,
     private cdr: ChangeDetectorRef
   ) {
     this.userProfile$ = this.authService.userProfile$;

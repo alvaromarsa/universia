@@ -1,9 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, AsyncPipe } from '@angular/common';
-import { map, Observable, of, switchMap, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-
-
+import { map, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { PlanetService } from '../planet.service';
 import { Planeta } from 'src/app/features/planet/planet.interface';
@@ -17,16 +15,23 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   styleUrls: ['./planet.component.css'],
 })
 export class PlanetComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute) { }
-
   public petitionsInject = inject(PlanetService);
   private router = inject(Router);
   public planetsName$!: Observable<Planeta[]>;
   public randomNumber: number = this.getRandomNumber();
-  public planetData$!: Observable<Planeta[]>;
 
   public idSeleccionado: string | null = null;
+
+  tokens: { [key: string]: string } = {
+    'jupiter': '0ffe9c51-01e4-41ee-8f07-fb3a1e4cef7e',
+    'mars': 'ba070b90-3722-448f-abfe-de18a1ee5660',
+    'mercure': '3d322f7f-4481-4d18-942f-96c3565a377e',
+    'neptune': '841182cb-5bd4-489d-99c0-91e7d14c3e42',
+    'saturne': '9313bdea-22fa-4820-96f6-d7e9a70c0111',
+    'terre': '880c9768-3c31-4073-852f-5636452d9b5c',
+    'uranus': '8ca0849a-8622-4e94-9b86-a7109b0064ad',
+    'venus': '1dbd3f22-1626-49fa-8848-2650e1b736a3',
+};
 
   ngOnInit(): void {
     this.planetsName$ = this.petitionsInject.getPlanetsName().pipe(
@@ -40,22 +45,8 @@ export class PlanetComponent implements OnInit {
           const indexB = ordenReal.indexOf(b.id?.toLowerCase() || '');
           return indexA - indexB;
         });
-      }),
-      tap(planetas => {
-        console.log('Planetas cargados:', planetas);
-        console.log('randomNumber:', this.randomNumber);
       })
     );
-
- }
-
- getPlanetsData():void {
-      this.planetData$ = this.route.paramMap.pipe(
-        switchMap(params => {
-          const nombre = params.get('nombrePlaneta');
-          return nombre ? this.petitionsInject.getPlanetsData(nombre) : of([]);
-        })
-      );
 
  }
 
@@ -83,8 +74,6 @@ scaleRadius(radiusKm: number): number {
  getRandomNumber(){
   return Math.floor(Math.random() * 100);
  }
-
-public posicionInicial = { x: 0, y: 0 };
 
 viajarAPlaneta(event: MouseEvent, id: string) {
   // prevenir clicks múltiples durante el zoom
@@ -156,7 +145,6 @@ viajarAPlaneta(event: MouseEvent, id: string) {
   // Desactivamos el navbar durante el zoom
   document.body.classList.add('zoom-active');
 
-  //this.posicionInicial = { x, y };
   // activamos el zoom y el desvanecido inmediato de los elementos no seleccionados
   this.idSeleccionado = id;
 
@@ -167,5 +155,12 @@ viajarAPlaneta(event: MouseEvent, id: string) {
     document.body.classList.remove('zoom-active');
   }, 1500);
 }
+  getVideoUrl(planetId: string): string {
+  const id = planetId.toLowerCase();
+  const token = this.tokens[id];
+  const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/universia-ac877.firebasestorage.app/o/';
+
+  return `${baseUrl}${id}.mp4?alt=media&token=${token}`;
+  }
 
 }

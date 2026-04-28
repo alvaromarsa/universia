@@ -50,7 +50,6 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     });
 
     this.userSubscription = this.authService.user$.subscribe(user => {
-      console.log('User in favorites:', user);
       Promise.resolve().then(() => {
         this.user = user;
         this.currentUserUid = user?.uid ?? null;
@@ -61,7 +60,6 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   }
 
   private loadFavorites(): void {
-    console.log('loadFavorites called, uid:', this.currentUserUid);
     if (!this.currentUserUid) {
       this.allFavorites = [];
       this.visibleFavorites$ = of([]);
@@ -70,7 +68,6 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
     const data$ = of(this.favoritesService.getFavorites(this.currentUserUid)).pipe(
       tap(data => {
-        console.log('Favorites loaded:', data);
         this.allFavorites = data;
         this.cdr.markForCheck();
       })

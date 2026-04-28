@@ -32,7 +32,6 @@ export class LoginComponent {
   ) { }
 
   isValidField(field: string): boolean | null {
-    console.log(this.loginForm);
   return FormUtils.isValidField(this.loginForm, field);
 
   }
