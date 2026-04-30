@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
 })
 
 export class HomeComponent  {
-
+  ngafterViewInit() {
+    const video = document.querySelector('video');
+    if (video) {
+      video.load();
+    }
+  }
 }
