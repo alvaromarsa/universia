@@ -24,8 +24,8 @@
                placeholder="correo@ejemplo.com">
                   @if (formUtils.isValidField(loginForm, 'email')) {
 
-                    <span class="text-red-700">
-                      {{ formUtils.getFieldError(loginForm, "email")}}
+                    <span class="text-red-400 text-[10px] mt-1">
+                      {{ loginForm.get('email')?.hasError('email') ? 'Introduce un email valido.' : formUtils.getFieldError(loginForm, 'email') }}
                     </span>
 
                    }
@@ -44,19 +44,19 @@
                placeholder="••••••••">
                   @if (formUtils.isValidField(loginForm, 'password')) {
 
-                    <span class="text-red-700">
+                    <span class="text-red-400 text-[10px] mt-1">
                       {{ formUtils.getFieldError(loginForm, "password")}}
                   </span>
 
                   }
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid"
+      <button type="submit" [disabled]="loginForm.invalid || isSubmitting"
               class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500
                   hover:to-purple-500 text-white font-bold py-4 rounded-lg shadow-lg transform
                     active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed
                     uppercase tracking-widest text-sm">
-        Iniciar Propulsores
+        {{ isSubmitting ? 'Verificando acceso...' : 'Iniciar Propulsores' }}
       </button>
 
       <div class="text-center mt-6">

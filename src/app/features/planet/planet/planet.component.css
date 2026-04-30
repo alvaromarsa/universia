@@ -15,6 +15,10 @@
   transition: opacity 500ms ease, transform 500ms ease;
 }
 
+.planet-title {
+  color: #60a5fa;
+}
+
 .zoom-fade {
   opacity: 0;
   transform: scale(0.9);
@@ -153,6 +157,7 @@
 
 .planeta-link:hover .nombre-tooltip {
   opacity: 1;
+  color: #60a5fa;
 }
 
 /* Animaciones */

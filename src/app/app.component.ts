@@ -16,7 +16,6 @@ import type { AppNotification } from './core/services/notification.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'universia';
   readonly isLoading$ = this.loadingService.isLoading$;
   readonly notifications$ = this.notificationService.notifications$;
 

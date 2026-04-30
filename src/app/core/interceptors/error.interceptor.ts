@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -14,12 +15,17 @@ import { NotificationService } from '../services/notification.service';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private readonly notificationService: NotificationService) { }
+  constructor(
+    private readonly notificationService: NotificationService,
+    @Inject(PLATFORM_ID) private readonly platformId: Object,
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.error('Error HTTP interceptado:', error);
+        if (isPlatformBrowser(this.platformId)) {
+          console.error('Error HTTP interceptado:', error);
+        }
 
         let errorMessage = 'Ha ocurrido un error en la misión.';
 
@@ -55,7 +61,10 @@ export class ErrorInterceptor implements HttpInterceptor {
           }
         }
 
-        this.notificationService.error(errorMessage);
+        if (isPlatformBrowser(this.platformId)) {
+          this.notificationService.error(errorMessage);
+        }
+
         return throwError(() => error);
       })
     );

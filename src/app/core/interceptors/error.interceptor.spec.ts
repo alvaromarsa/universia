@@ -20,7 +20,7 @@ describe('ErrorInterceptor', () => {
 
   beforeEach(() => {
     notificationService = jasmine.createSpyObj<NotificationService>('NotificationService', ['error']);
-    interceptor = new ErrorInterceptor(notificationService);
+    interceptor = new ErrorInterceptor(notificationService, 'browser');
     consoleErrorSpy = spyOn(console, 'error');
   });
 
@@ -135,6 +135,31 @@ describe('ErrorInterceptor', () => {
         expect(error).toBe(serverLikeError);
         expect(notificationService.error).toHaveBeenCalledOnceWith('❌ Error de conexión. Verifica tu conexión a internet.');
         expect(consoleErrorSpy).toHaveBeenCalledOnceWith('Error HTTP interceptado:', serverLikeError);
+        done();
+      },
+    });
+  });
+
+  it('should skip console and notifications while running on the server', (done) => {
+    interceptor = new ErrorInterceptor(notificationService, 'server');
+
+    const serverLikeError = new HttpErrorResponse({
+      error: new Error('Node prerender network failure'),
+      status: 0,
+      statusText: 'Unknown Error',
+      url: '/test-endpoint',
+    });
+
+    const handler: HttpHandler = {
+      handle: () => throwError(() => serverLikeError),
+    };
+
+    interceptor.intercept(request, handler).subscribe({
+      next: () => done.fail('Expected an error response'),
+      error: (error) => {
+        expect(error).toBe(serverLikeError);
+        expect(notificationService.error).not.toHaveBeenCalled();
+        expect(consoleErrorSpy).not.toHaveBeenCalled();
         done();
       },
     });

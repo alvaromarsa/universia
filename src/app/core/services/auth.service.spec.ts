@@ -3,9 +3,17 @@
 import { TestBed } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { Auth, User, UserCredential } from '@angular/fire/auth';
-import { BehaviorSubject, firstValueFrom, take } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, take } from 'rxjs';
 
 import { AuthService } from './auth.service';
+
+type AuthServiceTestSeams = {
+  observeCurrentUser(): Observable<User | null>;
+  createUserCredential(email: string, pass: string): Promise<UserCredential>;
+  signInUserCredential(email: string, pass: string): Promise<UserCredential>;
+  signOutFromAuth(): Promise<void>;
+  updateFirebaseProfile(currentUser: User, profile: { displayName: string }): Promise<void>;
+};
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -23,7 +31,9 @@ describe('AuthService', () => {
       },
     } as Partial<Auth> & { currentUser: User | null };
 
-    spyOn<any>(AuthService.prototype, 'observeCurrentUser').and.returnValue(authState$.asObservable());
+    const authServicePrototypeSeams = AuthService.prototype as unknown as AuthServiceTestSeams;
+
+    spyOn(authServicePrototypeSeams, 'observeCurrentUser').and.returnValue(authState$.asObservable());
     spyOn(console, 'log');
 
     TestBed.configureTestingModule({
@@ -71,6 +81,7 @@ describe('AuthService', () => {
   });
 
   it('should register a user, update the display name, and persist the local profile', async () => {
+    const authServiceSeams = service as unknown as AuthServiceTestSeams;
     const createdUser = {
       uid: 'user-2',
       email: 'new@universia.dev',
@@ -82,8 +93,8 @@ describe('AuthService', () => {
       operationType: 'signIn',
     } as UserCredential;
 
-    const createUserSpy = spyOn<any>(service, 'createUserCredential').and.resolveTo(userCredential);
-    const updateProfileSpy = spyOn<any>(service, 'updateFirebaseProfile').and.resolveTo();
+    const createUserSpy = spyOn(authServiceSeams, 'createUserCredential').and.resolveTo(userCredential);
+    const updateProfileSpy = spyOn(authServiceSeams, 'updateFirebaseProfile').and.resolveTo();
 
     const result = await service.register('new@universia.dev', 'secret', 'Nova', 'Exploradora');
 
@@ -96,6 +107,7 @@ describe('AuthService', () => {
   });
 
   it('should login, reload the user, and persist the hydrated local profile', async () => {
+    const authServiceSeams = service as unknown as AuthServiceTestSeams;
     const reloadedUser = {
       uid: 'user-3',
       email: 'pilot@universia.dev',
@@ -113,7 +125,7 @@ describe('AuthService', () => {
       JSON.stringify({ displayName: 'Local Pilot', rango: 'Comandante' })
     );
 
-    const loginSpy = spyOn<any>(service, 'signInUserCredential').and.resolveTo(userCredential);
+    const loginSpy = spyOn(authServiceSeams, 'signInUserCredential').and.resolveTo(userCredential);
 
     const result = await service.login('pilot@universia.dev', 'secret');
 
@@ -132,6 +144,7 @@ describe('AuthService', () => {
   });
 
   it('should trim and persist the updated display name while preserving rango', async () => {
+    const authServiceSeams = service as unknown as AuthServiceTestSeams;
     const currentUser = {
       uid: 'user-4',
       displayName: 'Old Name',
@@ -143,7 +156,7 @@ describe('AuthService', () => {
       JSON.stringify({ displayName: 'Old Name', rango: 'Ingeniera' })
     );
 
-    const updateProfileSpy = spyOn<any>(service, 'updateFirebaseProfile').and.resolveTo();
+    const updateProfileSpy = spyOn(authServiceSeams, 'updateFirebaseProfile').and.resolveTo();
 
     await service.updateUserDisplayName('  Nova Prime  ');
 
@@ -154,7 +167,8 @@ describe('AuthService', () => {
   });
 
   it('should delegate logout to Firebase Auth signOut', async () => {
-    const signOutSpy = spyOn<any>(service, 'signOutFromAuth').and.resolveTo();
+    const authServiceSeams = service as unknown as AuthServiceTestSeams;
+    const signOutSpy = spyOn(authServiceSeams, 'signOutFromAuth').and.resolveTo();
 
     await service.logout();
 

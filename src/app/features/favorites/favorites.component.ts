@@ -1,8 +1,10 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { User } from '@angular/fire/auth';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, Inject, OnDestroy, OnInit, PLATFORM_ID, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FavoriteItem, FavoritesService } from 'src/app/core/services/favorites.service';
@@ -18,14 +20,14 @@ import { TechnologyTranslatePipe } from '@shared/pipes/technology-translate.pipe
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
   private readonly mobileBreakpoint = 640;
-  public user: any = null;
+  private readonly destroyRef = inject(DestroyRef);
+  public user: User | null = null;
   public allFavorites: FavoriteItem[] = [];
   public visibleFavorites$: Observable<FavoriteItem[]> | undefined;
   public currentPage$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pageSize: number = 4;
   public isMobileView = false;
   private currentUserUid: string | null = null;
-  private userSubscription: Subscription | undefined;
   private resizeHandler?: () => void;
 
   constructor(
@@ -44,19 +46,21 @@ export class FavoritesComponent implements OnInit, OnDestroy {
       window.addEventListener('resize', this.resizeHandler);
     }
 
-    this.route.queryParams.subscribe(params => {
-      const page = +params['page'] || 0;
-      this.currentPage$.next(page);
-    });
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        const page = +params['page'] || 0;
+        this.currentPage$.next(page);
+      });
 
-    this.userSubscription = this.authService.user$.subscribe(user => {
-      Promise.resolve().then(() => {
+    this.authService.user$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
         this.user = user;
         this.currentUserUid = user?.uid ?? null;
         this.loadFavorites();
         this.cdr.markForCheck();
       });
-    });
   }
 
   private loadFavorites(): void {
@@ -66,23 +70,20 @@ export class FavoritesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const data$ = of(this.favoritesService.getFavorites(this.currentUserUid)).pipe(
-      tap(data => {
-        this.allFavorites = data;
-        this.cdr.markForCheck();
-      })
-    );
+    this.allFavorites = this.favoritesService.getFavorites(this.currentUserUid);
 
-    this.visibleFavorites$ = combineLatest([data$, this.currentPage$]).pipe(
-      map(([data, page]) => {
+    this.visibleFavorites$ = this.currentPage$.pipe(
+      map((page) => {
         if (this.isMobileView) {
-          return data;
+          return this.allFavorites;
         }
 
         const start = page * this.pageSize;
-        return data.slice(start, start + this.pageSize);
+        return this.allFavorites.slice(start, start + this.pageSize);
       })
     );
+
+    this.cdr.markForCheck();
   }
 
   private syncViewportMode(): void {
@@ -132,24 +133,21 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     if (!this.currentUserUid) {
       return;
     }
+
     this.favoritesService.removeFavorite(this.currentUserUid, item.id, item.type);
     this.loadFavorites();
-    setTimeout(() => {
-      // Espera a que visibleFavorites$ se actualice
-      this.visibleFavorites$?.subscribe(favs => {
-        if (favs.length === 0 && this.currentPage$.value > 0) {
-          // Retrocede de página y recarga
-          const prev = this.currentPage$.value - 1;
-          this.currentPage$.next(prev);
-          this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: { page: prev }
-          });
-          this.loadFavorites();
-        }
-        this.cdr.markForCheck();
-      }).unsubscribe();
-    }, 0);
+
+    if (!this.isMobileView && this.currentPage$.value > 0 && this.currentPage$.value * this.pageSize >= this.allFavorites.length) {
+      const prev = this.currentPage$.value - 1;
+      this.currentPage$.next(prev);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { page: prev }
+      });
+      this.loadFavorites();
+    }
+
+    this.cdr.markForCheck();
   }
 
   removeFavoriteSilent(item: FavoriteItem, event: Event): void {
@@ -182,7 +180,6 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSubscription?.unsubscribe();
     if (this.resizeHandler && isPlatformBrowser(this.platformId)) {
       window.removeEventListener('resize', this.resizeHandler);
     }

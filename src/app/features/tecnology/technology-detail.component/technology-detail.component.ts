@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
@@ -20,6 +21,9 @@ import { TechnologyDescriptionTranslatePipe } from './technology-description-tra
 })
 export class TechnologyDetailComponent implements OnInit {
   public readonly fallbackImage = 'assets/images/fondo.jpg';
+  private readonly destroyRef = inject(DestroyRef);
+  private animationResetTimer: ReturnType<typeof setTimeout> | null = null;
+  private navigationTimer: ReturnType<typeof setTimeout> | null = null;
   public allTechnologies: TechnologyInterface[] = [];
   public currentTechnology: TechnologyInterface | null = null;
   public currentIndex = -1;
@@ -37,19 +41,26 @@ export class TechnologyDetailComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
     private favoritesService: FavoritesService
-  ) {}
+  ) {
+    this.destroyRef.onDestroy(() => this.clearTimers());
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.currentPage = +params['page'] || 0;
-    });
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        this.currentPage = +params['page'] || 0;
+      });
 
-    this.authService.user$.subscribe(user => {
-      this.currentUserUid = user?.uid ?? null;
-      this.updateFavoriteState();
-    });
+    this.authService.user$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
+        this.currentUserUid = user?.uid ?? null;
+        this.updateFavoriteState();
+      });
 
     this.route.paramMap.pipe(
+      takeUntilDestroyed(this.destroyRef),
       switchMap(params => {
         const id = params.get('id');
         if (!id) {
@@ -70,7 +81,8 @@ export class TechnologyDetailComponent implements OnInit {
         if (this.pendingEntryClass) {
           this.animationClass = this.pendingEntryClass;
           this.pendingEntryClass = '';
-          setTimeout(() => {
+          this.clearAnimationResetTimer();
+          this.animationResetTimer = setTimeout(() => {
             this.animationClass = '';
             this.cdr.markForCheck();
           }, this.animationDurationMs);
@@ -108,9 +120,29 @@ export class TechnologyDetailComponent implements OnInit {
     this.pendingEntryClass = direction === 'next' ? 'slide-in-right' : 'slide-in-left';
     this.cdr.markForCheck();
 
-    setTimeout(() => {
+    this.clearNavigationTimer();
+    this.navigationTimer = setTimeout(() => {
       this.router.navigate(['/technology', id]);
     }, this.animationDurationMs);
+  }
+
+  private clearTimers(): void {
+    this.clearAnimationResetTimer();
+    this.clearNavigationTimer();
+  }
+
+  private clearAnimationResetTimer(): void {
+    if (this.animationResetTimer) {
+      clearTimeout(this.animationResetTimer);
+      this.animationResetTimer = null;
+    }
+  }
+
+  private clearNavigationTimer(): void {
+    if (this.navigationTimer) {
+      clearTimeout(this.navigationTimer);
+      this.navigationTimer = null;
+    }
   }
 
   toggleFavorite(): void {
