@@ -1,0 +1,3 @@
+/api-francia/* https://api.le-systeme-solaire.net/:splat 200
+/api-nasa/* https://technology.nasa.gov/:splat 200
+/* /index.html 200

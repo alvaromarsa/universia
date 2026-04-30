@@ -29,7 +29,7 @@
         </select>
       </div>
 
-      <div class="col-span-2">
+      <div class="col-span-1 md:col-span-2">
         <label class="block text-xs font-bold text-blue-400 uppercase mb-1 ml-1">Email de la Flota</label>
         <input type="email" formControlName="email"
                class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
@@ -39,7 +39,7 @@
         }
       </div>
 
-      <div class="col-span-2">
+      <div class="col-span-1 md:col-span-2">
         <label class="block text-xs font-bold text-blue-400 uppercase mb-1 ml-1">Código de Encriptación</label>
         <input type="password" formControlName="password"
                class="w-full bg-blue-900/20 border border-blue-500/50 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all">
@@ -49,11 +49,11 @@
       </div>
 
       <button type="submit" [disabled]="registerForm.invalid || isSubmitting"
-              class="col-span-2 mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 rounded-lg shadow-lg uppercase tracking-widest text-sm transition-all disabled:opacity-30">
+              class="col-span-1 mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 rounded-lg shadow-lg uppercase tracking-widest text-sm transition-all disabled:opacity-30 md:col-span-2">
         {{ isSubmitting ? 'Creando expediente...' : 'Crear Expediente' }}
       </button>
 
-      <div class="col-span-2 text-center mt-4">
+      <div class="col-span-1 mt-4 text-center md:col-span-2">
         <a [routerLink]="['/login']" class="text-blue-300 text-xs hover:text-white transition-colors underline cursor-pointer pointer-events-auto">
           ¿Ya tienes rango? Vuelve a la base
         </a>

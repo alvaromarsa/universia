@@ -40,21 +40,35 @@
   pointer-events: none;
 }
 
-.planeta-detail-video {
+.planet-video-shell {
   width: var(--planet-detail-size);
   height: var(--planet-detail-size);
-  border-radius: 60%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.28), rgba(15, 23, 42, 0.12) 55%, rgba(15, 23, 42, 0.32) 100%);
+}
+
+.planet-video-shell-saturno {
+  width: calc(var(--planet-detail-size) * 1.8);
+  height: var(--planet-detail-size);
+  border-radius: 999px;
+  overflow: visible;
+  background: transparent;
+}
+
+.planeta-detail-video {
+  width: 100%;
+  height: 100%;
+  display: block;
   object-fit: cover;
-  clip-path: circle(40% at 50% 50%);
 }
 
 /* Saturno en detail - sin máscara, mostrando los anillos completos */
 .planeta-detail-video-saturno {
-  width: calc(var(--planet-detail-size) * 1.8);
-  height: var(--planet-detail-size);
+  width: 100%;
+  height: 100%;
   border-radius: 0;
   object-fit: contain;
-  clip-path: none;
 }
 
 /* Título aparece con fade in */
@@ -80,6 +94,10 @@
   animation: fadeIn 0.8s ease 0.8s forwards;
   font-size: clamp(12px, 1.5vw, 18px);
   z-index: 50;
+}
+
+.planet-info p {
+  justify-content: center;
 }
 
 .icon-container {
@@ -120,6 +138,85 @@
   }
 }
 
+@media (max-width: 768px) {
+  .planet-detail {
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+    --planet-detail-size: min(56vw, 260px);
+  }
+
+  .detail-container {
+    min-height: 100dvh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .detail-title {
+    top: max(1rem, env(safe-area-inset-top));
+    padding: 0 0.75rem;
+    font-size: clamp(2.5rem, 11vw, 4rem);
+    line-height: 0.95;
+  }
+
+  .planet-info {
+    position: absolute;
+    left: 50%;
+    bottom: calc(5.75rem + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    animation: fadeInMobile 0.8s ease 0.8s forwards;
+    margin-top: 0;
+    padding: 0;
+    width: min(18rem, calc(100vw - 8.5rem));
+    max-width: min(18rem, calc(100vw - 8.5rem));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1rem;
+    align-content: end;
+    justify-items: center;
+  }
+
+  .planet-info p {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    display: block !important;
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    font-size: clamp(0.95rem, 3.7vw, 1.1rem);
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .planet-info .icon-container,
+  .planet-info svg,
+  .planet-info img {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .planet-detail {
+    --planet-detail-size: min(58vw, 235px);
+  }
+
+  .planet-info {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    width: min(16rem, calc(100vw - 7.5rem));
+    max-width: min(16rem, calc(100vw - 7.5rem));
+    gap: 0.85rem 0.75rem;
+  }
+
+  .planet-info p {
+    min-height: 0;
+    padding: 0;
+    font-size: clamp(0.88rem, 3.9vw, 1rem);
+  }
+}
+
 
 @keyframes fadeIn {
   from {
@@ -129,6 +226,17 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeInMobile {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 

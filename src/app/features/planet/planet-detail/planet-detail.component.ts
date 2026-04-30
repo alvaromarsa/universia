@@ -47,6 +47,22 @@ export class PlanetDetailComponent implements OnInit {
     );
   }
 
+  ensureVideoPlayback(event: Event): void {
+    const video = event.target as HTMLVideoElement | null;
+
+    if (!video) {
+      return;
+    }
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playResult = video.play();
+    if (playResult && typeof playResult.catch === 'function') {
+      playResult.catch(() => undefined);
+    }
+  }
+
     // 2. Creamos una función que monte la URL solita
   getVideoUrl(planetId: string): string {
   const id = planetId.toLowerCase();

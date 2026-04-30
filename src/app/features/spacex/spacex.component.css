@@ -217,11 +217,13 @@
         .spacex-view {
           height: 100dvh;
           min-height: 100dvh;
+          align-items: flex-start;
+          justify-content: flex-start;
           overflow-y: auto;
           overflow-x: hidden;
           -ms-overflow-style: none;
           scrollbar-width: none;
-          padding: 104px 72px 32px;
+          padding: 132px 72px 32px;
         }
 
         .spacex-view::-webkit-scrollbar {
@@ -230,6 +232,7 @@
 
         .spacex-view-content {
           width: min(100%, calc(100vw - 144px));
+          margin: 0 auto;
         }
 
         .detail-card {
@@ -418,6 +421,10 @@
         border: 1px solid rgba(96, 165, 250, 0.22);
       }
 
+      .spacex-loading {
+        color: #60a5fa;
+      }
+
       @media (max-width: 1024px) {
         .spacex-section {
           min-height: 100dvh;
@@ -458,7 +465,15 @@
       @media (max-width: 640px) {
         .spacex-section {
           justify-content: flex-start;
-          padding: 104px 72px 24px;
+          padding: 136px 72px 24px;
+        }
+
+        .spacex-header {
+          top: 28px;
+        }
+
+        .spacex-title {
+          line-height: 1.15;
         }
 
         .spacex-grid {

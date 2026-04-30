@@ -27,12 +27,19 @@
                 class="planeta-link group"
                 [class.planeta-seleccionado]="idSeleccionado === planeta.id">
 
-              <video muted loop playsinline
-              class="video-planeta"
-              [class.video-planeta-saturno]="planeta.id.toLowerCase() === 'saturne'"
-              [style.--diameter.px]="scaleRadius(planeta.meanRadius)"
-              [src]="getVideoUrl(planeta.id)">
-              </video>
+              <div class="planet-visual-shell"
+                   [class.planet-visual-shell-saturno]="planeta.id.toLowerCase() === 'saturne'"
+                   [style.--diameter.px]="scaleRadius(planeta.meanRadius)">
+                <video autoplay muted loop playsinline
+                webkit-playsinline="true"
+                class="video-planeta"
+                preload="auto"
+                [class.video-planeta-saturno]="planeta.id.toLowerCase() === 'saturne'"
+                (loadedmetadata)="ensureVideoPlayback($event)"
+                (canplay)="ensureVideoPlayback($event)"
+                [src]="getVideoUrl(planeta.id)">
+                </video>
+              </div>
 
               <span class="nombre-tooltip">{{ planeta.name | translate }}</span>
             </a>

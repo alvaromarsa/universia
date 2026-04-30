@@ -4,7 +4,7 @@
 	</header>
 
 	<div class="spacex-content" *ngIf="launchState$ | async as state">
-		<p class="spacex-empty" *ngIf="state.loading">Cargando lanzamientos de SpaceX...</p>
+		<p class="spacex-empty spacex-loading" *ngIf="state.loading">Cargando lanzamientos de SpaceX...</p>
 		<p class="spacex-error" *ngIf="!state.loading && state.error">{{ state.error }}</p>
 
 		<app-spacex-launch-list

@@ -84,15 +84,14 @@ viajarAPlaneta(event: MouseEvent, id: string) {
   // si conseguimos el elemento del planeta, calculamos su centro y la
   // traslación necesaria para llevarlo al centro tras escalar
   const anchor = event.currentTarget as HTMLElement;
-  const videoElem = anchor.querySelector('.video-planeta') as HTMLElement | null;
   let tX = 0;
   let tY = 0;
   const isSaturnSelected = id.toLowerCase() === 'saturne';
   // Separamos el zoom visible del tamaño que se usa después en detail.
   let detailScale = 1;
   let zoomScale = 1;
-  if (videoElem) {
-    const rect = videoElem.getBoundingClientRect();
+  if (anchor) {
+    const rect = anchor.getBoundingClientRect();
     // coordenadas del centro del planeta en pantalla
     const absCenterX = rect.left + rect.width / 2;
     const absCenterY = rect.top + rect.height / 2;
@@ -131,8 +130,8 @@ viajarAPlaneta(event: MouseEvent, id: string) {
 
     // guardamos también dónde queda el planeta al terminar (centro de viewport)
     // calculamos el tamaño final del video del planeta
-    if (videoElem) {
-      const rect = videoElem.getBoundingClientRect();
+    if (anchor) {
+      const rect = anchor.getBoundingClientRect();
       // finalSize es el tamaño que usará la vista detail al entrar.
       const finalSize = rect.width * detailScale;
       document.documentElement.style.setProperty('--final-planet-size', `${finalSize}px`);
@@ -155,6 +154,23 @@ viajarAPlaneta(event: MouseEvent, id: string) {
     document.body.classList.remove('zoom-active');
   }, 1500);
 }
+
+  ensureVideoPlayback(event: Event): void {
+    const video = event.target as HTMLVideoElement | null;
+
+    if (!video) {
+      return;
+    }
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playResult = video.play();
+    if (playResult && typeof playResult.catch === 'function') {
+      playResult.catch(() => undefined);
+    }
+  }
+
   getVideoUrl(planetId: string): string {
   const id = planetId.toLowerCase();
   const token = this.tokens[id];
