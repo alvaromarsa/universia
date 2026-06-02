@@ -1,103 +1,134 @@
-## Universia
+# 🚀 Universia
 
-Universia es una aplicacion Angular centrada en exploracion espacial, tecnologias de la NASA y lanzamientos de SpaceX. La app combina una experiencia visual orientada a demo con una base tecnica solida: autenticacion, rutas protegidas, lazy loading, feedback global de errores y carga, y despliegue compatible con SSR/prerender.
+> Aplicación SPA desarrollada con Angular que combina exploración espacial, autenticación de usuarios y gestión personalizada de contenido mediante integración con APIs públicas.
 
-## Caracteristicas principales
+## 🎬 Demo
 
-- Autenticacion con Firebase Auth.
-- Registro y login con mensajes de error amigables para usuario final.
-- Perfil de usuario editable, incluyendo cambio de nombre visible.
-- Rutas protegidas con `authGuard` y rutas publicas restringidas con `guestGuard`.
-- Vista de planetas con detalle individual y transiciones visuales entre listado y detalle.
-- Vista de tecnologias con listado, detalle y control de favoritos.
-- Vista de SpaceX con arquitectura separada entre contenedores y componentes presentacionales.
-- Sistema de favoritos persistido por usuario en `localStorage`.
-- Notificaciones globales tipo toast para errores y eventos relevantes.
-- Interceptor global de carga para mostrar estado de peticiones HTTP.
-- Lazy loading por funcionalidades usando componentes y rutas standalone.
-- Soporte de SSR/prerender con Angular 17.
-- Diseno responsive pensado para movil, tablet y escritorio.
-- Suite de tests en servicios, guards, interceptores y componentes clave.
+![Universia Demo](./docs/gifs/universia.gif)
 
-## Stack tecnico
+---
 
-- Angular 17 con standalone components y standalone routes.
-- Angular Router con lazy loading.
-- AngularFire para autenticacion.
-- RxJS para composicion reactiva de estado y flujos async.
-- SSR con `@angular/ssr`.
-- Karma + Jasmine + Puppeteer para testing.
+## 🌌 Visión General
 
-## Funcionalidades destacadas
+Universia es una aplicación desarrollada con Angular que permite explorar información relacionada con el espacio a través de diferentes fuentes de datos externas.
 
-### Autenticacion y perfil
+Los usuarios pueden consultar información sobre planetas del Sistema Solar, lanzamientos espaciales de SpaceX y tecnologías de la NASA, además de guardar contenido favorito mediante autenticación de usuario.
 
-- Registro y login conectados a Firebase Auth.
-- Perfil derivado de Firebase Auth + `localStorage` para mantener nombre y rango de usuario.
-- Proteccion de vistas privadas como perfil y favoritos.
+---
 
-### Favoritos
+## ✨ Características Principales
 
-- El usuario puede guardar y eliminar favoritos de SpaceX y tecnologias.
-- Los favoritos se almacenan por `uid`, por lo que cada usuario mantiene su propia coleccion.
-- La vista de favoritos adapta su paginacion segun el tamano de pantalla.
+### 🌍 Exploración del Sistema Solar
 
-### Experiencia de usuario
+* Visualización interactiva de los planetas.
+* Navegación dinámica entre vistas.
+* Consulta de información detallada de cada planeta.
 
-- Loading global mientras hay peticiones en curso.
-- Manejo centralizado de errores HTTP mediante interceptor.
-- Mensajes de validacion inline en formularios y bloqueo de submit cuando procede.
-- Animaciones de transicion entre rutas y entre vistas concretas.
+### 🚀 Lanzamientos Espaciales
 
-### Integracion con APIs externas
+* Consumo de datos desde APIs públicas.
+* Acceso a información de misiones espaciales.
+* Enlaces externos relacionados con cada lanzamiento.
 
-- Firebase Auth para autenticacion.
-- API de SpaceX para lanzamientos recientes y detalle de mision.
-- API de NASA Technology para el catalogo de tecnologias destacadas.
-- API de Le Systeme Solaire para datos planetarios.
+### 🛰️ Tecnologías de la NASA
 
-## Estructura funcional
+* Consulta de tecnologías y proyectos publicados por la NASA.
+* Visualización dinámica de información obtenida desde API.
 
-- `src/app/features/planet`: listado y detalle de planetas.
-- `src/app/features/tecnology`: listado y detalle de tecnologias.
-- `src/app/features/spacex`: listado de lanzamientos y detalle de mision.
-- `src/app/features/favorites`: gestion de favoritos por usuario.
-- `src/app/features/login` y `src/app/features/register`: acceso y alta de usuario.
-- `src/app/features/user-profile`: perfil de usuario.
-- `src/app/core`: guards, interceptores y servicios globales.
-- `src/app/shared`: pipes, animaciones, utilidades y componentes compartidos.
+### ⭐ Sistema de Favoritos
 
-## Scripts disponibles
+* Guardado de elementos favoritos.
+* Persistencia de datos asociada al usuario autenticado.
+* Gestión personalizada de contenido.
 
-- `npm start`: arranca el servidor de desarrollo.
-- `npm run build`: genera la build de produccion.
-- `npm run watch`: build en modo desarrollo con watch.
-- `npm test`: ejecuta la suite de tests.
-- `npm run serve:ssr:universia`: sirve la build SSR generada en `dist`.
+### 🔐 Autenticación
 
-## Desarrollo local
+* Registro e inicio de sesión mediante Firebase Authentication.
+* Protección de funcionalidades privadas.
+* Control de acceso mediante Guards.
 
-1. Instala dependencias con `npm install`.
-2. Arranca el proyecto con `npm start`.
-3. Abre `http://localhost:4200`.
+---
 
-En desarrollo se usa `proxy.conf.json` para reenviar llamadas a APIs externas sin exponer directamente las URLs ni depender de CORS durante `ng serve`.
+## 📸 Capturas
 
-## Despliegue
+### 🌍 Sistema Solar
 
-La app esta preparada para despliegue estatico en Netlify y mantiene redirects para:
+![Solar System](./docs/screenshots/solar-system.jpg)
 
-- proxy de `/api-francia/*` hacia la API planetaria.
-- proxy de `/api-nasa/*` hacia la API de tecnologias.
-- fallback SPA hacia `/index.html`.
+### 🔐 Autenticación
 
-Si se despliega en otra plataforma, hay que replicar esas reglas de rewrite/proxy para que las vistas de planetas y tecnologias funcionen igual que en local.
+![Login](./docs/screenshots/user-paneljpg)
 
-## Calidad tecnica
+### 🛰️ Tecnologías NASA
 
-- Componentes standalone y carga diferida por feature.
-- Guards para control de acceso.
-- Interceptores para loading y errores.
-- Cobertura de tests en piezas criticas de negocio e infraestructura.
-- Codigo preparado para demo publica.
+![NASA Technologies](./docs/screenshots/nasa.jpg)
 
+---
+
+## 🏗️ Arquitectura
+
+* Standalone Components
+* Angular Router
+* Lazy Loading
+* Reactive Forms
+* Guards
+* Http Interceptors
+* Servicios desacoplados
+* Gestión reactiva con RxJS
+* Integración con Firebase
+
+---
+
+## 🧰 Stack Tecnológico
+
+### Frontend
+
+* Angular
+* TypeScript
+* RxJS
+* Angular Router
+* Reactive Forms
+
+### Backend & Cloud
+
+* Firebase Authentication
+* Firestore
+
+### APIs
+
+* NASA APIs
+* SpaceX APIs
+* le-systeme-solaire APIs
+
+### Estilos
+
+* HTML5
+* CSS3
+* Tailwind CSS
+
+---
+
+## 🎯 Objetivos del Proyecto
+
+Este proyecto fue desarrollado para profundizar en conceptos avanzados de Angular:
+
+* Consumo de APIs REST.
+* Gestión de autenticación.
+* Protección de rutas.
+* Persistencia de datos.
+* Arquitectura modular escalable.
+* Desarrollo de aplicaciones SPA modernas.
+
+---
+
+## 🚀 Live Demo
+
+https://universia-haxe.netlify.app
+
+---
+
+## 👨‍💻 Autor
+
+Álvaro Martínez Sagristá
+
+Frontend Developer especializado en Angular
