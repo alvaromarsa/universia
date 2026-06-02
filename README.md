@@ -57,7 +57,7 @@ Los usuarios pueden consultar información sobre planetas del Sistema Solar, lan
 
 ### 🔐 Autenticación
 
-![Login](./docs/screenshots/user-paneljpg)
+![Login](./docs/screenshots/user-panel.jpg)
 
 ### 🛰️ Tecnologías NASA
 
