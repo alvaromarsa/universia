@@ -40,7 +40,17 @@ export class SpacexService {
   }
 
   getLaunchById(id: string): Observable<SpacexInterface> {
-    return this.http.get<SpacexInterface>(`${this.apiUrl}/${id}`);
+    return this.http.get<SpacexInterface[]>(this.apiUrl).pipe(
+      map((launches) => {
+        const launch = launches.find((item) => item.id === id);
+
+        if (!launch) {
+          throw new Error(`Lanzamiento con id ${id} no encontrado.`);
+        }
+
+        return launch;
+      })
+    );
   }
 
 }

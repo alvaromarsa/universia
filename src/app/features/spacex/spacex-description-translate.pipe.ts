@@ -30,6 +30,14 @@ export class SpacexDescriptionTranslatePipe implements PipeTransform {
       'GPS III SV05 fue el cuarto lanzamiento GPS III de SpaceX y el primero de seguridad nacional en volar con un propulsor ya utilizado, reforzando la constelacion NAVSTAR de nueva generacion.',
     '5fe3af6db3467846b3242160':
       'SXM-8 llevo a orbita de transferencia geoestacionaria un satelite de nueva generacion para SiriusXM, destinado a sustituir a XM-4 y reforzar su red de radiodifusion.',
+    '135fb199-a39e-48cc-ba27-0aecd96ba9f8':
+      'Un lote de 24 satelites para la mega-constelacion Starlink, el proyecto de SpaceX para un sistema de Internet basado en el espacio.',
+    '62d4cd48-ed28-418b-b58c-526781a50a39':
+      'Un lote de 29 satelites para la mega-constelacion Starlink, parte del despliegue continuo de SpaceX para cobertura global de Internet.',
+    'a6db1e67-5860-47c9-a674-adc0f35b62e0':
+      'Vuelo dedicado Transporter 17 con docenas de pequenos microsatelites y nanosatelites comerciales y gubernamentales en una orbita heliosincrona.',
+    '1ef27ca1-af91-48bb-b934-3da5abd9f711':
+      'Un lote de 29 satelites de la constelacion Starlink, continuando la construccion de la red global de Internet por satelite de SpaceX.',
   };
 
   transform(description: string | null | undefined, launchId?: string): string {
